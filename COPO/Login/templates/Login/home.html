@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Welcome to COPO website</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .fade-out { opacity: 0; transition: opacity 0.5s ease-out;}
+        nav {
+            margin-top: 1%;
+            width: 100%;
+            background-color: #00B6BD; 
+            color: #ffffff; 
+            padding: 10px;
+            height: 50px;
+        }
+        nav a {
+            text-decoration: none;
+            color: inherit;
+            margin: 0 10px;
+            transition: font-size 0.2s;
+            
+        }
+        nav a:hover {
+            font-weight: bold; 
+        }
+        nav div:last-child{
+            border: none;
+        }
+        .welcome {
+            border:2px solid rgb(113, 142, 228);
+            color: #000000; 
+            text-align: center;
+            margin-top: 20px;
+            width: 600px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            /* align-items: center; */
+            /* overflow:hidden auto; */
+            text-overflow: ellipsis;
+        }
+        nav div {
+            width: 100px;
+            height: 30px;
+            float: left;
+            border-right: 1px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #e8cfba; 
+            color: #dc6f15; 
+            padding: 10px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div><a href="#Indeks.html">Home</a></div>
+            <div><a href="admin/">Admin Panel</a></div>
+            <div><a href="#">Services</a></div>
+            <div><a href="Login/loginpage/">Login</a></div>
+        </nav>
+
+    </header>
+    <div >  {% if messages %}
+        <ul class="message-list">
+            {% for message in messages %}
+                <li class="alert alert-{{ message.tags }} alert-dismissible fade show" style="background-color: rgba(143, 239, 239, 0.868);color: red;" role="alert">
+                    {{ message }}
+                    <button type="button" class="  btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}</div>
+    <div class="welcome">
+    <h1 >How it works
+    </h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, cupiditate, consequuntur soluta error quis blanditiis repudiandae placeat minus nobis totam laudantium consectetur dicta quaerat inventore exercitationem sit maxime quia temporibus neque odio. Voluptatibus totam aliquid alias cumque qui quae, dolores sit vero rem, blanditiis repellendus.</p>
+    </div>
+    <footer>
+        © Copyright 2024, SIES GST
+    </footer>
+    <script>
+        // Auto fade out alerts after 3 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(function() {
+            let alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+              alert.classList.add('fade-out');
+              setTimeout(function() {
+                alert.style.display = 'none';
+              }, 500); // Match the duration of the fade-out transition
+            });
+          }, 3000); // Time in milliseconds before fading out (3 seconds)
+        });
+      </script>
+      
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js">
+    </script>
+</body>
+</html>

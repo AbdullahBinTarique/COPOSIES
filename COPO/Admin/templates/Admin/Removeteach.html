@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove User formt</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+        }
+        .form{
+            border:2px solid black;
+            margin: 10px;
+            padding: 20px;
+            width: 60vw;
+            height: 70vh;
+        }
+    </style>
+</head>
+<body>
+    <div class = "form">
+    
+    <form action="/Admin/Home/removeuser/func" method="post">{% csrf_token %}
+        <div>
+            <h3>Select User to remove</h3>
+           
+        </div>
+        <div class="mb-3">
+            <select name="remuser" id="remuser">
+                <option value="default">Select User</option>
+                {% for user in Allusers %}
+                <option value="{{ user}}" name="{{ user}}">{{ user}}</option>
+                {% endfor %}
+
+            </select>
+          </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+ 
+
+
+      <script 
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" 
+      integrity="sha384-whJm9f1zLgP1h7lYKg9fhzEhc2bKUdYIYwxj9z2+lcFqq3fJm2Ap0q3sF86dIHND" 
+      crossorigin="anonymous"></script>
+<script>
+        // Auto-fade the alert after 3 seconds
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('.alert').fadeOut('slow');
+            }, 3000);  // 3000 milliseconds = 3 seconds
+        });
+    </script>
+
+</body>
+</html>

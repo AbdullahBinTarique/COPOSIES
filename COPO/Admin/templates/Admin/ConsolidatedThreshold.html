@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consolidated Threshold Sheets</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+body{
+    background-color: #b7cdee6d
+}
+
+        header{
+            border: 1 px solid white;
+            margin-top: 100px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+       
+       main{
+        display: flex;
+            flex-direction: column;
+            align-items: center;
+       }
+        
+       .accordion-button{
+         
+            width: 500px;
+             
+            
+        }
+
+
+        th {
+            border: 2px solid black;
+            margin: 2px;
+            padding: 2px;
+
+        }
+
+        td {
+            border: 0.5px solid black;
+            margin: 2px;
+            padding: 2px;
+            text-align: center;
+            /* Prevent text selection */
+        }
+
+        td.selected {
+            background-color: #a0d6b4;
+        }
+
+        td.filled {
+            background-color: #ffd966;
+        }
+
+        table {
+            border-collapse: collapse;
+
+        }
+
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0px;
+
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .Table_data:focus {
+            outline: none;
+        }
+
+        .Button {
+            border: 2px solid blue;
+            background-color: #6A0DAD;
+            color: azure;
+            width: 100px;
+            height: 30px;
+            border-radius: 30px;
+            transition: background-color, font-size 0.3s;
+            font-size: 14px;
+        }
+
+        .Button:hover {
+            background-color: #540b9c;
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+<table>
+                    <thead>
+                        <tr>
+                            <th style="  background-color:blanchedalmond">Teacher Name</th>
+                            <th style="  background-color:blanchedalmond">IA THRESH LVL1</th>
+                            <th style="  background-color:blanchedalmond">IA THRESH LVL2</th>
+                             <th style="  background-color:blanchedalmond">IA THRESH LVL3</th>
+                            <th style="  background-color:blanchedalmond">Sem THRESH LVL1</th>
+                             <th style="  background-color:blanchedalmond">Sem THRESH LVL2</th>
+                            <th style="  background-color:blanchedalmond">Sem THRESH LVL3</th>
+                            <th style="  background-color:blanchedalmond">IA THRES POM</th>
+                            <th style="  background-color:blanchedalmond">Sem THRESH POM</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in teacher %}
+                        <tr>
+                            <td style="background-color:rgb(246, 239, 229)">{{s.Username}}</td>
+                            <td style="background-color:rgb(246, 239, 229)">{{s.ia_th_lvl1_sc}}</td>
+                            <td style="background-color:rgb(246, 239, 229) ">{{s.ia_th_lvl2_sc}}</td>
+                            <td style="background-color:rgb(246, 239, 229)">{{s.ia_th_lvl3_sc}}</td>
+                            <td style="background-color:rgb(246, 239, 229) ">{{s.sem_th_lvl1_sc}}</td>
+                            <td style="background-color:rgb(246, 239, 229)">{{s.sem_th_lvl2_sc}}</td>
+                            <td style="background-color:rgb(246, 239, 229) ">{{s.sem_th_lvl3_sc}}</td>
+                            <td style="background-color:rgb(246, 239, 229)">{{s.ia_th_pom}}</td>
+                            <td style="background-color:rgb(246, 239, 229) ">{{s.sem_th_pom}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+
+
+
+    </header>
+    <main>
+        {% if messages %}
+        <ul class="message-list">
+            {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <form action="/Admin/Home/" method = 'post'>{% csrf_token %}<button type="submit" class="btn btn-primary">Goto Home</button>
+</form>
+
+
+
+        
+    </main>
+
+
+    <script>
+        // Auto-fade the alert after 3 seconds
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('.alert').fadeOut('slow');
+            }, 3000);  // 3000 milliseconds = 3 seconds
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

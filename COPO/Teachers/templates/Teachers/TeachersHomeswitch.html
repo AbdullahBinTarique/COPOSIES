@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Homepage</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+
+
+
+
+
+
+    <style>
+        body {
+            background-color: #b7cdee6d;
+            height: 100vh;
+        }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        header {
+            border: 1 px solid white;
+            margin-top: 100px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 0.8em;
+        }
+
+        .accordion-button {
+
+            width: 500px;
+
+
+        }
+
+
+        th {
+            border: 2px solid black;
+            margin: 2px;
+            padding: 2px;
+
+        }
+
+        td {
+            border: 0.5px solid black;
+            margin: 2px;
+            padding: 2px;
+            text-align: center;
+            /* Prevent text selection */
+        }
+
+        td.selected {
+            background-color: #a0d6b4;
+        }
+
+        td.filled {
+            background-color: #ffd966;
+        }
+
+        table {
+            border-collapse: collapse;
+
+        }
+
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0px;
+
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .Table_data:focus {
+            outline: none;
+        }
+
+        .Button {
+            border: 2px solid blue;
+            background-color: #6A0DAD;
+            color: azure;
+            width: 100px;
+            height: 30px;
+            border-radius: 30px;
+            transition: background-color;
+            font-size: 14px;
+        }
+
+        .Button:hover {
+            background-color: #540b9c;
+
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="accordion accordion-flush" id="Teacher_name">
+            <div class="accordion-item" style="border-radius: 40px;">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" style="border-radius: 40px;width: 600px;"
+                        data-bs-toggle="collapse" data-bs-target="#Teacher_content" aria-expanded="false"
+                        aria-controls="flush-collapseOne">
+                        {{teachname}}
+                    </button>
+                </h2>
+                <div id="Teacher_content" class="accordion-collapse collapse" data-bs-parent="#Teacher_name">
+                    <div class="accordion-body">
+                        <form action="/Login/logout/">
+                            <button type="submit" class="Button"> Logout </button>
+                        </form>
+                        <form action="/Admin/Home/">
+                            <button type="submit" class="Button">Switch</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion accordion-flush" id="Subject_name">
+            <div class="accordion-item" style="border-radius: 40px;">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" style="border-radius: 40px;width: 600px;"
+                        data-bs-toggle="collapse" data-bs-target="#Subject_content" aria-expanded="false"
+                        aria-controls="flush-collapseOne">
+                        {{subject}}
+                    </button>
+                </h2>
+                <div id="Subject_content" class="accordion-collapse collapse" data-bs-parent="#Subject_name">
+                    <div class="accordion-body" style="display: flex;">
+
+                        <form action='/Teachers/fetchadmin/' method="post">{% csrf_token %}
+
+                            <select name="branch" id="branch">
+                                <option value="default">Select Branch</option>
+                                {% for b in branch %}
+                                <option value="{{b}}">{{b}}</option>
+                                {% endfor %}
+                            </select>
+
+
+
+                            <select name="batch" id="batch">
+                                <option value="default">Select Batch</option>
+                                {% for b in batch %}
+                                <option value="{{b}}">{{b}}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="Button" style="margin-right: 10px;"> Generate </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </header>
+    <main>
+        {% if messages %}
+        <ul class="message-list">
+            {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="Data">
+            {% if Students %}
+
+
+            <form action="">
+                <table id="formTable">
+                    <thead>
+                        <caption>IA 1</caption>
+                        <tr>
+                            <td style="background-color:rgb(246, 239, 229)" colspan="2">COs </td>
+                            {% for i in NoofQuestions %}
+                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                    style="width: 30px; border: none; " type="number" name='COia1{{i}}' id='COia1{{i}}'>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td style="background-color:rgb(246, 239, 229)" colspan="2">Marks </td>
+                            {% for i in NoofQuestions %}
+                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                    style="width: 30px; border: none; " type="number" name='MARKSia1{{i}}'
+                                    id='MARKSia1{{i}}'></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+
+                            <th style="padding:0px 150px 0px 1px; background-color:blanchedalmond">Name</th>
+                            <th style="padding:0px 100px 0px 1px; background-color:blanchedalmond">Prn</th>
+                            {% for i in NoofQuestions %}
+                            <th style="background-color:blanchedalmond">Q{{i}} </th>
+                            {% endfor %}
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for s in Students %}
+                        <tr name='{{forloop.counter}}'>
+                            <td style="background-color:rgb(246, 239, 229)">{{s.name}}</td>
+                            <td style="background-color:rgb(246, 239, 229)">{{s.prn}}</td>
+                            {% for i in NoofQuestions %}
+                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                    style="width: 30px; border: none; " type="number" name='QA{{i}}' id='QA{{i}}'></td>
+                            {% endfor %}
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button onclick="" class="Button">Submit</button>
+                <br><br>
+                <!--  -->
+                <table id="Calculated-IA1">
+                    <tbody>
+                        <caption>IA 1</caption>
+                        <tr>
+                            <td style="background-color:rgb(246, 239, 229) ;width: 327px;">Threshold Marks </td>
+                            {% for i in NoofQuestions %}
+                            <td style="background-color:rgb(246, 239, 229);width: 35px; padding: 1px 2px ;"
+                                name='ThreshMarksIA1{{i}}' id='ThreshMarksIA1{{i}}'></td>
+                            {% endfor %}
+
+                        </tr>
+                        <tr>
+                            <td style="background-color:rgb(246, 239, 229);width: 327px;">Count of obtained above
+                                Threshold </td>
+                            {% for i in NoofQuestions %}
+                            <td style="background-color:rgb(246, 239, 229);width: 35px;padding: 1px 2px ; "
+                                name='Coatia1{{i}}' id='Coatia1{{i}}'></td>
+                            {% endfor %}
+
+                        </tr>
+                        <tr>
+                            <td style="background-color:rgb(246, 239, 229);width:327px;">Attainment Lvl in % </td>
+                            {% for i in NoofQuestions %}
+                            <td style="background-color:rgb(246, 239, 229) ;width: 35px;padding: 1px 2px ;"
+                                name='AttlvlIA1{{i}}' id='AttlvlIA1{{i}}'> </td>
+                            {% endfor %}
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+
+
+                <!--  -->
+
+                <table id="formTable2">
+                    <thead>
+                        <caption>IA 2</caption>
+                        <tr>
+                            <td style="background-color:rgb(246, 239, 229)" colspan="2">COs </td>
+                            {% for i in NoofQuestions %}
+                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                    style="width: 30px; border: none; " type="number" name='COia2{{i}}' id='COia2{{i}}'>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td style="background-color:rgb(246, 239, 229)" colspan="2">Marks </td>
+                            {% for i in NoofQuestions %}
+                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                    style="width: 30px; border: none; " type="number" name='MARKSia2{{i}}'
+                                    id='MARKSia2{{i}}'></td>
+                            {% endfor %}
+                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                    style="width: 30px; border: none; " type="number" name='MARKSTEE' id='MARKSTEE'>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="padding:0px 150px 0px 1px; background-color:blanchedalmond">Name</th>
+                            <th style="padding:0px 100px 0px 1px; background-color:blanchedalmond">Prn</th>
+                            {% for i in NoofQuestions %}
+                            <th style="background-color:blanchedalmond">Q{{i}} </th>
+                            {% endfor %}
+                            <th style="background-color:blanchedalmond">TEE </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for s in Students %}
+                        <tr>
+                            <td style="background-color:rgb(246, 239, 229)">{{s.name}}</td>
+                            <td style="background-color:rgb(246, 239, 229) ">{{s.prn}}</td>
+                            {% for i in NoofQuestions %}
+                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                    style="width: 30px; border: none; " type="number" name='QA1{{i}}' id='QA1{{i}}'>
+                            </td>
+                            {% endfor %}
+                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                    style="width: 30px; border: none; " type="number" name='TEE'
+                                    id='TEE{{forloop.counter}}'></td>
+
+                        </tr>
+                        {% endfor %}
+
+
+
+
+                    </tbody>
+                </table>
+                <br>
+
+                <button onclick="" class="Button">Submit</button>
+            </form>
+
+
+            <table id="Calculated-IA2">
+                <tbody>
+                    <caption>IA 2</caption>
+                    <tr>
+                        <td style="background-color:rgb(246, 239, 229) ;width: 327px;">Threshold Marks </td>
+                        {% for i in NoofQuestions %}
+                        <td style="background-color:rgb(246, 239, 229);width: 35px; padding: 1px 2px ; "
+                            name='ThreshMarksIA2{{i}}' id='ThreshMarksIA2{{i}}'></td>
+                        {% endfor %}
+                        <td style="background-color:rgb(246, 239, 229) ;width: 35px; padding: 1px 2px ;"
+                            name='ThreshMarksTEE' id='ThreshMarksTEE'> </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color:rgb(246, 239, 229);width: 327px; ">Count of obtained above Threshold
+                        </td>
+                        {% for i in NoofQuestions %}
+                        <td style="background-color:rgb(246, 239, 229);width: 35px; padding: 1px 2px ;"
+                            name='Coatia2{{i}}' id='Coatia2{{i}}'> </td>
+                        {% endfor %}
+                        <td style="background-color:rgb(246, 239, 229) ;width: 35px;padding: 1px 2px ;" name='MARKSTEE'
+                            id='MARKSTEE'> </td>
+                    </tr>
+                    <tr>
+                        <td style="background-color:rgb(246, 239, 229);width:327px;">Attainment Lvl in % </td>
+                        {% for i in NoofQuestions %}
+                        <td style="background-color:rgb(246, 239, 229) ;width: 35px;padding: 1px 2px ;"
+                            name='AttlvlIA2{{i}}' id='AttlvlIA2{{i}}'> </td>
+                        {% endfor %}
+                        <td style="background-color:rgb(246, 239, 229);width: 35px; padding: 1px 2px ;" name='MARKSTEE'
+                            id='MARKSTEE'> </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+
+
+
+            <br><br>
+        </div>
+        {% endif %}
+        <span>
+            <p style="text-align: center;font-size:xx-large;font-weight: 400;"><i>CoPo Corelation Matrix</i></p>
+        </span>
+        <div class=" " id="copotable-div">
+
+            <p><input type="number" name="numberofpos" id="numberofpos" placeholder="No of Po "
+                    style="background-color: bisque;box-shadow:2px 2px 5px 5px #ffd966;border-color: transparent;border-radius: 30px;  ">
+                &nbsp
+                <input
+                    style="border-radius: 30px;box-shadow:2px 2px 5px 5px #ffd966; background-color: bisque; border-color: transparent;"
+                    type="number" name="numberofpsos" id="numberofpsos" placeholder="No of PSo ">
+                <button type="button" class="Button" onclick="generateCOPO()" style="width: 150px;">Generate
+                    Table</button>
+            </p>
+        </div>
+
+
+
+    </main>
+
+
+    <script>
+        var cos = 6;
+
+        function generateCOPO() {
+            let pos = document.getElementById('numberofpos').value;
+            let psos = document.getElementById('numberofpsos').value;
+            let innerhtml = `
+            <form> 
+                <table id="formTable">
+                    <thead>
+                        <tr>
+                            <td style = "width: 30px"></td>`
+            for (let x = 0; x < pos; x++) {
+                innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >Po${x + 1}</td>`
+
+            }
+            for (let x = 0; x < psos; x++) {
+                innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >PSo${x + 1}</td>`
+
+            }
+            innerhtml += `</tr></thead>
+            <tbody>`
+            for (let x = 0; x < cos; x++) {
+                innerhtml += `<tr> <td style = "width: 30px;background-color:#50bd2e"  >Co${x + 1}</td>`;
+                for (let y = 0; y < pos; y++) {
+                    innerhtml += `<td  style = "background-color:rgb(246, 239, 229)" ><input type = "number" class="Table_data" name = 'pos${y + 1}-Co${x + 1}' id = 'pos${y + 1}-Co${x + 1}' style="width: 30px; border: none;" ></td>`;
+                }
+                for (let y = 0; y < psos; y++) {
+                    innerhtml += `<td  style = "background-color:rgb(246, 239, 229)" ><input type = "number" class="Table_data" name = 'psos${y + 1}-Co${x + 1}' id = 'psos${y + 1}-Co${x + 1}'
+                                    style="width: 30px; border: none"; ></td>`;
+                }
+
+                innerhtml += `</tr>`;
+
+            }
+            innerhtml += `</tbody></table>
+            <br><br>
+            <button type = "button" class = "Button" onclick=  " save() ">Save</button>
+            </form>
+            <br><br>`
+            document.getElementById('copotable-div').innerHTML = innerhtml;
+        }
+
+
+
+        // Auto-fade the alert after 3 seconds
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('.alert').fadeOut('slow');
+            }, 3000);  // 3000 milliseconds = 3 seconds
+        });
+
+
+    </script>
+    <script>
+
+
+        document.getElementById("formTable").addEventListener("paste", (event) => {
+            event.preventDefault();
+
+            // Retrieve pasted data as plain text
+            const pasteData = event.clipboardData.getData("text");
+
+            // Split into rows and then into columns
+            const rows = pasteData.trim().split("\n").map(row => row.split("\t"));
+
+            // Find table rows in tbody
+            const tableRows = document.querySelectorAll("#formTable tbody tr");
+
+            // Loop through rows of pasted data
+            rows.forEach((rowData, rowIndex) => {
+                const targetRow = tableRows[rowIndex + 3];
+
+                // Make sure targetRow exists in the table
+                if (targetRow) {
+                    // Select only the inputs with class 'Table_data' in this row
+                    const rowInputs = targetRow.querySelectorAll("input.Table_data");
+
+                    // Loop through each cell in the pasted rowData
+                    rowData.forEach((cellData, cellIndex) => {
+                        // Ensure we don't exceed the number of inputs in the row
+                        if (cellIndex < rowInputs.length) {
+                            rowInputs[cellIndex].value = cellData.trim(); // Assign cell data
+                        }
+                    });
+                }
+            });
+        });
+
+        document.getElementById("formTable2").addEventListener("paste", (event) => {
+            event.preventDefault();
+
+            // Retrieve pasted data as plain text
+            const pasteData = event.clipboardData.getData("text");
+
+            // Split into rows and then into columns
+            const rows = pasteData.trim().split("\n").map(row => row.split("\t"));
+
+            // Find table rows in tbody
+            const tableRows = document.querySelectorAll("#formTable2 tbody tr");
+
+            // Loop through rows of pasted data
+            rows.forEach((rowData, rowIndex) => {
+                const targetRow = tableRows[rowIndex + 3];
+
+                // Make sure targetRow exists in the table
+                if (targetRow) {
+                    // Select only the inputs with class 'Table_data' in this row
+                    const rowInputs = targetRow.querySelectorAll("input.Table_data");
+
+                    // Loop through each cell in the pasted rowData
+                    rowData.forEach((cellData, cellIndex) => {
+                        // Ensure we don't exceed the number of inputs in the row
+                        if (cellIndex < rowInputs.length) {
+                            rowInputs[cellIndex].value = cellData.trim(); // Assign cell data
+                        }
+                    });
+                }
+            });
+        });
+
+
+    </script>
+    <script src="/static/formulas.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script> -->
+    <script>
+        // Auto fade out alerts after 3 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+          setTimeout(function() {
+            let alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+              alert.classList.add('fade-out');
+              setTimeout(function() {
+                alert.style.display = 'none';
+              }, 500); // Match the duration of the fade-out transition
+            });
+          }, 3000); // Time in milliseconds before fading out (3 seconds)
+        });
+      </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js">
+    </script>
+
+
+
+</body>
+
+</html>
