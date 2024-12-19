@@ -37,7 +37,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            height: 0.8em;
+            /* height: 100vh; */
         }
 
         .accordion-button {
@@ -60,6 +60,7 @@
             margin: 2px;
             padding: 2px;
             text-align: center;
+            height: 31px;
             /* Prevent text selection */
         }
 
@@ -170,6 +171,7 @@
         </div>
 
     </header>
+    <br><br><br>
     <main>
         {% if messages %}
         <ul class="message-list">
@@ -183,360 +185,685 @@
         {% endif %}
 
         <div class="Data">
-            {% if Students %}
+            <div>
+                <p style="text-align: center;font-size:xx-large;font-weight: 400;"><i>CoPo Corelation Matrix</i></p>
+            </div>
+            <div id="input">
+                <input type="number" name="numberofpos" id="numberofpos" placeholder="No of Po "
+                    style="background-color: bisque;width:150px ;box-shadow:2px 2px 5px 5px #ffd966;border-color: transparent;border-radius: 30px;  ">
+                &nbsp
+                <input
+                    style="border-radius: 30px;width:150px ;box-shadow:2px 2px 5px 5px #ffd966; background-color: bisque; border-color: transparent;"
+                    type="number" name="numberofcos" id="numberofcos" placeholder="No of Cos ">
+                <input
+                    style="border-radius: 30px;width:150px ;box-shadow:2px 2px 5px 5px #ffd966; background-color: bisque; border-color: transparent;"
+                    type="number" name="numberofpsos" id="numberofpsos" placeholder="No of PSo ">
+
+            </div>
+            <br><br>
+
+            <div id="codescription">
+
+            </div>
+
+            <div class=" " id="copotable-div">
+
+                <p><button type="button" class="Button" onclick="generateCOPO()" style="width: 150px;">Generate
+                        Table</button>
+                </p>
+            </div>
 
 
-            <form action="">
-                <table id="formTable">
+            <div class="Internal-External-Weighted-AVG ">
+                <!--Error while using style visiblity hidden!-->
+                <table class="">
                     <thead>
-                        <caption>IA 1</caption>
                         <tr>
-                            <td style="background-color:rgb(246, 239, 229)" colspan="2">COs </td>
-                            {% for i in NoofQuestions %}
-                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
-                                    style="width: 30px; border: none; " type="number" name='COia1{{i}}' id='COia1{{i}}'>
-                            </td>
-                            {% endfor %}
+                            <td style="background-color:rgb(246, 239, 229)"></td>
+                            <td style="background-color:rgb(246, 239, 229)">Int Wt Avg </td>
+                            <td style="background-color:rgb(246, 239, 229)">Ext Wt Ag </td>
                         </tr>
-                        <tr>
-                            <td style="background-color:rgb(246, 239, 229)" colspan="2">Marks </td>
-                            {% for i in NoofQuestions %}
-                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
-                                    style="width: 30px; border: none; " type="number" name='MARKSia1{{i}}'
-                                    id='MARKSia1{{i}}'></td>
-                            {% endfor %}
-                        </tr>
-                        <tr>
-
-                            <th style="padding:0px 150px 0px 1px; background-color:blanchedalmond">Name</th>
-                            <th style="padding:0px 100px 0px 1px; background-color:blanchedalmond">Prn</th>
-                            {% for i in NoofQuestions %}
-                            <th style="background-color:blanchedalmond">Q{{i}} </th>
-                            {% endfor %}
-
-
-                        </tr>
+                        <caption></caption>
                     </thead>
-                    <tbody>
+                    <tbody id="COTableGen">
 
-                        {% for s in Students %}
-                        <tr name='{{forloop.counter}}'>
-                            <td style="background-color:rgb(246, 239, 229)">{{s.name}}</td>
-                            <td style="background-color:rgb(246, 239, 229)">{{s.prn}}</td>
-                            {% for i in NoofQuestions %}
-                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
-                                    style="width: 30px; border: none; " type="number" name='QA{{i}}' id='QA{{i}}'></td>
+                    </tbody>
+
+
+            </div>
+
+            <div>
+                {% if Students %}
+
+                <form action="">
+                    <caption>IA 1</caption>
+                    <table id="formTable">
+
+                        <thead>
+
+                            <tr>
+                                <td style="background-color:rgb(246, 239, 229)" colspan="2">COs </td>
+                                {% for i in NoofQuestions %}
+                                <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                        style="width: 30px; border: none; " type="number" name='COia1{{i}}'
+                                        id='COia1{{i}}'>
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td style="background-color:rgb(246, 239, 229)" colspan="2">Marks </td>
+                                {% for i in NoofQuestions %}
+                                <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                        style="width: 30px; border: none; " type="number" name='MARKSia1{{i}}'
+                                        id='MARKSia1{{i}}'></td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+
+                                <th style="padding:0px 150px 0px 1px; background-color:blanchedalmond">Name</th>
+                                <th style="padding:0px 100px 0px 1px; background-color:blanchedalmond">Prn</th>
+                                {% for i in NoofQuestions %}
+                                <th style="background-color:blanchedalmond">Q{{i}} </th>
+                                {% endfor %}
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for s in Students %}
+                            <tr name='{{forloop.counter}}'>
+                                <td style="background-color:rgb(246, 239, 229)">{{s.name}}</td>
+                                <td style="background-color:rgb(246, 239, 229)">{{s.prn}}</td>
+                                {% for i in NoofQuestions %}
+                                <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                        style="width: 30px; border: none; " type="number" name='QA{{i}}' id='QA{{i}}'>
+                                </td>
+                                {% endfor %}
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    {% if qno %}
+                    <br>
+                    <input type="number" placeholder="lvl1 Threshold" id="lvl1"> <input type="number"
+                        placeholder="lvl2 Threshold" id="lvl2">
+                    <input type="number" placeholder="lvl3 Threshold" id="lvl3">
+                    <span id="NoofQuestions">{{qno}}</span>
+
+                    <button type="button" onclick="callCalculate1()" class="Button">Calculate</button>
+                    <script>
+                        function callCalculate1() {
+                            let noq = document.getElementById('NoofQuestions').textContent;
+                            let lvl1 = document.getElementById('lvl1').value;
+                            let lvl2 = document.getElementById('lvl2').value;
+                            let lvl3 = document.getElementById('lvl3').value;
+                            mainFunctions.calculate1(noq, lvl1, lvl2, lvl3);
+                        }
+                    </script>
+
+                    {% endif %}
+                    <br><br>
+                    <!--  -->
+                    <caption>IA 1</caption>
+                    <table id="Calculated-IA1">
+                        <tbody>
+
+                            <tr>
+                                <td style="background-color:rgb(246, 239, 229) ;width: 327px;">Threshold Marks </td>
+                                {% for i in NoofQuestions %}
+                                <td style="background-color:rgb(246, 239, 229);width: 35px; padding: 1px 2px ;"
+                                    name='ThreshMarksIA1{{i}}' id='ThreshMarksIA1{{i}}'></td>
+                                {% endfor %}
+
+                            </tr>
+                            <tr>
+                                <td style="background-color:rgb(246, 239, 229);width: 327px;">Count of obtained above
+                                    Threshold </td>
+                                {% for i in NoofQuestions %}
+                                <td style="background-color:rgb(246, 239, 229);width: 35px;padding: 1px 2px ; "
+                                    name='Coatia1{{i}}' id='Coatia1{{i}}'></td>
+                                {% endfor %}
+
+                            </tr>
+                            <tr>
+                                <td style="background-color:rgb(246, 239, 229);width:327px;">Attainment Lvl in % </td>
+                                {% for i in NoofQuestions %}
+                                <td style="background-color:rgb(246, 239, 229) ;width: 35px;padding: 1px 2px ;"
+                                    name='AttlvlIA1{{i}}' id='AttlvlIA1{{i}}'> </td>
+                                {% endfor %}
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+
+
+                    <!--  -->
+                    <caption>IA 2</caption>
+                    <table id="formTable2">
+
+                        <thead>
+
+                            <tr>
+                                <td style="background-color:rgb(246, 239, 229)" colspan="2">COs </td>
+                                {% for i in NoofQuestions %}
+                                <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                        style="width: 30px; border: none; " type="number" name='COia2{{i}}'
+                                        id='COia2{{i}}'>
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            <tr>
+                                <td style="background-color:rgb(246, 239, 229)" colspan="2">Marks </td>
+                                {% for i in NoofQuestions %}
+                                <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                        style="width: 30px; border: none; " type="number" name='MARKSia2{{i}}'
+                                        id='MARKSia2{{i}}'></td>
+                                {% endfor %}
+                                <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                        style="width: 30px; border: none; " type="number" name='MARKSTEE' id='MARKSTEE'>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="padding:0px 150px 0px 1px; background-color:blanchedalmond">Name</th>
+                                <th style="padding:0px 100px 0px 1px; background-color:blanchedalmond">Prn</th>
+                                {% for i in NoofQuestions %}
+                                <th style="background-color:blanchedalmond">Q{{i}} </th>
+                                {% endfor %}
+                                <th style="background-color:blanchedalmond">TEE </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {% for s in Students %}
+                            <tr>
+                                <td style="background-color:rgb(246, 239, 229)">{{s.name}}</td>
+                                <td style="background-color:rgb(246, 239, 229) ">{{s.prn}}</td>
+                                {% for i in NoofQuestions %}
+                                <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                        style="width: 30px; border: none; " type="number" name='QA1{{i}}' id='QA1{{i}}'>
+                                </td>
+                                {% endfor %}
+                                <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
+                                        style="width: 30px; border: none; " type="number" name='TEE'
+                                        id='TEE{{forloop.counter}}'></td>
+
+                            </tr>
                             {% endfor %}
 
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                <button onclick="" class="Button">Submit</button>
+
+
+
+                        </tbody>
+                    </table>
+                    <br>
+
+
+                </form>
+
+                {% if qno %}
+                <br>
+                <button type="button" style="position:relative;left:600px" onclick="callCalculate2()"
+                    class="Button">Calculate</button>
+                <script>
+                    function callCalculate2() {
+                        let noq = document.getElementById('NoofQuestions').textContent;
+                        let lvl1 = document.getElementById('lvl1').value;
+                        let lvl2 = document.getElementById('lvl2').value;
+                        let lvl3 = document.getElementById('lvl3').value;
+                        mainFunctions.calculate2(noq, lvl1, lvl2, lvl3);
+                    }
+                </script>
+                {% endif %}
+
                 <br><br>
-                <!--  -->
-                <table id="Calculated-IA1">
+
+                <caption>IA 2</caption>
+                <table id="Calculated-IA2">
                     <tbody>
-                        <caption>IA 1</caption>
+
                         <tr>
                             <td style="background-color:rgb(246, 239, 229) ;width: 327px;">Threshold Marks </td>
                             {% for i in NoofQuestions %}
-                            <td style="background-color:rgb(246, 239, 229);width: 35px; padding: 1px 2px ;"
-                                name='ThreshMarksIA1{{i}}' id='ThreshMarksIA1{{i}}'></td>
+                            <td style="background-color:rgb(246, 239, 229);width: 35px; padding: 1px 2px ; "
+                                name='ThreshMarksIA2{{i}}' id='ThreshMarksIA2{{i}}'></td>
                             {% endfor %}
-
+                            <td style="background-color:rgb(246, 239, 229) ;width: 35px; padding: 1px 2px ;"
+                                name='ThreshMarksTEE' id='ThreshMarksTEE'> </td>
                         </tr>
                         <tr>
-                            <td style="background-color:rgb(246, 239, 229);width: 327px;">Count of obtained above
-                                Threshold </td>
+                            <td style="background-color:rgb(246, 239, 229);width: 327px; ">Count of obtained above
+                                Threshold
+                            </td>
                             {% for i in NoofQuestions %}
-                            <td style="background-color:rgb(246, 239, 229);width: 35px;padding: 1px 2px ; "
-                                name='Coatia1{{i}}' id='Coatia1{{i}}'></td>
+                            <td style="background-color:rgb(246, 239, 229);width: 35px; padding: 1px 2px ;"
+                                name='Coatia2{{i}}' id='Coatia2{{i}}'> </td>
                             {% endfor %}
-
+                            <td style="background-color:rgb(246, 239, 229) ;width: 35px;padding: 1px 2px ;"
+                                name='CountTEE' id='CountTEE'> </td>
                         </tr>
                         <tr>
                             <td style="background-color:rgb(246, 239, 229);width:327px;">Attainment Lvl in % </td>
                             {% for i in NoofQuestions %}
                             <td style="background-color:rgb(246, 239, 229) ;width: 35px;padding: 1px 2px ;"
-                                name='AttlvlIA1{{i}}' id='AttlvlIA1{{i}}'> </td>
+                                name='AttlvlIA2{{i}}' id='AttlvlIA2{{i}}'> </td>
                             {% endfor %}
-
+                            <td style="background-color:rgb(246, 239, 229);width: 35px; padding: 1px 2px ;"
+                                name='MARKSTEE' id='MARKSTEE'> </td>
                         </tr>
 
                     </tbody>
                 </table>
 
+            </div>
 
-
-
-                <!--  -->
-
-                <table id="formTable2">
-                    <thead>
-                        <caption>IA 2</caption>
-                        <tr>
-                            <td style="background-color:rgb(246, 239, 229)" colspan="2">COs </td>
-                            {% for i in NoofQuestions %}
-                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
-                                    style="width: 30px; border: none; " type="number" name='COia2{{i}}' id='COia2{{i}}'>
-                            </td>
-                            {% endfor %}
-                        </tr>
-                        <tr>
-                            <td style="background-color:rgb(246, 239, 229)" colspan="2">Marks </td>
-                            {% for i in NoofQuestions %}
-                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
-                                    style="width: 30px; border: none; " type="number" name='MARKSia2{{i}}'
-                                    id='MARKSia2{{i}}'></td>
-                            {% endfor %}
-                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
-                                    style="width: 30px; border: none; " type="number" name='MARKSTEE' id='MARKSTEE'>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th style="padding:0px 150px 0px 1px; background-color:blanchedalmond">Name</th>
-                            <th style="padding:0px 100px 0px 1px; background-color:blanchedalmond">Prn</th>
-                            {% for i in NoofQuestions %}
-                            <th style="background-color:blanchedalmond">Q{{i}} </th>
-                            {% endfor %}
-                            <th style="background-color:blanchedalmond">TEE </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        {% for s in Students %}
-                        <tr>
-                            <td style="background-color:rgb(246, 239, 229)">{{s.name}}</td>
-                            <td style="background-color:rgb(246, 239, 229) ">{{s.prn}}</td>
-                            {% for i in NoofQuestions %}
-                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
-                                    style="width: 30px; border: none; " type="number" name='QA1{{i}}' id='QA1{{i}}'>
-                            </td>
-                            {% endfor %}
-                            <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
-                                    style="width: 30px; border: none; " type="number" name='TEE'
-                                    id='TEE{{forloop.counter}}'></td>
-
-                        </tr>
-                        {% endfor %}
-
-
-
-
-                    </tbody>
-                </table>
-                <br>
-
-                <button onclick="" class="Button">Submit</button>
-            </form>
-
-
-            <table id="Calculated-IA2">
-                <tbody>
-                    <caption>IA 2</caption>
-                    <tr>
-                        <td style="background-color:rgb(246, 239, 229) ;width: 327px;">Threshold Marks </td>
-                        {% for i in NoofQuestions %}
-                        <td style="background-color:rgb(246, 239, 229);width: 35px; padding: 1px 2px ; "
-                            name='ThreshMarksIA2{{i}}' id='ThreshMarksIA2{{i}}'></td>
-                        {% endfor %}
-                        <td style="background-color:rgb(246, 239, 229) ;width: 35px; padding: 1px 2px ;"
-                            name='ThreshMarksTEE' id='ThreshMarksTEE'> </td>
-                    </tr>
-                    <tr>
-                        <td style="background-color:rgb(246, 239, 229);width: 327px; ">Count of obtained above Threshold
-                        </td>
-                        {% for i in NoofQuestions %}
-                        <td style="background-color:rgb(246, 239, 229);width: 35px; padding: 1px 2px ;"
-                            name='Coatia2{{i}}' id='Coatia2{{i}}'> </td>
-                        {% endfor %}
-                        <td style="background-color:rgb(246, 239, 229) ;width: 35px;padding: 1px 2px ;" name='MARKSTEE'
-                            id='MARKSTEE'> </td>
-                    </tr>
-                    <tr>
-                        <td style="background-color:rgb(246, 239, 229);width:327px;">Attainment Lvl in % </td>
-                        {% for i in NoofQuestions %}
-                        <td style="background-color:rgb(246, 239, 229) ;width: 35px;padding: 1px 2px ;"
-                            name='AttlvlIA2{{i}}' id='AttlvlIA2{{i}}'> </td>
-                        {% endfor %}
-                        <td style="background-color:rgb(246, 239, 229);width: 35px; padding: 1px 2px ;" name='MARKSTEE'
-                            id='MARKSTEE'> </td>
-                    </tr>
-
-                </tbody>
-            </table>
-
-
-
-
-            <br><br>
-        </div>
-        {% endif %}
-        <span>
-            <p style="text-align: center;font-size:xx-large;font-weight: 400;"><i>CoPo Corelation Matrix</i></p>
-        </span>
-        <div class=" " id="copotable-div">
-
-            <p><input type="number" name="numberofpos" id="numberofpos" placeholder="No of Po "
-                    style="background-color: bisque;box-shadow:2px 2px 5px 5px #ffd966;border-color: transparent;border-radius: 30px;  ">
-                &nbsp
-                <input
-                    style="border-radius: 30px;box-shadow:2px 2px 5px 5px #ffd966; background-color: bisque; border-color: transparent;"
-                    type="number" name="numberofpsos" id="numberofpsos" placeholder="No of PSo ">
-                <button type="button" class="Button" onclick="generateCOPO()" style="width: 150px;">Generate
-                    Table</button>
-            </p>
+            {% endif %}
         </div>
 
 
 
-    </main>
 
 
-    <script>
-        var cos = 6;
 
-        function generateCOPO() {
-            let pos = document.getElementById('numberofpos').value;
-            let psos = document.getElementById('numberofpsos').value;
-            let innerhtml = `
+
+        </div>
+        <br><br><br>
+        <div id="copotable-achieved-div">
+
+        </div>
+        <br><br>
+        <div id="EThreshold-achieved-table">
+        </div>
+        <br><br>
+
+        <script>
+            var pos;
+            var psos;
+            var cos;
+
+            function generateCOPO() {
+                pos = document.getElementById('numberofpos').value;
+                psos = document.getElementById('numberofpsos').value;
+                cos = document.getElementById('numberofcos').value;
+                let innerhtml = `
             <form> 
-                <table id="formTable">
+                <table id="formTableCopoRelation">
                     <thead>
                         <tr>
                             <td style = "width: 30px"></td>`
-            for (let x = 0; x < pos; x++) {
-                innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >Po${x + 1}</td>`
+                for (let x = 0; x < pos; x++) {
+                    innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >Po${x + 1}</td>`
 
-            }
-            for (let x = 0; x < psos; x++) {
-                innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >PSo${x + 1}</td>`
+                }
+                for (let x = 0; x < psos; x++) {
+                    innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >PSo${x + 1}</td>`
 
-            }
-            innerhtml += `</tr></thead>
+                }
+                innerhtml += `</tr></thead>
             <tbody>`
-            for (let x = 0; x < cos; x++) {
-                innerhtml += `<tr> <td style = "width: 30px;background-color:#50bd2e"  >Co${x + 1}</td>`;
+                for (let x = 0; x < cos; x++) {
+                    innerhtml += `<tr> <td style = "width: 30px;background-color:#50bd2e"  >Co${x + 1}</td>`;
+                    for (let y = 0; y < pos; y++) {
+                        innerhtml += `<td  style = "background-color:rgb(246, 239, 229)" ><input type = "number" class="Table_data" name = 'Co${x + 1}' id = 'pos${y + 1}-Co${x + 1}' style="width: 30px; border: none;" ></td>`;
+                    }
+                    for (let y = 0; y < psos; y++) {
+                        innerhtml += `<td  style = "background-color:rgb(246, 239, 229)" ><input type = "number" class="Table_data" name = 'Co${x + 1}' id = 'psos${y + 1}-Co${x + 1}'
+                                    style="width: 30px; border: none"; ></td>`;
+                    }
+
+                    innerhtml += `</tr>`;
+
+                }
+                innerhtml += `</tbody></table>
+            
+            </form><br> 
+            <button type = "button" class = "Button" onclick=  " save() ">Save</button>
+            <button type = "button" class = "Button" onclick=  " update() ">Update</button>
+            
+            <br><br>
+            <table>
+                 <tbody>`
+
+                innerhtml += `<tr> <td style = "width: 200px;background-color:#50bd2e"  >Target Set</td>`;
                 for (let y = 0; y < pos; y++) {
-                    innerhtml += `<td  style = "background-color:rgb(246, 239, 229)" ><input type = "number" class="Table_data" name = 'pos${y + 1}-Co${x + 1}' id = 'pos${y + 1}-Co${x + 1}' style="width: 30px; border: none;" ></td>`;
+                    innerhtml += `<td  style = "width: 30px;background-color:rgb(246, 239, 229)"  name = 'Targetdata'> </td>`;
                 }
                 for (let y = 0; y < psos; y++) {
-                    innerhtml += `<td  style = "background-color:rgb(246, 239, 229)" ><input type = "number" class="Table_data" name = 'psos${y + 1}-Co${x + 1}' id = 'psos${y + 1}-Co${x + 1}'
-                                    style="width: 30px; border: none"; ></td>`;
+                    innerhtml += `<td  style = "width: 30px;background-color:rgb(246, 239, 229)" name = 'Targetdata' > </td>`;
+                }
+                innerhtml += `</tr> `
+                innerhtml += `<tr> <td style = "width: 200px;background-color:#50bd2e"  >Target Avg</td>`;
+                for (let y = 0; y < pos; y++) {
+                    innerhtml += `<td  style = "width: 30px;background-color:rgb(246, 239, 229)"  name = 'Targetavg'> </td>`;
+                }
+                for (let y = 0; y < psos; y++) {
+                    innerhtml += `<td  style = "width: 30px;background-color:rgb(246, 239, 229)" name = 'Targetavg' > </td>`;
                 }
 
-                innerhtml += `</tr>`;
+
+
+                innerhtml += `</tr> 
+                </tbody></table>  <br><br>`;
+
+                document.getElementById('copotable-div').innerHTML = innerhtml;
+                let table = ` <form ><table>
+            <thead>
+                <tr>
+                    <td style="width: 50px;"></td>
+                    <td>Course Outcomes</td>
+                </tr>
+            </thead>
+            <tbody>`
+
+                for (let a = 0; a < cos; a++) {
+                    table += `<tr> <td style = "width: 50px;background-color:aqua"  >Co${a}</td>
+                    <td><input style = "width: 600px;" type = 'text'  class="Table_data" name = 'CoName${a}' ></td></tr>`
+                }
+                table += `</tbody></table></form><br><br>`
+
+                document.getElementById('codescription').innerHTML = table;
+                WeightedAverage(cos);
+                generateCOPOachieved(pos, psos, cos);
+            }
+
+
+            function generateCOPOachieved(pos, psos, cos) {
+
+                let innerhtml = `<form>
+                          <caption>Copo Achieved</caption>
+                <table id="formTableCopoAchieved">
+                    <thead>
+                        <tr>
+                            <td style = "width: 30px"></td>`
+                for (let x = 0; x < pos; x++) {
+                    innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >Po${x + 1}</td>`
+
+                }
+                for (let x = 0; x < psos; x++) {
+                    innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >PSo${x + 1}</td>`
+
+                }
+                innerhtml += `</tr></thead>
+            <tbody>`
+                for (let x = 0; x < cos; x++) {
+                    innerhtml += `<tr> <td style = "width: 30px;background-color:#50bd2e"  >Co${x + 1}</td>`;
+                    for (let y = 0; y < pos; y++) {
+                        innerhtml += `<td  style = "background-color:rgb(246, 239, 229)"  name = 'CoAchieved${x + 1}' id = 'posAchieved${y + 1}-Co${x + 1}' style="width: 30px; border: none;"> </td>`;
+                    }
+                    for (let y = 0; y < psos; y++) {
+                        innerhtml += `<td  style = "background-color:rgb(246, 239, 229)"   name = 'CoAchieved${x + 1}' id = 'psosAchieved${y + 1}-Co${x + 1}'
+                                    style="width: 30px; border: none";> </td>`;
+                    }
+
+                    innerhtml += `</tr>`;
+
+
+                }
+                innerhtml += `<tr> <td style = "width: 30px;background-color:aqua"  >AVG</td>`
+                for (let y = 0; y < pos; y++) {
+                    innerhtml += `<td  style = "background-color:rgb(255, 255, 153)"  name = 'AVG' id = 'posAvg${y + 1}' style="width: 30px; border: none;"> </td>`;
+                }
+                for (let y = 0; y < psos; y++) {
+                    innerhtml += `<td  style = "background-color:rgb(255, 255, 153)"   name = 'AVG' id = 'psosAvg${y + 1}'
+                                    style="width: 30px; border: none";> </td>`;
+                }
+
+                innerhtml += `</tr>`
+
+
+                innerhtml += `</tbody></table >
+             
+            
+            </form >
+            <button type = "button" class = "Button" onclick=  "mainFunctions.calculateAchievedAndExternal() ">Calc. Table</button>
+            <br><br>`
+                document.getElementById('copotable-achieved-div').innerHTML = innerhtml;
+
+
+
+
+                generateEthresholdCOPO(pos, psos, cos);
 
             }
-            innerhtml += `</tbody></table>
-            <br><br>
-            <button type = "button" class = "Button" onclick=  " save() ">Save</button>
-            </form>
-            <br><br>`
-            document.getElementById('copotable-div').innerHTML = innerhtml;
-        }
 
+            function generateEthresholdCOPO(pos, psos, cos) {
 
+                let innerhtml = `
+<form> <caption>External Thershold based / scaled average </caption>
+<table id="formEThresholdCopoAchieved">
+    <thead>
+        <tr>
+            <td style = "width: 30px"></td>`
+                for (let x = 0; x < pos; x++) {
+                    innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >Po${x + 1}</td>`
 
-        // Auto-fade the alert after 3 seconds
-        $(document).ready(function () {
-            setTimeout(function () {
-                $('.alert').fadeOut('slow');
-            }, 3000);  // 3000 milliseconds = 3 seconds
-        });
-
-
-    </script>
-    <script>
-
-
-        document.getElementById("formTable").addEventListener("paste", (event) => {
-            event.preventDefault();
-
-            // Retrieve pasted data as plain text
-            const pasteData = event.clipboardData.getData("text");
-
-            // Split into rows and then into columns
-            const rows = pasteData.trim().split("\n").map(row => row.split("\t"));
-
-            // Find table rows in tbody
-            const tableRows = document.querySelectorAll("#formTable tbody tr");
-
-            // Loop through rows of pasted data
-            rows.forEach((rowData, rowIndex) => {
-                const targetRow = tableRows[rowIndex + 3];
-
-                // Make sure targetRow exists in the table
-                if (targetRow) {
-                    // Select only the inputs with class 'Table_data' in this row
-                    const rowInputs = targetRow.querySelectorAll("input.Table_data");
-
-                    // Loop through each cell in the pasted rowData
-                    rowData.forEach((cellData, cellIndex) => {
-                        // Ensure we don't exceed the number of inputs in the row
-                        if (cellIndex < rowInputs.length) {
-                            rowInputs[cellIndex].value = cellData.trim(); // Assign cell data
-                        }
-                    });
                 }
-            });
-        });
+                for (let x = 0; x < psos; x++) {
+                    innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >PSo${x + 1}</td>`
 
-        document.getElementById("formTable2").addEventListener("paste", (event) => {
-            event.preventDefault();
-
-            // Retrieve pasted data as plain text
-            const pasteData = event.clipboardData.getData("text");
-
-            // Split into rows and then into columns
-            const rows = pasteData.trim().split("\n").map(row => row.split("\t"));
-
-            // Find table rows in tbody
-            const tableRows = document.querySelectorAll("#formTable2 tbody tr");
-
-            // Loop through rows of pasted data
-            rows.forEach((rowData, rowIndex) => {
-                const targetRow = tableRows[rowIndex + 3];
-
-                // Make sure targetRow exists in the table
-                if (targetRow) {
-                    // Select only the inputs with class 'Table_data' in this row
-                    const rowInputs = targetRow.querySelectorAll("input.Table_data");
-
-                    // Loop through each cell in the pasted rowData
-                    rowData.forEach((cellData, cellIndex) => {
-                        // Ensure we don't exceed the number of inputs in the row
-                        if (cellIndex < rowInputs.length) {
-                            rowInputs[cellIndex].value = cellData.trim(); // Assign cell data
-                        }
-                    });
                 }
+                innerhtml += `</tr></thead>
+<tbody>`
+                for (let x = 0; x < cos; x++) {
+                    innerhtml += `<tr> <td style = "width: 30px;background-color:#50bd2e"  >Co${x + 1}</td>`;
+                    for (let y = 0; y < pos; y++) {
+                        innerhtml += `<td  style = "background-color:rgb(246, 239, 229)"  name = 'ECoAchieved${x + 1}' id = 'EposAchieved${y + 1}-Co${x + 1}' style="width: 30px; border: none;"> </td>`;
+                    }
+                    for (let y = 0; y < psos; y++) {
+                        innerhtml += `<td  style = "background-color:rgb(246, 239, 229)"   name = 'ECoAchieved${x + 1}' id = 'EpsosAchieved${y + 1}-Co${x + 1}'
+                    style="width: 30px; border: none";> </td>`;
+                    }
+
+                    innerhtml += `</tr>`;
+
+
+                }
+                innerhtml += `<tr> <td style = "width: 100px;background-color:aqua"  >AVG</td>`
+                for (let y = 0; y < pos; y++) {
+                    innerhtml += `<td  style = "background-color:rgb(255, 255, 153)"  name = 'EAVG' id = 'EposAvg${y + 1}' style="width: 30px; border: none;"> </td>`;
+                }
+                for (let y = 0; y < psos; y++) {
+                    innerhtml += `<td  style = "background-color:rgb(255, 255, 153)"   name = 'EAVG' id = 'EpsosAvg${y + 1}'
+                    style="width: 30px; border: none";> </td>`;
+                }
+
+                innerhtml += `</tr>`
+
+                innerhtml += `<tr> <td style = "width: 100px;background-color:aqua"  >TSet</td>`
+                for (let y = 0; y < pos; y++) {
+                    innerhtml += `<td  style = "background-color:rgb(255, 255, 153)"  name = 'TargetSet' id = 'Tsetpos${y + 1}' style="width: 30px; border: none;"> </td>`;
+                }
+                for (let y = 0; y < psos; y++) {
+                    innerhtml += `<td  style = "background-color:rgb(255, 255, 153)"   name = 'TargetSet' id = 'Tsetpsos${y + 1}'
+                    style="width: 30px; border: none";> </td>`;
+                }
+
+                innerhtml += `</tr>`
+
+                innerhtml += `<tr> <td style = "width: 100px;background-color:aqua"  >Achieved(Y/N)</td>`
+                for (let y = 0; y < pos; y++) {
+                    innerhtml += `<td  style = "background-color:rgb(255, 255, 153)"  name = 'Achieved' style="width: 30px; border: none;"> </td>`;
+                }
+                for (let y = 0; y < psos; y++) {
+                    innerhtml += `<td  style = "background-color:rgb(255, 255, 153)"   name = 'Achieved'style="width: 30px; border: none";> </td>`;
+                }
+
+                innerhtml += `</tr>`
+
+
+                innerhtml += `</tbody></table>
+<br><br>
+
+</form>
+<br><br>`
+                document.getElementById('EThreshold-achieved-table').innerHTML = innerhtml;
+
+            }
+            function save() {
+                if (coposcore.length == 0)
+                    calc.TweightedAvgAchieved();
+                calc.TargetNAvg();
+            }
+
+            function update() {
+                coposcore = [];
+                calc.TweightedAvgAchieved();
+                calc.TargetNAvg();
+            }
+
+
+
+
+            function WeightedAverage(cos) {
+                let c = ""
+                for (let i = 0; i < cos; i++) {
+                    c += `
+                    <tr>
+                        <td style="background-color:rgb(246, 239, 229)">CO${i + 1}</td>
+                        <td  style="background-color:rgb(246, 239, 229)" name = "Internal" id = "Co${i + 1}I"></td>
+                        <td  style="background-color:rgb(246, 239, 229)" name = "External" id = "Co${i + 1}E"></td>
+                     </tr> 
+                `;
+                }
+                document.getElementById("COTableGen").innerHTML = c;
+            }
+
+
+            // Auto-fade the alert after 3 seconds
+            $(document).ready(function () {
+                setTimeout(function () {
+                    $('.alert').fadeOut('slow');
+                }, 3000);  // 3000 milliseconds = 3 seconds
             });
-        });
 
 
-    </script>
-    <script src="/static/formulas.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script> -->
-    <script>
-        // Auto fade out alerts after 3 seconds
-        document.addEventListener('DOMContentLoaded', function() {
-          setTimeout(function() {
-            let alerts = document.querySelectorAll('.alert');
-            alerts.forEach(function(alert) {
-              alert.classList.add('fade-out');
-              setTimeout(function() {
-                alert.style.display = 'none';
-              }, 500); // Match the duration of the fade-out transition
+        </script>
+        <script>
+
+
+            document.getElementById("formTable").addEventListener("paste", (event) => {
+                event.preventDefault();
+
+                // Retrieve pasted data as plain text
+                const pasteData = event.clipboardData.getData("text");
+
+                // Split into rows and then into columns
+                const rows = pasteData.trim().split("\n").map(row => row.split("\t"));
+
+                // Find table rows in tbody
+                const tableRows = document.querySelectorAll("#formTable tbody tr");
+
+                // Loop through rows of pasted data
+                rows.forEach((rowData, rowIndex) => {
+                    const targetRow = tableRows[rowIndex + 3];
+
+                    // Make sure targetRow exists in the table
+                    if (targetRow) {
+                        // Select only the inputs with class 'Table_data' in this row
+                        const rowInputs = targetRow.querySelectorAll("input.Table_data");
+
+                        // Loop through each cell in the pasted rowData
+                        rowData.forEach((cellData, cellIndex) => {
+                            // Ensure we don't exceed the number of inputs in the row
+                            if (cellIndex < rowInputs.length) {
+                                rowInputs[cellIndex].value = cellData.trim(); // Assign cell data
+                            }
+                        });
+                    }
+                });
             });
-          }, 3000); // Time in milliseconds before fading out (3 seconds)
-        });
-      </script>
+
+            document.getElementById("formTable2").addEventListener("paste", (event) => {
+                event.preventDefault();
+
+                // Retrieve pasted data as plain text
+                const pasteData = event.clipboardData.getData("text");
+
+                // Split into rows and then into columns
+                const rows = pasteData.trim().split("\n").map(row => row.split("\t"));
+
+                // Find table rows in tbody
+                const tableRows = document.querySelectorAll("#formTable2 tbody tr");
+
+                // Loop through rows of pasted data
+                rows.forEach((rowData, rowIndex) => {
+                    const targetRow = tableRows[rowIndex + 3];
+
+                    // Make sure targetRow exists in the table
+                    if (targetRow) {
+                        // Select only the inputs with class 'Table_data' in this row
+                        const rowInputs = targetRow.querySelectorAll("input.Table_data");
+
+                        // Loop through each cell in the pasted rowData
+                        rowData.forEach((cellData, cellIndex) => {
+                            // Ensure we don't exceed the number of inputs in the row
+                            if (cellIndex < rowInputs.length) {
+                                rowInputs[cellIndex].value = cellData.trim(); // Assign cell data
+                            }
+                        });
+                    }
+                });
+            });
+
+            document.getElementById("copotable-div").addEventListener("paste", (event) => {
+                event.preventDefault();
+
+                // Retrieve pasted data as plain text
+                const pasteData = event.clipboardData.getData("text");
+
+                // Split into rows and then into columns
+                const rows = pasteData.trim().split("\n").map(row => row.split("\t"));
+
+                // Find table rows in tbody
+                const tableRows = document.querySelectorAll("#copotable-div tbody tr");
+
+                // Loop through rows of pasted data
+                rows.forEach((rowData, rowIndex) => {
+                    const targetRow = tableRows[rowIndex];
+
+                    // Make sure targetRow exists in the table
+                    if (targetRow) {
+                        // Select only the inputs with class 'Table_data' in this row
+                        const rowInputs = targetRow.querySelectorAll("input.Table_data");
+
+                        // Loop through each cell in the pasted rowData
+                        rowData.forEach((cellData, cellIndex) => {
+                            // Ensure we don't exceed the number of inputs in the row
+                            if (cellIndex < rowInputs.length) {
+                                rowInputs[cellIndex].value = cellData.trim(); // Assign cell data
+                            }
+                        });
+                    }
+                });
+            });
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js">
-    </script>
+        </script>
+        <script src="/static/formulas.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script> -->
+        <script>
+            // Auto fade out alerts after 3 seconds
+            document.addEventListener('DOMContentLoaded', function () {
+                setTimeout(function () {
+                    let alerts = document.querySelectorAll('.alert');
+                    alerts.forEach(function (alert) {
+                        alert.classList.add('fade-out');
+                        setTimeout(function () {
+                            alert.style.display = 'none';
+                        }, 500); // Match the duration of the fade-out transition
+                    });
+                }, 3000); // Time in milliseconds before fading out (3 seconds)
+            });
+        </script>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js">
+        </script>
 
 
 

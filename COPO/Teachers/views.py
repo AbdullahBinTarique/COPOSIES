@@ -35,7 +35,7 @@ def fetch(request):
         students = Students.objects.filter(branch = br,batch = ba )
         branches = Branch.objects.all()
         batch = Batch.objects.all()
-        params = {'Students':students,'NoofQuestions':range(1,qno+1),'teachname':name,'subject':teacher.subject,'branch':branches,'batch':batch}
+        params = {'Students':students,'NoofQuestions':range(1,qno+1),'qno':qno,'teachname':name,'subject':teacher.subject,'branch':branches,'batch':batch}
         return render(request,'Teachers/TeachersHome.html',params)
     return render(request, 'Login/login.html', {'message': "No session found. Please log in."})
 
@@ -52,7 +52,7 @@ def fetchadmin(request):
         students = Students.objects.filter(branch = br,batch = ba )
         branches = Branch.objects.all()
         batch = Batch.objects.all()
-        params = {'Students':students,'NoofQuestions':range(1,qno+1),'teachname':name,'subject':teacher.subject,'branch':branches,'batch':batch}
+        params = {'Students':students,'NoofQuestions':range(1,qno+1),'teachname':name,'subject':teacher.subject,'branch':branches,'qno':qno,'batch':batch}
         return render(request,'Teachers/TeachersHomeswitch.html',params)
     return render(request, 'Login/login.html', {'message': "No session found. Please log in."})
 
