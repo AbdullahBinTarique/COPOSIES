@@ -6,7 +6,7 @@ var answered = [];
 var attainment = [];
 var attainmentlvl = [];
 var internalweightarray = [];
-var teethreshold = 60;
+var teethreshold = 60; //should come from the backend and should be modifiable
 
 
 
@@ -65,7 +65,7 @@ class formula {
 
 
 }
-var thresh = 60;//value from the backend
+
 
 class calc {
 
@@ -248,7 +248,7 @@ class calc {
         document.getElementById('ThreshMarksTEE').innerHTML = finalarr[finalarr.length - 1];
         document.getElementById('CountTEE').innerHTML = countarr[countarr.length - 1];
 
-        document.getElementById('MARKSTEE').innerHTML = Math.round(attainment[attainment.length - 1] * 10) / 10;
+        document.getElementById('CMARKSTEE').innerHTML = Math.round(attainment[attainment.length - 1] * 10) / 10;
     }
 
 
@@ -437,7 +437,7 @@ class calc {
 
     }
 
-    static TargetNAvg() {
+    static TargetNAvg() {//dual
         let max = 0;
         for (let a = 0; a < parseInt(cos); a++) {
             let nodelist = document.getElementsByName('Co' + (a + 1));
@@ -482,7 +482,7 @@ class calc {
 
     }
 
-    static targetAchieved() {
+    static targetAchieved() {//dual
         let checkvalue = 90;
         let top = 0;
         let avglist = document.getElementsByName('EAVG');
@@ -542,9 +542,202 @@ class mainFunctions {
         calc.Ethersholdcalc();
         calc.targetAchieved();
 
+    }
+    static CourseExits() {
+        getScaledTable();
+        generateCourseExitCOPOAchieved(pos, psos, cos);
+    }
 
+    static CalculateCourseExits() {
+        CourseExit.CourseExitScaledValue();
+        CourseExit.calcCECAchieved();
+        CourseExit.CECExternal();
+        document.getElementById('CalCE').style.visibility = "hidden";
+    }
 
+}
+var CEScaledValue = []
+class CourseExit {
+    CEScaledValue = []
+    static CourseExitScaledValue() {
+
+        for (let x = 0; x < cos; x++) {
+            let c = document.getElementById('CECO' + (x + 1)).value
+            if (c >= 4) {
+                document.getElementById('CESCO' + (x + 1)).innerHTML = 3;
+                CEScaledValue.push(3);
+            } else if (c >= 2) {
+                document.getElementById('CESCO' + (x + 1)).innerHTML = 2;
+                CEScaledValue.push(2);
+            } else if (c >= 1) {
+                document.getElementById('CESCO' + (x + 1)).innerHTML = 1;
+                CEScaledValue.push(1);
+            } else if (c >= 0) {
+                document.getElementById('CESCO' + (x + 1)).innerHTML = 0;
+                CEScaledValue.push(0);
+            } else {
+                document.getElementById('CESCO' + (x + 1)).innerHTML = "";
+                CEScaledValue.push("");
+
+            }
+        }
+    }
+
+    static calcCECAchieved() {
+        storeelements = []
+        let variable = parseInt(psos) + parseInt(pos);
+        let values = document.getElementsByName('ScaledValue')
+        for (let i = 0; i < coposcore.length; i++) {
+            for (let j = 0; j < variable; j++) {
+                let k = coposcore[i][j];
+                if (k === '3' && j < pos) {
+                    document.getElementById(`courseposAchieved${j + 1}-Co${i + 1}`).innerHTML = Math.round(parseFloat(values[i].textContent) * 10) / 10;
+                }
+                else if (k === '2' && j < pos) {
+                    document.getElementById(`courseposAchieved${j + 1}-Co${i + 1}`).innerHTML = Math.round(parseFloat(values[i].textContent) * 0.66 * 100) / 100;
+                }
+                else if (k === '1' && j < pos) {
+                    document.getElementById(`courseposAchieved${j + 1}-Co${i + 1}`).innerHTML = Math.round(parseFloat(values[i].textContent) * 10 * 0.33) / 10;
+                }
+                else if (k === '0' && j < pos) {
+                    document.getElementById(`courseposAchieved${j + 1}-Co${i + 1}`).innerHTML = 0;
+
+                }
+                ///////////////////////////
+                else if (k === '3' && j >= pos) {
+                    document.getElementById(`coursepsosAchieved${j + 1 - pos}-Co${i + 1}`).innerHTML = Math.round(parseFloat(values[i].textContent) * 10) / 10;
+                }
+                else if (k === '2' && j >= pos) {
+                    document.getElementById(`coursepsosAchieved${j + 1 - pos}-Co${i + 1}`).innerHTML = Math.round(parseFloat(values[i].textContent) * 0.66 * 100) / 100;
+                }
+                else if (k === '1' && j >= pos) {
+                    document.getElementById(`coursepsosAchieved${j + 1 - pos}-Co${i + 1}`).innerHTML = Math.round(parseFloat(values[i].textContent) * 10 * 0.33) / 10;
+                }
+                else if (k === '0' && j >= pos) {
+                    document.getElementById(`coursepsosAchieved${j + 1 - pos}-Co${i + 1}`).innerHTML = 0;
+
+                }/////////////////////////
+                else if (j < pos) {
+                    document.getElementById(`courseposAchieved${j + 1}-Co${i + 1}`).innerHTML = '';
+                }
+                else if (j >= pos) {
+                    document.getElementById(`coursepsosAchieved${j + 1 - pos}-Co${i + 1}`).innerHTML = '';
+                }
+
+            }
+        }//FOr AVG
+        for (let index = 0; index < (parseInt(pos) + parseInt(psos)); index++) {
+            let arr = [];
+            for (let a = 0; a < cos; a++) {
+                if (index < pos) {
+                    let ele = document.getElementById(`courseposAchieved${index + 1}-Co${a + 1}`).textContent;
+                    arr.push(ele);
+                }
+                else {
+                    let ele = document.getElementById(`coursepsosAchieved${index + 1 - pos}-Co${a + 1}`).textContent;
+                    arr.push(ele);
+
+                }
+
+            } let avg = 0.0, sum = 0.0, count = 0;
+
+            for (let b = 0; b < arr.length; b++) {
+                if (arr[b] != "" && arr[b] != "NaN") {
+                    sum += parseFloat(arr[b]);
+                    count++;
+                }
+            }
+            avg = Math.round(sum / count * 100) / 100;
+            storeelements.push(avg);
+        }
+        for (let index = 0; index < storeelements.length; index++) {
+            if (index < pos) {
+                document.getElementById(`courseposAvg${(index + 1)}`).innerHTML = storeelements[index];
+
+            }
+            else {
+                document.getElementById(`coursepsosAvg${(index + 1 - pos)}`).innerHTML = storeelements[index];
+
+            }
+        }
 
     }
 
+    static CECExternal() {
+        storeelements = []
+
+        for (let i = 0; i < cos; i++) {
+            let ele = document.getElementsByName('CourseECoAchieved' + (i + 1))
+            for (let j = 0; j < (parseInt(pos) + parseInt(psos)); j++) {
+                if (CEScaledValue[i] != "" && coposcore[i][j] != "NaN") {
+                    ele[j].innerHTML = CEScaledValue[i];
+                }
+
+            }
+        }
+        ///for calculating the average
+        for (let index = 0; index < (parseInt(pos) + parseInt(psos)); index++) {
+            let arr = [];
+            for (let a = 0; a < cos; a++) {
+                if (index < pos) {
+                    let ele = document.getElementById(`CEEposAchieved${index + 1}-Co${a + 1}`).textContent;
+                    arr.push(ele);
+                }
+                else {
+                    let ele = document.getElementById(`CEEpsosAchieved${index + 1 - pos}-Co${a + 1}`).textContent;
+                    arr.push(ele);
+
+                }
+
+            } let avg = 0.0, sum = 0.0, count = 0;
+
+            for (let b = 0; b < arr.length; b++) {
+                if (arr[b] != " " && arr[b] != "NaN") {
+                    sum += parseFloat(arr[b]);
+                    count++;
+                }
+            }
+            avg = Math.round(sum / count * 100) / 100;
+            storeelements.push(avg);
+        }
+        for (let index = 0; index < storeelements.length; index++) {
+            if (index < pos) {
+                document.getElementById(`CEEposAvg${(index + 1)}`).innerHTML = storeelements[index];
+
+            }
+            else {
+                document.getElementById(`CEEpsosAvg${(index + 1 - pos)}`).innerHTML = storeelements[index];
+
+            }
+        }
+        let max = 0;
+        for (let a = 0; a < parseInt(cos); a++) {
+            let nodelist = document.getElementsByName('Co' + (a + 1));
+
+            for (let e of nodelist) {
+                if (e.value > max) {
+                    max = e.value
+                }
+            }
+        }
+        let nodelist = document.getElementsByName('CourseTargetSet');
+        for (let a of nodelist) {
+            a.innerHTML = max;
+        }
+        let checkvalue = 90;
+        let top = 0;
+        let avglist = document.getElementsByName('CourseEAVG');
+        let list = document.getElementsByName('CourseAchieved')
+        for (let a of list) {
+            if (((Math.round(((avglist[top].textContent) / 3) * 100) * 10) / 10) >= checkvalue) {
+                a.innerHTML = "Y"
+            }
+            else {
+                a.innerHTML = "N"
+            }
+            top++;
+        }
+
+
+    }
 }

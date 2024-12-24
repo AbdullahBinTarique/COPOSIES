@@ -9,27 +9,18 @@ from  Admin.models import AdminUSERS,SubjectDB
 
 # Create your models here.
 class Teacher(models.Model):
-    srno = models.AutoField(primary_key = True)
+    srno = models.AutoField(primary_key =True)
     Username = models.CharField(max_length=30 )
     email = models.ForeignKey(AdminUSERS,to_field='email' ,on_delete=models.CASCADE,default='name@gmail/sies.edu.in' )
-    subject = models.CharField(max_length=20)
-    subques = models.PositiveSmallIntegerField(null=True,validators=[MinValueValidator(1), MaxValueValidator(100)])
+    subject = models.CharField(max_length=20,default = "Subject")
+    subject_id = models.CharField(max_length=20,default = "Subject",unique=True)
+
 
 #     threshold set by teacher SC is students Scoring
-    ia_th_lvl1_sc = models.PositiveSmallIntegerField(null=True  ,validators=[MinValueValidator(1), MaxValueValidator(100)])
-    ia_th_lvl2_sc = models.PositiveSmallIntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(100)])
-    ia_th_lvl3_sc = models.PositiveSmallIntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(100)])
 
-#     pom =Percentage of marks
-    ia_th_pom = models.PositiveSmallIntegerField(null=True,  validators=[MinValueValidator(1), MaxValueValidator(100)])
 
 #     threshold set by teacher SC is students Scoring
-    sem_th_lvl1_sc = models.PositiveSmallIntegerField(null=True,  validators=[MinValueValidator(1), MaxValueValidator(100)])
-    sem_th_lvl2_sc = models.PositiveSmallIntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(100)])
-    sem_th_lvl3_sc = models.PositiveSmallIntegerField(null=True,  validators=[MinValueValidator(1), MaxValueValidator(100)])
 
-#     pom =Percentage of marks
-    sem_th_pom = models.PositiveSmallIntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(100)])
 
     def __str__(self):
         return self.Username
@@ -65,56 +56,56 @@ class Students(models.Model):
 
 class Sem1(models.Model):
      Subject = models.CharField(max_length=20,unique = True)
-     code = models.CharField(max_length=20,unique = True)
+     subject_id = models.CharField(max_length=20,unique = True)
 
      def __str__(self):
-         return self.Subject + ' ' + self.code
+         return self.Subject + ' ' + self.subject_id
 
 
 class Sem2(models.Model):
     Subject = models.CharField(max_length=20, unique=True)
-    code = models.CharField(max_length=20, unique=True)
+    subject_id = models.CharField(max_length=20, unique=True)
     def __str__(self):
-        return self.Subject + ' ' + self.code
+        return self.Subject + ' ' + self.subject_id
 
 
 class Sem3(models.Model):
     Subject = models.CharField(max_length=20, unique=True)
-    code = models.CharField(max_length=20, unique=True)
+    subject_id = models.CharField(max_length=20, unique=True)
     def __str__(self):
-        return self.Subject + ' ' + self.code
+        return self.Subject + ' ' + self.subject_id
 
 
 class Sem4(models.Model):
     Subject = models.CharField(max_length=20, unique=True)
-    code = models.CharField(max_length=20, unique=True)
+    subject_id = models.CharField(max_length=20, unique=True)
     def __str__(self):
-        return self.Subject + ' ' + self.code
+        return self.Subject + ' ' + self.subject_id
 
 
 class Sem5(models.Model):
     Subject = models.CharField(max_length=20, unique=True)
-    code = models.CharField(max_length=20, unique=True)
+    subject_id = models.CharField(max_length=20, unique=True)
     def __str__(self):
-        return self.Subject + ' ' + self.code
+        return self.Subject + ' ' + self.subject_id
 
 
 class Sem6(models.Model):
     Subject = models.CharField(max_length=20, unique=True)
-    code = models.CharField(max_length=20, unique=True)
+    subject_id = models.CharField(max_length=20, unique=True)
     def __str__(self):
-        return self.Subject + ' ' + self.code
+        return self.Subject + ' ' + self.subject_id
 
 
 class Sem7(models.Model):
     Subject = models.CharField(max_length=20, unique=True)
-    code = models.CharField(max_length=20, unique=True)
+    subject_id = models.CharField(max_length=20, unique=True)
     def __str__(self):
-        return self.Subject + ' ' + self.code
+        return self.Subject + ' ' + self.subject_id
 
 
 class Sem8(models.Model):
     Subject = models.CharField(max_length=20, unique=True)
-    code = models.CharField(max_length=20, unique=True)
+    subject_id = models.CharField(max_length=20, unique=True)
     def __str__(self):
-        return self.Subject + ' ' + self.code
+        return self.Subject + ' ' + self.subject_id

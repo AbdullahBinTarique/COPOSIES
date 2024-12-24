@@ -1,20 +1,22 @@
 # second_app/signals.py
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+import Teachers
 from Teachers.models import Teacher
 from .models import AdminUSERS, SubjectDB
 
 
-@receiver(post_save, sender=Teacher)
+@receiver(post_save, sender=Teachers)
 def create_or_update_Teachers_model(sender, instance, created, **kwargs):
     if created:
         pass
         # Create a corresponding record in SecondAppModel
-        # SubjectDB.objects.create(
-        #     # email=instance.email,
-        #     # Username=instance ,
-        #
-        # )
+        SubjectDB.objects.create(
+            email=instance.email,
+            Username=instance ,
+
+        )
     else:
         pass
         # Update multiple fields in an existing record

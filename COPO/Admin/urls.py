@@ -21,7 +21,7 @@ urlpatterns = [
     # path('Home/Teachers/<slug:slug>',views.slugusers,name="Sluguser")
 
 
-    # path('ConsolidateCorrelationMatrix/',views.ccorrmatrix,name="HomePage"),
+    path('Home/adduserform/AskSem/',views.returnsSubforSem,name = "EndpointSem"),
 
     # path('ConsolidateDirectAttainment/',views.cdirattainment,name="HomePage"),
 

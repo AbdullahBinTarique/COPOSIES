@@ -1,9 +1,10 @@
+from django.http import JsonResponse
 from django.shortcuts import render,redirect
 from django.shortcuts import HttpResponse
 from django.contrib import messages
 from django.db import models
 from Teachers.models import Students,Branch,Batch,Teacher
-from Admin.models import AdminUSERS
+from Admin.models import AdminUSERS,SubjectDB
 from Teachers.models import Sem1,Sem2,Sem3,Sem4,Sem5,Sem6,Sem7,Sem8
 
 
@@ -22,7 +23,7 @@ def adduserfunction(request):
             email   = request.POST['email']
             fname   = request.POST['fname']
             lname   = request.POST['lname']
-            sem     = request.POST['sem']
+            sem     = request.POST['Sem']
             passw   = request.POST['password']
             utype   = request.POST['usertype']
             sub     = request.POST['subject']
@@ -36,7 +37,7 @@ def adduserfunction(request):
 
                 tea = Teacher.objects.filter(email = email).first()
                 tea.subject = sub
-                tea.subques = ques
+                # tea.subques = ques
                 tea.Username =Uname
                 tea.save()
                 messages.success(request, 'Successfully added User')
@@ -142,4 +143,20 @@ def fetchstudent(request):
                 params = {'Student':students}
                 return render(request, 'Admin/removestudent.html', params)
     return render(request, 'Login/login.html', {'message': "No session found. Please log in."})
+
+def returnsSubforSem(request):
+    if 'user_id' in request.session:
+
+        if request.method == 'POST':
+            sem =request.POST.get('sem')
+
+            if not sem:
+                # Handle missing 'Sem' parameter
+                return JsonResponse({'error': 'Missing "Sem" parameter'}, status=400)
+            subs = SubjectDB.objects.filter(sem=sem)
+            sub = list(subs.values('subject'))
+            data = {'subs':sub}
+            print(sub)
+            return JsonResponse(data)
+
 

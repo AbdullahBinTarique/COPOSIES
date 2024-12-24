@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,12 +15,13 @@
             height: 100vh;
             margin: 0;
             background-color: darkgray;
-            
+
         }
+
         form {
             position: absolute;
             top: 0px;
-            width : 24rem;
+            width: 24rem;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -28,32 +30,40 @@
             flex-direction: column;
             align-items: center;
         }
-        
+
         label {
             display: block;
             margin-bottom: 0px;
             font-weight: bold;
-             
-             
+
+
 
         }
-        input[type="text"], input[type="email"], input[type="password"],input[type="number"], select{
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        select {
             width: 70%;
             padding: 8px;
             margin-bottom: 0px;
             border: 1px solid #ccc;
             border-radius: 4px;
             text-align: center;
-                         
+
         }
+
         input[type="radio"] {
             margin-right: 8px;
             margin-bottom: 9px;
         }
+
         .radio-container {
             display: flex;
             align-items: center;
         }
+
         input[type="submit"] {
             background-color: #4CAF50;
             color: white;
@@ -62,19 +72,21 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
         input[type="submit"]:hover {
             background-color: #45a049;
         }
+
         .error {
             color: red;
             font-size: 12px;
         }
-
     </style>
 </head>
+
 <body style="margin-top:50px ;">
-    
-    <form id="userForm" action = 'adduserfunction/' method="POST">{% csrf_token %}
+
+    <form id="userForm" action='adduserfunction/' method="POST">{% csrf_token %}
         <h1>Add Teacher</h1>
         <label for="fname">First Name:</label>
         <input type="text" id="fname" name="fname" required><br><br>
@@ -93,21 +105,40 @@
         <input type="password" id="password" name="password" required>
         <span class="error" id="passwordError"></span><br><br>
 
-         
+        <label for="Sem">Sem:</label>
+        <input type="number" id="Sem" name="Sem" required max="8" min="1"><br><br>
+        <script>
+            document.getElementById('Sem').addEventListener("input", function (event) {
+                event.preventDefault();
+                const userInput = document.getElementById("Sem").value;
+                $('#subject').empty().append(`<option value="">Select Subject</option>`);
+                $.post('/Admin/Home/adduserform/AskSem/',
+                    {
+                        sem: userInput,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    function (data) {
+                        for (x of data.subs)
+                            $('#subject').append(`<option value="${x.subject}">${x.subject}</option>`);
+                    }
+                )
+            });
+
+        </script>
 
         <label for="subject">Subjects:</label>
-        <select name="subject" id="subject" required >
+        <select name="subject" id="subject" required>
             <option value="default">Select Subject</option>
+            <!-- <option value=""></option>
             {% for s in Subjects %}
             <option value="{{s.Subject}}">{{s.Subject}}</option>
-            {% endfor %}
+            {% endfor %} -->
         </select><br><br>
 
-        <label for="Sem">Sem:</label>
-        <input type="number" id="Sem" name="sem" required max="8" min="1"<br><br>
 
-        <label for="ques">Total Number of Questions in the Qpaper</label>
-        <input type="number" id="ques" name="ques" required max="20" min="1"<br><br>
+
+        <!-- <label for="ques">Total Number of Questions in the Qpaper</label>
+        <input type="number" id="ques" name="ques" required max="20" min="1"> <br><br> -->
 
         <label>User Type:</label><br>
         <div class="radio-container">
@@ -116,14 +147,14 @@
             <input type="radio" id="user" name="usertype" value="us" required>
             <label for="user">User</label>
         </div>
-         <br><br>
+        <br><br>
 
         <input type="submit" value="Submit">
     </form>
 
     <script>
         const form = document.getElementById('userForm');
-        form.addEventListener('submit', function(event) {
+        form.addEventListener('submit', function (event) {
             event.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
@@ -153,16 +184,19 @@
         });
 
         function validateEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(email);
         }
 
         function validatePassword(password) {
             const emailRegex = /^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9\d]{8,}$/
             return emailRegex.test(password);
-         
-          
+
+
         }
+
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
+
 </html>

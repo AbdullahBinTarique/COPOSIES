@@ -5,6 +5,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
 from django.apps import apps
+from django.template.defaultfilters import default
+
 
 # from Teachers.models import Sem1, Sem2, Sem3, Sem4, Sem5, Sem6, Sem7, Sem8, Batch, Branch
 
@@ -22,27 +24,42 @@ class AdminUSERS(models.Model):
     sem =   models.PositiveSmallIntegerField(default=1,validators=[MinValueValidator(1), MaxValueValidator(8)] )
     slug = models.SlugField(max_length=20,default='')
 
-    def __str__(self):
-        return   self.email
+    # def __str__(self):
+    #     return   self.email
 
 class SubjectDB(models.Model):
+    ia_th_lvl1_sc = models.PositiveSmallIntegerField(null=True,
+                                                     validators=[MinValueValidator(1), MaxValueValidator(100)])
+    ia_th_lvl2_sc = models.PositiveSmallIntegerField(null=True,
+                                                     validators=[MinValueValidator(1), MaxValueValidator(100)])
+    ia_th_lvl3_sc = models.PositiveSmallIntegerField(null=True,
+                                                     validators=[MinValueValidator(1), MaxValueValidator(100)])
+    #     pom =Percentage of marks
+    ia_th_pom = models.PositiveSmallIntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(100)])
+    Sem_th_pom = models.PositiveSmallIntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(100)])
+    srno = models.AutoField(primary_key=True,)
+    subject = models.CharField(unique=True,max_length=20,default = "Subject")
+
+    sem = models.PositiveSmallIntegerField(default = 1,validators=[MinValueValidator(1), MaxValueValidator(8)])
+    subques = models.PositiveSmallIntegerField(null=True, validators=[MinValueValidator(1), MaxValueValidator(100)])
+    # content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,null = True )
+    # object_id = models.PositiveIntegerField(null=True)
+    # subject = GenericForeignKey('content_type','object_id')
+    # subject_id = GenericForeignKey('content_type','object_id')
 
 
-    srno = models.AutoField(primary_key = True)
-
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,null = True )
-    object_id = models.PositiveIntegerField(null=True)
-    subjects = GenericForeignKey('content_type','object_id')
-    batch = models.ForeignKey('Teachers.Batch',on_delete=models.CASCADE,default = '00-00')
-    branch = models.ForeignKey('Teachers.Branch',on_delete=models.CASCADE,default = 'SIES')
-    email = models.ForeignKey(AdminUSERS,to_field='email', on_delete=models.CASCADE,default='Email')
+    # batch = models.ForeignKey('Teachers.Batch',on_delete=models.CASCADE,default = '00-00')
+    # branch = models.ForeignKey('Teachers.Branch',on_delete=models.CASCADE,default = 'SIES')
+    # email = models.ForeignKey(AdminUSERS,to_field='email', on_delete=models.CASCADE,default='Email')
     # CO1 = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(8)],default= 0)
     # CO2 = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(8)],default= 0)
     # CO3 = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(8)],default= 0)
     # CO4 = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(8)],default= 0)
     # CO5 = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(8)],default= 0)
     # CO6 = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(8)],default= 0)
-    COs = models.TextField(default=' ')
+    # COs = models.TextField(default=' ')
 
+    def __str__(self):
 
+        return   self.subject
 
