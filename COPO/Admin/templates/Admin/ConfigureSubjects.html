@@ -1,0 +1,189 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Form</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            position: relative;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: darkgray;
+
+        }
+
+        form {
+            position: absolute;
+            top: 0px;
+            width: 24rem;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0px;
+            font-weight: bold;
+
+
+
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 70%;
+            padding: 8px;
+            margin-bottom: 0px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+
+        }
+
+        input[type="radio"] {
+            margin-right: 8px;
+            margin-bottom: 9px;
+        }
+
+        .radio-container {
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body style="margin-top:50px ;">
+
+
+    <form id="userForm" action='/Admin/Home/DataSubjects/' method="POST">{% csrf_token %}
+        {% if messages %}
+        <ul class="message-list">
+            {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                style="background-color: rgba(143, 239, 239, 0.868);color: red;" role="alert">
+                {{ message }}
+                <button type="button" class=" btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <h1>Change Subject DataBase</h1>
+        <label for="Sem">Sem:</label>
+        <input type="number" id="Sem" name="Sem" required max="8" min="1"><br>
+        <label for="subject">Subjects:</label>
+        <select name="subject" id="subject" required>
+            <option value="default">Select Subject</option>
+
+        </select><br><br>
+        <div style="display: flex;">
+            <div> <label for="iath1">IA Threshold level 1 score:</label>
+                <input type="number" id="iath1" name="iath1" required><br><br>
+
+                <label for="iath2">IA Threshold level 2 score:</label>
+                <input type="number" id="iath2" name="iath2" required><br><br>
+
+                <label for="iath3">IA Threshold level 3 score:</label>
+                <input type="number" id="iath3" name="iath3" required><br><br>
+
+                <label for="iathpom">IA Threshold percentage of marks:</label>
+                <input type="number" id="iathpom" name="iathpom" required><br><br>
+
+                <label for="semthpom">Semester Threshold percentage of marks:</label>
+                <input type="number" id="semthpom" name="semthpom" required><br><br>
+            </div>
+            <div>
+
+
+                <label for="NOCO">Number of CO:</label>
+                <input type="number" id="NOCO" name="NOCO" required><br><br>
+                <label for="NOPO">Number of PO:</label>
+                <input type="number" id="NOPO" name="NOPO" required><br><br>
+                <label for="NOPSO">Number of PSO:</label>
+                <input type="number" id="NOPSO" name="NOPSO" required><br><br>
+                <label for="ques">Number of questions:</label>
+                <input type="number" id="ques" name="ques" required><br><br>
+
+            </div>
+        </div>
+
+
+        <script>
+            document.getElementById('Sem').addEventListener("input", function (event) {
+                event.preventDefault();
+                const userInput = document.getElementById("Sem").value;
+                $('#subject').empty().append(`<option value="">Select Subject</option>`);
+                $.post('/Admin/Home/adduserform/AskSem/',
+                    {
+                        sem: userInput,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    function (data) {
+                        for (x of data.subs)
+                            $('#subject').append(`<option value="${x.subject}">${x.subject}</option>`);
+                    }
+                )
+            });
+
+        </script>
+
+
+
+
+
+
+        <input type="submit" value="Submit">
+        <button class="Button" onclick="window.location.href='/Admin/Home/' ;" type="button" class="Button" value="Home"
+            style="width: 150px; margin: 10px;">Home </button>
+    </form>
+    <script>
+        // Auto fade out alerts after 3 seconds
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                let alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function (alert) {
+                    alert.classList.add('fade-out');
+                    setTimeout(function () {
+                        alert.style.display = 'none';
+                    }, 500); // Match the duration of the fade-out transition
+                });
+            }, 3000); // Time in milliseconds before fading out (3 seconds)
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+</body>
+
+</html>

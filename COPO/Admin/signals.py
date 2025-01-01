@@ -4,25 +4,18 @@ from django.dispatch import receiver
 
 import Teachers
 from Teachers.models import Teacher
-from .models import AdminUSERS, SubjectDB
+from .models import AdminUSERS, SubjectDB, CONAMES
 
 
-@receiver(post_save, sender=Teachers)
+@receiver(post_save, sender=CONAMES)
 def create_or_update_Teachers_model(sender, instance, created, **kwargs):
     if created:
-        pass
-        # Create a corresponding record in SecondAppModel
-        SubjectDB.objects.create(
-            email=instance.email,
-            Username=instance ,
 
-        )
+        inst=  SubjectDB.objects.get(subject = instance.subject)
+        inst.CONAMES = instance.data
+        inst.save()
     else:
-        pass
-        # Update multiple fields in an existing record
-        # second_instance = Teacher.objects.filter(email=instance).first()
-        # if second_instance:
-            # second_instance.Username = instance.username
-            # second_instance.email = instance
-            # second_instance.subject = instance.subject,
-            # second_instance.save()
+        inst = SubjectDB.objects.get(subject=instance.subject)
+        inst.CONAMES = instance.data
+        inst.save()
+

@@ -740,4 +740,13 @@ class CourseExit {
 
 
     }
+    //     let dict = {};
+    // for (let a = 0; a < cos; a++) {
+    //     let b = [...document.getElementsByName('Co' + (a+1))];
+    //     let arr = [];
+    //     for (let c = 0; c < b.length; c++) {
+    //         arr.push(b[c].value);
+    //     }
+    //     dict[`CO${a+1}`] = arr; // Assign the key-value pair to dict
+    // }
 }

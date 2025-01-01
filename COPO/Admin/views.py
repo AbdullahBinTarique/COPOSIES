@@ -1,10 +1,15 @@
+import json
+
 from django.http import JsonResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.shortcuts import HttpResponse
 from django.contrib import messages
 from django.db import models
+from django.urls import reverse
+import time
+
 from Teachers.models import Students,Branch,Batch,Teacher
-from Admin.models import AdminUSERS,SubjectDB
+from Admin.models import AdminUSERS, SubjectDB, CONAMES
 from Teachers.models import Sem1,Sem2,Sem3,Sem4,Sem5,Sem6,Sem7,Sem8
 
 
@@ -27,19 +32,30 @@ def adduserfunction(request):
             passw   = request.POST['password']
             utype   = request.POST['usertype']
             sub     = request.POST['subject']
-            ques    =request.POST['ques']
+
 
             user = AdminUSERS.objects.filter(email = email).first()
 
             if not user :
                 newuser = AdminUSERS.objects.create(sem = sem,email = email,usertype=utype ,password=passw ,fname= fname ,lname=lname ,username=Uname)
                 newuser.save()
+                newuser.refresh_from_db()
+                # time.sleep(0.3)
+                admin_user = AdminUSERS.objects.filter(email=email).first()
 
-                tea = Teacher.objects.filter(email = email).first()
-                tea.subject = sub
-                # tea.subques = ques
-                tea.Username =Uname
-                tea.save()
+                if admin_user:
+                    tea = Teacher.objects.filter(email=admin_user).first() # Match using the foreign key
+                    su =SubjectDB.objects.get(subject = sub)
+                    if tea:
+                        tea.subject = sub
+                        tea.Username = Uname
+                        tea.subject_id =su.subject_id
+                        tea.save()
+                    else:
+                        # If no Teacher exists, create a new one
+                        Teacher.objects.create(email=admin_user, subject=sub, Username=Uname)
+                else:
+                    messages.error(request, 'User not found in AdminUSERS')
                 messages.success(request, 'Successfully added User')
             else:
                 messages.error(request, 'User Already Exists')
@@ -107,10 +123,33 @@ def addstudentfunc(request):
 
     return render(request, 'Login/login.html', {'message': "No session found. Please log in."})
 
+def addstudentBW(request):
+    if 'user_id' in request.session:
+        if request.method == 'POST':
+            jsonvalue = request.POST.get('data')
+            data_dict =json.loads(jsonvalue)
+            try:
+                branch = Branch.objects.get(branch = data_dict['branch'])
+            except Branch.DoesNotExist:
+                return JsonResponse({'message':'Branch DNE,Create a Branch' })
+            try:
+                batch = Batch.objects.get(batch = data_dict['batch'])
+            except Batch.DoesNotExist:
+                return JsonResponse({'message':'Batch DNE Create Batch'})
+
+            print("Data received: ",data_dict)
+            for x,y in zip(data_dict['prn'],data_dict['name']):
+                try:
+                    prn_inst = Students.objects.get(prn = x)
+
+                except Students.DoesNotExist:
+                    new = Students.objects.create(name = y,prn = x,branch =branch,batch = batch )
+                    new.save()
+            return JsonResponse({'message':'Successfully saved the data'})
+
 
 def removestudentfunc(request):
     if 'user_id' in request.session:
-
         if request.method == 'POST':
             rem = request.POST.get('remuser', '')
             Students.objects.filter( name=rem).delete()
@@ -157,6 +196,92 @@ def returnsSubforSem(request):
             sub = list(subs.values('subject'))
             data = {'subs':sub}
             print(sub)
+            return JsonResponse(data)
+
+def RenderSubjectHtml(request):
+    if 'user_id' in request.session:
+        return render(request,'Admin/ConfigureSubjects.html')
+
+def ConfigureAndEditSubject(request):
+    if 'user_id' in request.session:
+        if request.method == 'POST':
+            sub = request.POST['subject']
+            iath1 = request.POST['iath1']
+            iath2 = request.POST['iath2']
+            iath3 = request.POST['iath3']
+            iathpom = request.POST['iathpom']
+            semthpom = request.POST['semthpom']
+            NoCO = request.POST['NOCO']
+            NoPO = request.POST['NOPO']
+            NoPSO = request.POST['NOPSO']
+            NOQues = request.POST['ques']
+
+            obj = SubjectDB.objects.get(subject = sub)
+            obj.ia_th_lvl1_sc = iath1
+            obj.ia_th_lvl2_sc = iath2
+            obj.ia_th_lvl3_sc = iath3
+            obj.ia_th_pom = iathpom
+            obj.Sem_th_pom = semthpom
+            obj.NOCO = NoCO
+            obj.NOPO = NoPO
+            obj.NOPSO = NoPSO
+            obj.subques = NOQues
+            obj.save()
+            messages.success(request, 'Successfully Configured the Subject')
+            return render(request,'Admin/Configure COS.html')
+
+def UpdateCOS(request):
+    if 'user_id' in request.session:
+
+        if request.method == 'POST':
+            sub = request.POST.get('subject')
+
+            if not sub:
+                # Handle missing 'Sem' parameter
+                return JsonResponse({'error': 'Missing "Sem" parameter'}, status=400)
+            subs = SubjectDB.objects.get(subject = sub)
+            data = {'cos':subs.NOCO }
+            return JsonResponse( data)
+def renderConfigureCos(request):
+    if 'user_id' in request.session:
+        return render(request,'Admin/Configure COS.html')
+
+def saveCOs(request):
+    if 'user_id' in request.session:
+        if request.method == 'POST':
+            sub = request.POST['subject']
+            data = request.POST.get('data')
+            try:
+                sub_ins= CONAMES.objects.get(subject=sub)
+                if data:
+                    data_dict = json.loads(data)  # Convert JSON string to a dictionary
+                    print("Data received:", data_dict)
+                    sub_ins.data = data_dict
+                    sub_ins.save()
+                    messages.success(request, 'Edited Successfully ')
+                    data = {"redirect_url": "/Admin/Home/adduserform/RenderUpdateCO/"}
+                    return JsonResponse(data)
+
+            except CONAMES.DoesNotExist:
+                if data:
+                    data_dict = json.loads(data)  # Convert JSON string to a dictionary
+                    print("Data received:", data_dict)
+                    sinstance = get_object_or_404(SubjectDB, subject=sub)
+                    ins = CONAMES.objects.create(subject=sinstance, data=data_dict)
+                    ins.save()
+                    messages.success(request, 'Saved Successfully ')
+                    data = {"redirect_url": "/Admin/Home/adduserform/RenderUpdateCO/"}
+                    return JsonResponse(data)
+def returnBranchBatch(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            batch = Batch.objects.all();
+            branch = Branch.objects.all();
+
+            BatchL = list(batch.values('batch'))
+            BranchL = list(branch.values('branch'))
+            data = {'batch':BatchL,'branch':BranchL }
+
             return JsonResponse(data)
 
 

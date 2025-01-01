@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled Form</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            position: relative;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: darkgray;
+
+        }
+
+        form {
+            position: absolute;
+            top: 0px;
+            width: 24rem;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0px;
+            font-weight: bold;
+
+
+
+        }
+
+        .Button {
+            border: 2px solid blue;
+            background-color: #6A0DAD;
+            color: azure;
+            width: 100px;
+            height: 30px;
+            border-radius: 30px;
+            transition: background-color;
+            font-size: 14px;
+        }
+
+        .Button:hover {
+            background-color: #540b9c;
+
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 70%;
+            padding: 8px;
+            margin-bottom: 0px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+
+        }
+
+        input[type="radio"] {
+            margin-right: 8px;
+            margin-bottom: 9px;
+        }
+
+        .radio-container {
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="userForm" action='/Admin/Home/adduserform/SaveCOS/' method="POST">{% csrf_token %}
+        {% if messages %}
+        <ul class="message-list">
+            {% for message in messages %}
+            <li class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                style="background-color: rgba(143, 239, 239, 0.868);color: red;" role="alert">
+                {{ message }}
+                <button type="button" class=" btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+
+        <h1>Change Subject DataBase</h1>
+        <label for="Sem">Sem:</label>
+        <input type="number" id="Sem" name="Sem" required max="8" min="1" style="width: 250px;"><br>
+        <label for="subject">Subjects:</label>
+        <select name="subject" id="subject" required>
+            <option value="default">Select Subject</option>
+
+        </select><br><br>
+        <div id="codescription" style="text-align: center;"></div>
+
+
+
+
+        <script>
+            var cos;
+
+            document.getElementById('Sem').addEventListener("input", function (event) {
+                event.preventDefault();
+                const userInput = document.getElementById("Sem").value;
+                $('#subject').empty().append(`<option value="">Select Subject</option>`);
+                $.post('/Admin/Home/adduserform/AskSem/',
+                    {
+                        sem: userInput,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    function (data) {
+                        for (x of data.subs)
+                            $('#subject').append(`<option value="${x.subject}">${x.subject}</option>`);
+                    }
+                )
+            });
+
+            document.getElementById('userForm').addEventListener("submit", function (event) {
+                event.preventDefault();
+                let dict = {};
+                for (let a = 0; a < cos; a++) {
+                    let b = document.getElementById('CoName' + a).value
+                    dict[`CO${a + 1}`] = b;
+
+                }
+
+                // Convert the JavaScript object to a JSON string
+                let jsonString = JSON.stringify(dict);
+
+                $.ajax({
+                    url: '/Admin/Home/adduserform/SaveCOS/', // Backend endpoint
+                    type: 'POST',
+                    data: {
+                        data: jsonString, // Send JSON string as data
+                        subject: document.getElementById("subject").value,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    }, success: function (data) {
+                        if (data.redirect_url) {
+                            console.log(data.redirect_url);
+                            window.location.href = data.redirect_url;
+                        }
+                    }
+
+
+                });
+            });
+            document.getElementById('subject').addEventListener("input", function (event) {
+                event.preventDefault();
+                const userInput = document.getElementById("subject").value;
+                $.post('/Admin/Home/adduserform/UpdateCO/',
+                    {
+                        subject: userInput,
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    function (data) {
+
+
+                        cos = data.cos
+                        let table = ` <table>
+            <thead>
+                <tr>
+                    <td style="width: 50px;"></td>
+                    <td>Course Outcomes</td>
+                </tr>
+            </thead>
+            <tbody>`
+
+                        for (let a = 0; a < cos; a++) {
+                            table += `<tr> <td style = "width: 50px;" class = "Button" >Co${a}</td>
+                    <td><input style = "width: 288px;" type = 'text'  class="Table_data" id = 'CoName${a}' ></td></tr>`
+                        }
+                        table += `</tbody></table><br><br>`
+
+                        document.getElementById('codescription').innerHTML = table;
+                    }
+                )
+            });
+
+
+
+        </script>
+
+
+
+
+
+
+        <input type="submit" value="Submit"><br>
+        <button class="Button" onclick="window.location.href='/Admin/Home/' ;" type="button" class="Button" value="Home"
+            style="width: 150px; margin: 10px;">Home </button>
+
+    </form>
+    <script>
+        // Auto fade out alerts after 3 seconds
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                let alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function (alert) {
+                    alert.classList.add('fade-out');
+                    setTimeout(function () {
+                        alert.style.display = 'none';
+                    }, 500); // Match the duration of the fade-out transition
+                });
+            }, 3000); // Time in milliseconds before fading out (3 seconds)
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+</body>
+
+</html>

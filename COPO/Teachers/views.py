@@ -1,8 +1,10 @@
+import json
+
 from click.core import batch
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from Admin.models import SubjectDB
+from Admin.models import SubjectDB, CONAMES
 from Teachers.models import Teacher, Students, Branch, Batch
 
 
@@ -90,11 +92,13 @@ def adminhome(request):
 def fetchteacherform(request):
     if 'user_id' in request.session:
 
-        teacher =Teacher.objects.all()
+        teacher =SubjectDB.objects.all()
+
 
         params = {'teacher':teacher}
         return render(request,'Admin/ConsolidatedThreshold.html',params)
     return render(request, 'Login/login.html', {'message': "No session found. Please log in."})
+
 
 
 

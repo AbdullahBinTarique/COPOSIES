@@ -60,6 +60,7 @@ def handleloginuser(request):
         else:
             messages.error(request,"User Id Exists But Wrong password Entered")
             return redirect('LogInPage')
+    print(request.session)
 
 def handlelogoutuser(request):
     try:
