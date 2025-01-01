@@ -80,14 +80,16 @@ def adduserform(request):
         s = s1+s2+s3+s4+s5+s6+s7+s8
         params = {'Subjects':s}
         return render(request, 'Admin/addteachersform.html',params)
-    return render(request, 'Login/login.html', {'message': "No session found. Please log in."})
+    messages.success(request, "No session found. Please log in.")
+    return render(request, 'Login/login.html', )
 
 def removeuserform(request):
     if 'user_id' in request.session:
         users=AdminUSERS.objects.values_list('username',flat=True)
         params = {'Allusers':users}
         return render(request,'Admin/Removeteach.html',params)
-    return render(request, 'Login/login.html', {'message': "No session found. Please log in."})
+    messages.success(request, "No session found. Please log in.")
+    return render(request, 'Login/login.html', )
 
 def removeuserfunction(request):
     if 'user_id' in request.session:
@@ -97,6 +99,7 @@ def removeuserfunction(request):
             AdminUSERS.objects.filter(username = rem).delete()
             messages.success(request,'Successfully removed the user')
             return redirect("HomePage")
+    messages.success(request, "No session found. Please log in.")
     return render(request, 'Login/login.html', {'message': "No session found. Please log in."})
 
 def addstudent(request):
@@ -151,8 +154,9 @@ def addstudentBW(request):
 def removestudentfunc(request):
     if 'user_id' in request.session:
         if request.method == 'POST':
-            rem = request.POST.get('remuser', '')
-            Students.objects.filter( name=rem).delete()
+            rem = request.POST['Student']
+            print(rem)
+            Students.objects.get( name=rem).delete()
             messages.success(request, 'Successfully removed the user')
             return redirect("HomePage")
     return render(request, 'Login/login.html', {'message': "No session found. Please log in."})

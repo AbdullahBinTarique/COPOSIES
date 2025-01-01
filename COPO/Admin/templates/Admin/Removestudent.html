@@ -65,7 +65,7 @@
             <select name="Student" id="student">
                 <option value="default">Select student</option>
                 {% for ba in Student %}
-                <option value="{{ ba}}" name="{{ ba}}">{{ ba}}</option>
+                <option value="{{ ba.name}}" name="{{ ba}}">{{ ba}}</option>
                 {% endfor %}
             </select>
             <button type="submit" class="btn btn-primary">Submit</button>

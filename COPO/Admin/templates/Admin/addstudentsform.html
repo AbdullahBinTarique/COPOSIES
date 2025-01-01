@@ -184,7 +184,9 @@
 </head>
 
 <body style="margin-top:50px ;">
-    <form id="userForm" action='/Admin/Home/addstudent/addstudentfunction/' method="POST">{% csrf_token %}
+    <form id="userForm" action='/Admin/Home/addstudent/addstudentfunction/' style="position: absolute;top: 100px;"
+        method="POST">
+        {% csrf_token %}
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required><br><br>
 
@@ -199,9 +201,7 @@
         <label for="batch">Batch:</label>
         <input type="text" id="batch" name="batch" required><br><br>
         <div class="radio-container">
-            <label for="MS">Add Multiple Students</label>
-            <input type="radio" id="MS" name="MS">
-            <label for="BS">Add Students Batch-Wise</label>
+            <label for="BS">Add Students Batch-Wise&nbsp&nbsp</label>
             <input type="radio" id="BS" name="MS">
         </div>
         <br><br>
@@ -211,46 +211,7 @@
     </form>
     <script>
         var a = 0;
-        // document.getElementById('MS').addEventListener('change', function (event) {
-        //     event.preventDefault();
-        //     a = 0;
-        //     document.getElementById('userForm').innerHTML = ''
-        //     let table = `
 
-
-        //     <table>{% csrf_token %}
-        //         <thead>
-        //             <tr><th>Sr</th>
-        //             <th>Name</th>
-        //             <th>PRN</th>
-        //             <th>Branch</th>
-        //             <th>Batch</th>
-        //             </tr>
-        //         </thead><tbody id ='Tbody'>`
-        //     for (let b = 0; b < 5; b++, a++) {
-        //         table += `<tr>
-        //             <td>  ${(a + 1)}
-        //             </td>
-        //         <td><input type="text" id="name${(a + 1)}" name= "Name" class = "Table_data" >
-        //             </td>
-        //             <td><input type="text" id="PRN${(a + 1)}" name = "Prn" class = "Table_data" >
-        //             </td>
-        //             <td><input type="text" id="Branch${(a + 1)}" name = "Branch" class = "Table_data" >
-        //             </td>
-        //             <td><input type="text" id="Batch${(a + 1)}" name = "batch"  class = "Table_data">
-        //             </td></tr>
-        //             `
-        //     }
-
-        //     table += `</tbody></table><br> <button class="Button" onclick="window.location.href='/Admin/Home/' ;" type="button" class="Button" id="Save"
-        //     style="width: 150px; margin: 10px;">Submit </button>
-        //     <button class="Button" onclick="addrows() ;" type="button" class="Button" id="Save"
-        //     style="width: 150px; margin: 10px;">AddMoreRows</button>
-        //     <button class="Button" onclick="window.location.href='/Admin/Home/' ;" type="button" class="Button" id="Save"
-        // style="width: 150px; margin: 10px;">Home </button>`
-        //     document.getElementById('userForm').innerHTML = table
-
-        // })
 
 
         document.getElementById('BS').addEventListener('change', function (event) {
@@ -261,11 +222,11 @@
             $.get('/Admin/Home/viewBranchBatchEndpt/', function (data) {
 
                 data.branch.forEach(br => {
-                    $('#Branch').append(`<option value="${br.branch}">${br.branch}</option>`)
+                    $('#Branch').append(`<option value="${br.branch} required">${br.branch}</option>`)
                 }
                 )
                 data.batch.forEach(ba => {
-                    $('#Batch').append(`<option value="${ba.batch}">${ba.batch}</option>`)
+                    $('#Batch').append(`<option value="${ba.batch}" required>${ba.batch}</option>`)
                 })
 
             })
@@ -380,7 +341,7 @@
                     <input type="text" id="PRN${(a + 1)}" class = "Table_data" name="Prn">
                     </td>
                     <td>
-                    <input type="text" id="name${(a + 1)}" class = "Table_data" name="Names">
+                    <input type="text" id="name${(a + 1)}" class = "Table_data " name="Name">
                     </td>
                     
                     
