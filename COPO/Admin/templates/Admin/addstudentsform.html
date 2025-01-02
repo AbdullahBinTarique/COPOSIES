@@ -301,11 +301,14 @@
                 data: finaldict,
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             },
-                function (data) {
-                    console.log(data.message)
-                }
+                setTimeout(() => {
+                    alert('Data Added Successfully')
+                    window.location.href = '/Admin/Home/addstudent/';
+
+                }, 1000)
             )
-            // window.location.href = '/Admin/Home/';
+
+
 
         }
 

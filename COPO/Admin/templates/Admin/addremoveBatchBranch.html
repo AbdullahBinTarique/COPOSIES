@@ -1,0 +1,82 @@
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add/Remove Batch/Branch</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: large;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .grid_container {
+            width: 24rem;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5vw;
+            padding: 2.5vw;
+        }
+
+        .grid_item {
+            background-color: aquamarine;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 5rem;
+            border-radius: .5rem;
+        }
+
+        .grid_item:hover {
+            background-color: #4CAF50;
+            color: aliceblue;
+            cursor: pointer;
+        }
+
+        .grid_item:active {
+            background-color: darkgreen;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+
+<body style="margin-top:50px ;">
+    <div class="grid_container">
+        <a href="/Admin/Home/RenderConfBB/addBranch">
+            <div class="grid_item">
+                Add Branch
+            </div>
+        </a>
+        <a href="/Admin/Home/RenderConfBB/addBatch">
+            <div class="grid_item">
+                Add Batch
+            </div>
+        </a>
+        <a href="/Admin/Home/RenderConfBB/remBranch">
+            <div class="grid_item">
+                Remove Branch
+            </div>
+        </a>
+        <a href="/Admin/Home/RenderConfBB/remBatch">
+            <div class="grid_item">
+                Remove Batch
+            </div>
+        </a>
+
+    </div>
+</body>
+
+</html>

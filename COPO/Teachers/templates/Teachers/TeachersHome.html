@@ -4,8 +4,8 @@
     <div class="accordion accordion-flush" id="Teacher_name">
         <div class="accordion-item" style="border-radius: 40px;">
             <h2 class="accordion-header">
-                <button class="accordion-button collapsed" style="border-radius: 40px;" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#Teacher_content" aria-expanded="false"
+                <button class="accordion-button collapsed" id="teacher_collapse" style="border-radius: 40px;"
+                    type="button" data-bs-toggle="collapse" data-bs-target="#Teacher_content" aria-expanded="false"
                     aria-controls="flush-collapseOne">
                     {{teachname}}
                 </button>
@@ -21,9 +21,10 @@
     </div>
     <div class="accordion accordion-flush" id="Subject_name">
         <div class="accordion-item" style="border-radius: 40px;">
-            <h2 class="accordion-header">
-                <button class="accordion-button" style="border-radius: 40px;" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#Subject_content" aria-expanded="true" aria-controls="flush-collapseOne">
+            <h2 class="accordion-header" onload="setCOPO()">
+                <button class="accordion-button" id="subject_collapse" style="border-radius: 40px;" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#Subject_content" aria-expanded="true"
+                    aria-controls="flush-collapseOne">
                     {{subject}}
                 </button>
             </h2>
@@ -56,4 +57,12 @@
         </div>
     </div>
 </header>
+<script>
+    window.onload = function () {
+        setCOPO()
+
+    }
+
+
+</script>
 {% endblock %}

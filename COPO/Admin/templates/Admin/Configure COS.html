@@ -101,7 +101,7 @@
 </head>
 
 <body>
-    <form id="userForm" action='/Admin/Home/adduserform/SaveCOS/' method="POST">{% csrf_token %}
+    <form id="userForm" action='/Admin/Home/SaveCOS/' method="POST">{% csrf_token %}
         {% if messages %}
         <ul class="message-list">
             {% for message in messages %}
@@ -160,7 +160,7 @@
                 let jsonString = JSON.stringify(dict);
 
                 $.ajax({
-                    url: '/Admin/Home/adduserform/SaveCOS/', // Backend endpoint
+                    url: '/Admin/Home/SaveCOS/', // Backend endpoint
                     type: 'POST',
                     data: {
                         data: jsonString, // Send JSON string as data
@@ -179,7 +179,7 @@
             document.getElementById('subject').addEventListener("input", function (event) {
                 event.preventDefault();
                 const userInput = document.getElementById("subject").value;
-                $.post('/Admin/Home/adduserform/UpdateCO/',
+                $.post('/Admin/Home/UpdateCO/',
                     {
                         subject: userInput,
                         csrfmiddlewaretoken: '{{ csrf_token }}'

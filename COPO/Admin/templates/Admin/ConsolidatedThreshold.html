@@ -125,9 +125,15 @@
             </thead>
             <tbody>
                 {% for s in teacher|dictsort:"sem" %}
+                {% ifchanged s.sem %}
+                <!-- Add an empty row for horizontal space -->
+                <tr>
+                    <td style="height: 40px;background-color:rgba(117, 211, 130, 0.815)">Sem: {{s.sem}}</td>
+                </tr>
+
+                {% endifchanged %}
                 <tr>
                     <td style="background-color:rgba(162, 227, 243, 0.5)">{{s.subject}}</td>
-                    <td style="background-color:rgba(214, 241, 179, 0.288)">{{s.sem}}</td>
 
                     <td style="background-color:rgba(205, 250, 220, 0.568)">{{s.ia_th_lvl1_sc}}</td>
                     <td style="background-color:rgba(205, 250, 220, 0.568) ">{{s.ia_th_lvl2_sc}}</td>
@@ -136,15 +142,14 @@
                     <td style="background-color:rgba(205, 250, 220, 0.568) ">{{s.Sem_th_pom}}</td>
                     <td style="background-color:rgba(205, 250, 220, 0.568) ">{{s.NOCO}}</td>
 
-
                     <td style="background-color:rgba(205, 250, 220, 0.568)">{{s.NOPO}}</td>
                     <td style="background-color:rgba(205, 250, 220, 0.568)">{{s.NOPSO}}</td>
                     <td style="background-color:rgba(205, 250, 220, 0.568)">{{s.subques}}</td>
 
-
-
-
                 </tr>
+
+
+
                 {% endfor %}
             </tbody>
         </table>

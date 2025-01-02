@@ -147,9 +147,7 @@
 
             <div class=" " id="copotable-div">
 
-                <p><button type="button" class="Button" onclick="generateCOPO()" style="width: 150px;">Generate
-                        Table</button>
-                </p>
+
             </div>
 
 
@@ -460,11 +458,70 @@
         var pos;
         var psos;
         var cos;
+        function setCOPO() {
+            let sub = document.getElementById('subject_collapse').innerHTML.trim();
+
+            $.ajax({
+                url: '/Admin/Home/retrieveco/', // Backend endpoint
+                type: 'POST',
+                data: {
+                    sub: sub, // Send JSON string as data
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                }, success: function (data) {
+                    cos = data.NOCO;
+                    pos = data.NOPO;
+                    psos = data.NOPSO;
+                    teethreshold = data.sempom;
+                    conames = data.Cos
+                    document.getElementById('numberofpos').value = pos;
+                    document.getElementById('numberofpsos').value = psos;
+                    document.getElementById('numberofcos').value = cos;
+                    const con = document.getElementsByName('CoName')
+                    let counter = 0;
+                    generateCOPO()
+
+                    for (const key in conames) {
+                        con[counter].value = `${conames[key]}`
+                        let ele = document.getElementsByName('Co' + (counter + 1))
+
+                        if (data.COMatrix) {
+                            let count2 = 0;
+                            let k = data.COMatrix[`Co${(counter + 1)}`]
+                            for (const y in k) {
+                                ele[count2].value = `${k[y]}`
+                                count2++;
+
+                            }
+                        }
+
+                        counter++;
+                    }
+                    calc.TweightedAvgAchieved();
+                    calc.TargetNAvg();
+
+
+
+
+
+                    // for (const key in conames) {
+                    //     console.log(`${key}:${conames[key]}`);
+
+                    // }
+                    // Object.entries(conames).forEach(([key, value]) => {
+                    //     console.log(`${key}:${value}`)
+
+                    // })
+
+                }
+
+            })
+
+        }
 
         function generateCOPO() {
-            pos = document.getElementById('numberofpos').value;
-            psos = document.getElementById('numberofpsos').value;
-            cos = document.getElementById('numberofcos').value;
+            // pos = document.getElementById('numberofpos').value;
+            // psos = document.getElementById('numberofpsos').value;
+            // cos = document.getElementById('numberofcos').value;
             let innerhtml = `
             <form>
                 <table id="formTableCopoRelation">
@@ -536,8 +593,8 @@
             <tbody>`
 
             for (let a = 0; a < cos; a++) {
-                table += `<tr> <td style = "width: 50px;background-color:aqua"  >Co${a}</td>
-                    <td><input style = "width: 600px;" type = 'text'  class="Table_data" name = 'CoName${a}' ></td></tr>`
+                table += `<tr> <td style = "width: 50px;background-color:aqua"  >Co${(a + 1)}</td>
+                    <td><input style = "width: 600px;" type = 'text'  class="Table_data" name = 'CoName' ></td></tr>`
             }
             table += `</tbody></table></form><br><br>`
 
@@ -596,7 +653,7 @@
 
             </form >
             <br>
-            <button type = "button" class = "Button" onclick=  "mainFunctions.calculateAchievedAndExternal() ">Calc. Table</button>
+            <button type = "button" id="calculateAchievedAndExternal" class = "Button" onclick=  "mainFunctions.calculateAchievedAndExternal() ">Calc. Table</button>
             <br><br>`
             document.getElementById('copotable-achieved-div').innerHTML = innerhtml;
 
@@ -686,12 +743,50 @@
             if (coposcore.length == 0)
                 calc.TweightedAvgAchieved();
             calc.TargetNAvg();
+            saveCOmatrix();
+
+        }
+
+        function saveCOmatrix() {
+            let sub = document.getElementById('subject_collapse').innerHTML.trim();
+            let dictdata = {}
+            for (let a = 0; a < cos; a++) {
+                const ele = document.getElementsByName('Co' + (a + 1))
+                let arr = [];
+                ele.forEach(inp => {
+                    arr.push(inp.value)
+                })
+                dictdata[`Co${(a + 1)}`] = arr
+            }
+
+            const dict = JSON.stringify(dictdata)
+
+            $.ajax({
+                url: '/Admin/Home/SaveCOmatrix/', // Backend endpoint
+                type: 'POST',
+                data: {
+                    sub: sub,
+                    matrix: dict, // Send JSON string as data
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                }, success: function (data) {
+                    setTimeout(() => {
+                        alert('Data Added Successfully')
+                    }, 1000)
+                    calc.TweightedAvgAchieved();
+                    calc.TargetNAvg();
+
+                }
+
+
+            })
         }
 
         function update() {
             coposcore = [];
             calc.TweightedAvgAchieved();
             calc.TargetNAvg();
+            saveCOmatrix();
+
         }
 
 
@@ -964,6 +1059,8 @@
             });
         });
 
+
+
         document.getElementById("copotable-div").addEventListener("paste", (event) => {
             event.preventDefault();
 
@@ -996,6 +1093,146 @@
             });
         });
 
+        function getAllFinalValues() {
+            let sub = document.getElementById('subject_collapse').innerHTML.trim();
+            let tea = document.getElementById('teacher_collapse').innerHTML.trim();
+
+            let CoAchieved1 = {}
+            for (let a = 0; a < cos; a++) {
+                const ele = document.getElementsByName('CoAchieved' + (a + 1))
+                let arr = [];
+                ele.forEach(inp => {
+                    arr.push(inp.textContent)
+                })
+                CoAchieved1[`Co${(a + 1)}`] = arr
+            }
+            let ele = document.getElementsByName('AVG')
+            let arr = [];
+            ele.forEach(inp => {
+                arr.push(inp.textContent)
+            })
+            CoAchieved1[`AVG`] = arr
+            const CoAchieved1Dict = JSON.stringify(CoAchieved1)
+
+            //Table 1 finished
+
+            let CoAchieved2 = {}
+            for (let a = 0; a < cos; a++) {
+                ele = document.getElementsByName('ECoAchieved' + (a + 1))
+                arr = [];
+                ele.forEach(inp => {
+                    arr.push(inp.textContent)
+                })
+                CoAchieved2[`Co${(a + 1)}`] = arr
+            }
+            ele = document.getElementsByName('EAVG')
+            arr = [];
+            ele.forEach(inp => {
+                arr.push(inp.textContent)
+            })
+            CoAchieved2[`EAVG`] = arr
+
+            ele = document.getElementsByName('TargetSet')
+            arr = [];
+            ele.forEach(inp => {
+                arr.push(inp.textContent)
+            })
+            CoAchieved2[`TargetSet`] = arr
+
+            ele = document.getElementsByName('Achieved')
+            arr = [];
+            ele.forEach(inp => {
+                arr.push(inp.textContent)
+            })
+            CoAchieved2[`Achieved`] = arr
+            const CoAchieved2Dict = JSON.stringify(CoAchieved2)
+
+            //Table 2 finished
+
+            let CoAchieved3 = {}
+            for (let a = 0; a < cos; a++) {
+                ele = document.getElementsByName('CourseAchieved' + (a + 1))
+                arr = [];
+                ele.forEach(inp => {
+                    arr.push(inp.textContent)
+                })
+                CoAchieved3[`Co${(a + 1)}`] = arr
+            }
+            ele = document.getElementsByName('CourseAVG')
+            arr = [];
+            ele.forEach(inp => {
+                arr.push(inp.textContent)
+            })
+            CoAchieved3[`CourseAVG`] = arr
+            const CoAchieved3Dict = JSON.stringify(CoAchieved3)
+
+
+            //Table 3 finished
+
+            let CoAchieved4 = {}
+            for (let a = 0; a < cos; a++) {
+                ele = document.getElementsByName('CourseECoAchieved' + (a + 1))
+                arr = [];
+                ele.forEach(inp => {
+                    arr.push(inp.textContent)
+                })
+                CoAchieved4[`Co${(a + 1)}`] = arr
+            }
+            ele = document.getElementsByName('CourseEAVG')
+            arr = [];
+            ele.forEach(inp => {
+                arr.push(inp.textContent)
+            })
+            CoAchieved4[`CourseEAVG`] = arr
+
+            ele = document.getElementsByName('CourseTargetSet')
+            arr = [];
+            ele.forEach(inp => {
+                arr.push(inp.textContent)
+            })
+            CoAchieved4[`CourseTargetSet`] = arr
+
+            ele = document.getElementsByName('CourseAchieved')
+            arr = [];
+            ele.forEach(inp => {
+                arr.push(inp.textContent)
+            })
+            CoAchieved4[`CourseAchieved`] = arr
+            const CoAchieved4Dict = JSON.stringify(CoAchieved4)
+
+            //Table 4 finished
+
+
+            console.log(CoAchieved1Dict)
+            console.log(CoAchieved2Dict)
+            console.log(CoAchieved3Dict)
+            console.log(CoAchieved4Dict)
+            $.ajax({
+                url: '/Admin/Home/SaveCOPOAcheived/', // Backend endpoint
+                type: 'POST',
+                data: {
+                    sub: sub,
+                    table1: CoAchieved1Dict,
+                    table2: CoAchieved2Dict,
+                    table3: CoAchieved3Dict,
+                    table4: CoAchieved4Dict,
+                    teacher: tea,
+                    sub: sub,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                }, success: function (data) {
+                    setTimeout(() => {
+                        alert('Data Saved Successfully, Redirecting to FreshPage');
+                        location.reload(true);
+                    }, 1000)
+
+
+
+                }
+
+
+            })
+        }
+
 
     </script>
     <script src="/static/formulas.js"></script>
@@ -1018,6 +1255,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js">
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </body>
 
 </html>

@@ -6,7 +6,7 @@ var answered = [];
 var attainment = [];
 var attainmentlvl = [];
 var internalweightarray = [];
-var teethreshold = 60; //should come from the backend and should be modifiable
+var teethreshold = 0; //should come from the backend and should be modifiable
 
 
 
@@ -186,7 +186,7 @@ class calc {
 
             for (let i = 0; i < cos; i++) {
                 if (x == i + 1 && internalweightarray[x - 1] != NaN) {
-                    document.getElementById('Co' + (i + 1) + 'I').innerHTML = internalweightarray[x - 1];
+                    document.getElementById('Co' + (i + 1) + 'I').innerHTML = Math.round(internalweightarray[x - 1] * 100) / 100;
                 }
             }
 
@@ -503,35 +503,41 @@ class calc {
 var coposcore = [];
 var extWeightedAvg = [];//2D array
 var storeelements = [];//1D array
-
+var calc1count = 1;
+var calc2count = 1;
 class mainFunctions {
     static calculate1(noofquestion, lv1, lvl2, lvl3) {
-        calc.thresholdcalcforquestions(noofquestion, "MARKSia1");
-        calc.thresholdpercandabove(noofquestion, "QA");
-        formula.obtaineddivbyTstudents(noofquestion);
-        formula.lvlattainment(lv1, lvl2, lvl3);
-        calc.weighted_avg_of_internal(noofquestion, "COia1");
+        if (calc1count) {
+            calc.thresholdcalcforquestions(noofquestion, "MARKSia1");
+            calc.thresholdpercandabove(noofquestion, "QA");
+            formula.obtaineddivbyTstudents(noofquestion);
+            formula.lvlattainment(lv1, lvl2, lvl3);
+            calc.weighted_avg_of_internal(noofquestion, "COia1");
 
-        calc.print(noofquestion, "ThreshMarksIA1", "Coatia1", "AttlvlIA1");
-        finalarr = [];
-        countarr = [];
-        unanswered = [];
-        answered = [];
-        attainment = [];
-        attainmentlvl = [];
-        // internalweightarray = [];
-        teethreshold = 60;
+            calc.print(noofquestion, "ThreshMarksIA1", "Coatia1", "AttlvlIA1");
+            finalarr = [];
+            countarr = [];
+            unanswered = [];
+            answered = [];
+            attainment = [];
+            attainmentlvl = [];
+            calc1count = 0;
+        }        // internalweightarray = [];
     }
 
     static calculate2(noofquestion, lv1, lvl2, lvl3) {
-        calc.thresholdcalcforquestions(noofquestion, "MARKSia2");
-        calc.thresholdpercandabove(noofquestion, "QA1");
-        formula.obtaineddivbyTstudents(noofquestion);
-        formula.lvlattainment(lv1, lvl2, lvl3);
-        calc.weighted_avg_of_internal(noofquestion, "COia2");
-        calc.weighted_avg_of_external(lv1, lvl2, lvl3);
-        calc.print(noofquestion, "ThreshMarksIA2", "Coatia2", "AttlvlIA2");
+        if (calc2count) {
+            calc.thresholdcalcforquestions(noofquestion, "MARKSia2");
+            calc.thresholdpercandabove(noofquestion, "QA1");
+            formula.obtaineddivbyTstudents(noofquestion);
+            formula.lvlattainment(lv1, lvl2, lvl3);
+            calc.weighted_avg_of_internal(noofquestion, "COia2");
+            calc.weighted_avg_of_external(lv1, lvl2, lvl3);
+            calc.print(noofquestion, "ThreshMarksIA2", "Coatia2", "AttlvlIA2");
 
+            // internalweightarray = [];
+            calc2count = 0;
+        }
     }
 
 
@@ -541,6 +547,7 @@ class mainFunctions {
         calc.calcWeightedAvgAchieved();
         calc.Ethersholdcalc();
         calc.targetAchieved();
+        document.getElementById('calculateAchievedAndExternal').style.display = "none";
 
     }
     static CourseExits() {
@@ -553,6 +560,8 @@ class mainFunctions {
         CourseExit.calcCECAchieved();
         CourseExit.CECExternal();
         document.getElementById('CalCE').style.visibility = "hidden";
+        getAllFinalValues()
+
     }
 
 }

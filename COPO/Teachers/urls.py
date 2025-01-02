@@ -10,6 +10,6 @@ urlpatterns = [
     path('fetch/',views.fetch,name="FetchStudents"),
     path('fetchteacherform/',views.fetchteacherform ,name="Fetchtf"),
     path('fetchadmin/', views.fetchadmin, name="FetchAdminStudents"),
-    # path('/savenprint/', views.savenprint , name="SaveNPrint"),
+
 
 ]

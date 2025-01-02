@@ -42,7 +42,7 @@ def handleloginuser(request):
             user = AdminUSERS.objects.get(email=loginusername)
         except AdminUSERS.DoesNotExist:
             messages.success(request, 'User Doesnt Exists ')
-            return redirect("HomePage")
+            return redirect("LogInPage")
 
          # Store user info in session
         request.session['user_id'] = user.email

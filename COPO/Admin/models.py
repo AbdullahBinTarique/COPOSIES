@@ -26,14 +26,16 @@ class AdminUSERS(models.Model):
         if not self.slug:
             self.slug = slugify(f"{self.fname} {self.lname}")
         super().save(*args, **kwargs)
-    # def __str__(self):
-    #     return   self.email
+    def __str__(self):
+        return   self.slug
 
 class Corelationdata(models.Model):
     subject = models.OneToOneField('Admin.SubjectDB',to_field='subject', on_delete=models.CASCADE,unique=True)
     data = models.JSONField(null=True)
     srno = models.AutoField(primary_key =True)
 
+    def __str__(self):
+        return   str(self.subject)
 
 
 
@@ -47,12 +49,17 @@ class CONAMES(models.Model):
 
 class COPOAcheiveddata(models.Model):
     subject = models.ForeignKey('Admin.SubjectDB',to_field='subject',on_delete=models.CASCADE)
-    copo = models.JSONField(null=True)
-    data = models.JSONField(null=True)
+    copoAch = models.JSONField(null=True)
+    copoAchExt = models.JSONField(null=True)
     uploaded_by = models.ForeignKey('AdminUSERS',to_field='slug',on_delete=models.CASCADE,null=True)
 
-    copoAch = models.JSONField(null=True)
-    dataAch = models.JSONField(null=True)
+    CourseCopoAch = models.JSONField(null=True)
+    CourseCopoAchExt = models.JSONField(null=True)
+
+    def __str__(self):
+        return   str(self.subject)+" uploaded by "+str(self.uploaded_by)
+
+
 
 
 class SubjectDB(models.Model):

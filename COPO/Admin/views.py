@@ -9,7 +9,7 @@ from django.urls import reverse
 import time
 
 from Teachers.models import Students,Branch,Batch,Teacher
-from Admin.models import AdminUSERS, SubjectDB, CONAMES
+from Admin.models import AdminUSERS, SubjectDB, CONAMES, Corelationdata, COPOAcheiveddata
 from Teachers.models import Sem1,Sem2,Sem3,Sem4,Sem5,Sem6,Sem7,Sem8
 
 
@@ -276,6 +276,29 @@ def saveCOs(request):
                     messages.success(request, 'Saved Successfully ')
                     data = {"redirect_url": "/Admin/Home/adduserform/RenderUpdateCO/"}
                     return JsonResponse(data)
+
+
+def retrieveco(request):
+    if 'user_id' in request.session:
+        if request.method == 'POST':
+            sub= request.POST['sub']
+            values = SubjectDB.objects.get(subject = sub)
+            try:
+                Comatri = Corelationdata.objects.get(subject = sub)
+
+                data = {'subject':sub,'subid':values.subject_id,'sempom':
+                    values.Sem_th_pom,'NOCO':values.NOCO,'NOPO':values.NOPO,'NOPSO':values.NOPSO,
+                    'Cos':values.CONAMES,'COMatrix':Comatri.data}
+                return JsonResponse(data)
+            except Corelationdata.DoesNotExist:
+                data = {'subject': sub, 'subid': values.subject_id, 'sempom':
+                    values.Sem_th_pom, 'NOCO': values.NOCO, 'NOPO': values.NOPO, 'NOPSO': values.NOPSO,
+                        'Cos': values.CONAMES}
+
+                return JsonResponse(data)
+
+
+
 def returnBranchBatch(request):
     if 'user_id' in request.session:
         if request.method == 'GET':
@@ -287,5 +310,147 @@ def returnBranchBatch(request):
             data = {'batch':BatchL,'branch':BranchL }
 
             return JsonResponse(data)
+
+def saveCOMatrix(request):
+    if 'user_id' in request.session:
+
+        if request.method == 'POST':
+            sub = request.POST['sub']
+            subinst = SubjectDB.objects.get(subject = sub)
+            data = request.POST['matrix']
+            if data :
+                data_dict = json.loads(data)
+                try:
+                    retinst = Corelationdata.objects.get(subject = sub)
+                    retinst.data=data_dict
+                    retinst.save()
+                    return JsonResponse({})
+                except Corelationdata.DoesNotExist:
+                    inst = Corelationdata.objects.create(subject=subinst, data=data_dict)
+                    inst.save()
+                    return JsonResponse({})
+
+                    retinst.data = data_dict
+                    retinst.save()
+                    return JsonResponse({})
+
+def SaveCOPOAchieved(request):
+    if 'user_id' in request.session:
+        if request.method == 'POST':
+            copoAchDa = request.POST['table1']
+            copoAchExDa = request.POST['table2']
+            coursExdata = request.POST['table3']
+            coursExAchdata = request.POST['table4']
+
+            teacherUName = request.POST['teacher']
+            sub = request.POST['sub']
+
+            copo = json.loads(copoAchDa)
+            copoExdata = json.loads(copoAchExDa)
+            courseExitAch = json.loads(coursExdata)
+            courseExitExAch = json.loads(coursExAchdata)
+            print(copo)
+            print(copoExdata)
+            print(courseExitAch)
+            print(courseExitExAch)
+
+            subinst = SubjectDB.objects.get(subject = sub)
+            teacinst =AdminUSERS.objects.get(username = teacherUName,email = request.session['user_id'])
+            uploaded_by = teacinst
+            print(uploaded_by)
+            inst = COPOAcheiveddata.objects.create(subject = subinst, copoAch=copo,copoAchExt=copoExdata
+                                                   ,CourseCopoAch=courseExitAch,CourseCopoAchExt=courseExitExAch,
+                                                   uploaded_by=uploaded_by)
+            inst.save()
+            return JsonResponse({})
+
+def renderCONFBB(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            return render(request,'Admin/addremoveBatchBranch.html')
+def renderaddBr(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            return render(request,'Admin/addBranch.html')
+def renderremBr(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            br=Branch.objects.all()
+            param = {'br':br}
+            return render(request,'Admin/removeBranch.html',param)
+def renderaddBa(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            return render(request,'Admin/addBatch.html')
+def renderremBa(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            ba = Batch.objects.all()
+            param = {'ba':ba}
+            return render(request,'Admin/removeBatch.html',param)
+
+def renderaddBrf(request):
+    if 'user_id' in request.session:
+        if request.method == 'POST':
+            br = request.POST['name']
+            try:
+                brinst = Branch.objects.get(branch =br)
+                messages.success(request, 'Branch Already Exists')
+                return redirect("HomePage")
+            except Branch.DoesNotExist:
+                brinst = Branch.objects.create(branch = br)
+                brinst.save()
+                messages.success(request,'Branch Added Successfully')
+                return redirect("HomePage")
+
+def renderremBrf(request):
+    if 'user_id' in request.session:
+        if request.method == 'POST':
+            br = request.POST['name']
+            try:
+                brinst = Branch.objects.get(branch =br)
+                Branch.objects.get(branch=br).delete()
+                messages.success(request, 'Branch Removed Successfully ')
+                return redirect("HomePage")
+
+            except Branch.DoesNotExist:
+                messages.success(request,'Branch Doesnt Exists ')
+                return redirect("HomePage")
+
+
+def renderaddBaf(request):
+    if 'user_id' in request.session:
+        if request.method == 'POST':
+            ey = request.POST['entry_year']
+            fy = request.POST['final_year']
+            strin = str(ey) + '-' + str(fy)
+            print(str)
+            try:
+                bainst = Batch.objects.get(batch=strin)
+                messages.success(request, 'Batch Already Exists')
+                return redirect("HomePage")
+
+            except Batch.DoesNotExist:
+                bainst = Batch.objects.create(batch=strin)
+                bainst.save()
+                messages.success(request, 'Batch Added Successfully')
+                return redirect("HomePage")
+
+
+def renderremBaf(request):
+    if 'user_id' in request.session:
+        if request.method == 'POST':
+            ey = request.POST['entry_year']
+            fy = request.POST['final_year']
+            strin = str(ey) + '-' + str(fy)
+            print(str)
+            try:
+                bainst =Batch.objects.get(batch=strin)
+                Batch.objects.get(batch=strin).delete()
+                messages.success(request, 'Batch Removed Successfully ')
+                return redirect("HomePage")
+            except Batch.DoesNotExist:
+                messages.success(request, 'Batch Doesnt Exist ')
+                return redirect("HomePage")
 
 

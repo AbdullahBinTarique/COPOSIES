@@ -18,25 +18,38 @@ urlpatterns = [
     path('Home/addstudent/addstudentfunction/', views.addstudentfunc, name="AddStudentfunc"),
 
     path('Home/removestudent/',views.removestudent,name="RemoveStudent"),
+    path('Home/SaveCOmatrix/', views.saveCOMatrix, name="SaveCoMatrix"),
+
     path('Home/Student/fetch/', views.fetchstudent, name="FetchStudent"),
 
     path('Home/removestudent/func/', views.removestudentfunc, name="RemoveStudentfunc"),
 
     path('Home/removestudent/func/', views.removestudentfunc, name="RemoveStudentfunc"),
+    path('Home/retrieveco/', views.retrieveco, name="COendpoint"),
+
     # path('Home/Teachers/<slug:slug>',views.slugusers,name="Sluguser")
 
 
     path('Home/adduserform/AskSem/',views.returnsSubforSem,name = "EndpointSem"),
-    path('Home/adduserform/RenderUpdateCO/', views.renderConfigureCos, name="COS"),
+    path('Home/RenderUpdateCO/', views.renderConfigureCos, name="COS"),
 
-    path('Home/adduserform/UpdateCO/', views.UpdateCOS, name="EndpointCOS"),
-    path('Home/adduserform/SaveCOS/', views.saveCOs, name="SaveCO"),
+    path('Home/UpdateCO/', views.UpdateCOS, name="EndpointCOS"),
+    path('Home/SaveCOS/', views.saveCOs, name="SaveCO"),
 
     path('Home/viewBranchBatchEndpt/',views.returnBranchBatch,name="BranchBatchEndPt"),
 
-    # path('ConsolidateIndirectAttainment/',views.cindirattainment,name="HomePage"),
+    path('Home/SaveCOPOAcheived/',views.SaveCOPOAchieved,name="SaveCOAcheived"),
 
-    # path('ConsolidatedThresholdSettings/',views.cthreshsettings,name="HomePage"),
+    path('Home/RenderConfBB',views.renderCONFBB,name="ConfBB"),
+    path('Home/RenderConfBB/addBranch', views.renderaddBr, name="AddBr"),
+    path('Home/RenderConfBB/remBranch', views.renderremBr, name="RemBr"),
+    path('Home/RenderConfBB/addBatch', views.renderaddBa, name="AddBa"),
+    path('Home/RenderConfBB/remBatch', views.renderremBa, name="RemBa"),
+
+path('Home/RenderConfBB/addBranchfunc', views.renderaddBrf, name="AddBrf"),
+    path('Home/RenderConfBB/remBranchfunc', views.renderremBrf, name="RemBrf"),
+    path('Home/RenderConfBB/addBatchfunc', views.renderaddBaf, name="AddBaf"),
+    path('Home/RenderConfBB/remBatchfunc', views.renderremBaf, name="RemBaf"),
 
     # path('ConsolidatedCoAttainment/',views.ccoattainment,name="HomePage"),
 
