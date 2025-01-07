@@ -5,6 +5,7 @@ function togglePasswordVisibility() {
 
     if (passwordType === "password") {
         passwordInput.setAttribute("type", "text");
+
     } else {
         passwordInput.setAttribute("type", "password");
     }
@@ -29,7 +30,7 @@ function validateEmail(email) {
 }
 
 function validatePassword(password) {
-    return password.length >= 6; 
+    return password.length >= 6;
 }
 
 

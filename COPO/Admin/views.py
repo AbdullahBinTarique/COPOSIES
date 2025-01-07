@@ -131,6 +131,7 @@ def addstudentBW(request):
         if request.method == 'POST':
             jsonvalue = request.POST.get('data')
             data_dict =json.loads(jsonvalue)
+            print("Data received: ", data_dict)
             try:
                 branch = Branch.objects.get(branch = data_dict['branch'])
             except Branch.DoesNotExist:
@@ -263,7 +264,7 @@ def saveCOs(request):
                     sub_ins.data = data_dict
                     sub_ins.save()
                     messages.success(request, 'Edited Successfully ')
-                    data = {"redirect_url": "/Admin/Home/adduserform/RenderUpdateCO/"}
+                    data = {"redirect_url": "/Admin/Home/RenderUpdateCO/"}
                     return JsonResponse(data)
 
             except CONAMES.DoesNotExist:
@@ -274,7 +275,7 @@ def saveCOs(request):
                     ins = CONAMES.objects.create(subject=sinstance, data=data_dict)
                     ins.save()
                     messages.success(request, 'Saved Successfully ')
-                    data = {"redirect_url": "/Admin/Home/adduserform/RenderUpdateCO/"}
+                    data = {"redirect_url": "/Admin/Home/RenderUpdateCO/"}
                     return JsonResponse(data)
 
 
@@ -311,7 +312,7 @@ def returnBranchBatch(request):
 
             return JsonResponse(data)
 
-def saveCOMatrix(request):
+def saveCOrelMatrix(request):
     if 'user_id' in request.session:
 
         if request.method == 'POST':
@@ -324,15 +325,129 @@ def saveCOMatrix(request):
                     retinst = Corelationdata.objects.get(subject = sub)
                     retinst.data=data_dict
                     retinst.save()
-                    return JsonResponse({})
+                    return JsonResponse({'message':'Data Saved Successfully'})
                 except Corelationdata.DoesNotExist:
                     inst = Corelationdata.objects.create(subject=subinst, data=data_dict)
                     inst.save()
-                    return JsonResponse({})
+                    return JsonResponse({'message':'Data Created Successfully'})
 
                     retinst.data = data_dict
                     retinst.save()
-                    return JsonResponse({})
+                    return JsonResponse({'message':'Error Data Not Updated'})
+
+def ResetPass(request):
+    if request.method == 'POST':
+        em = request.POST['Email']
+        fname = request.POST['fname']
+        try:
+            aus = AdminUSERS.objects.get(email=em,fname=fname)
+
+
+            return HttpResponse("""
+            <!DOCTYPE html>
+
+            <html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+    body{
+    background-color:darkslategrey;}
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+    </style>
+</head>""" f"""<body >
+                 <div class="modal fade show" id="ForgetPass" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-modal="true" role="dialog" style="display:block;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Password</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                     
+                        
+                        <div class="mb-3"><label for="password">Password is :</label>
+                            <input class=" form-control" id="password" value= "{ aus.password }">
+                        </div>
+
+                </div>
+
+                 
+                 
+            </div>
+        </div>
+    </div>
+""" """
+    <script>
+            window.onload = function () {
+                setTimeout(() => {
+                    alert('Please Copy the Password, you will be redirected to login page in 5 seconds')
+                    setTimeout(()=>{
+                    window.location = '/Login/loginpage/'},3000)
+                    
+                }, 1000);
+            }
+        </script><script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
+</body></html>
+""")
+
+        except AdminUSERS.DoesNotExist:
+            return HttpResponse("""
+            <!DOCTYPE html>
+
+            <html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+
+    <link rel="stylesheet" href="{% static '/styles.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="{% static 'script.js' %}"></script>
+    <style>
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+    </style>
+</head>
+<body style="background-color:darkslategrey;">
+                                 <div class="modal fade" id="ForgetPass" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                        aria-labelledby="staticBackdropLabel" aria-modal="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Password</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                            window.onload = function () {
+                setTimeout(() => {
+                    alert('Wrong Credentials Please Try again .')
+                    setTimeout(()=>{
+                    window.location = '/Login/loginpage/'},1000)
+                    
+                }, 500);
+            }
+                        </script>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
+</body></html>
+                """)
 
 def SaveCOPOAchieved(request):
     if 'user_id' in request.session:
@@ -452,5 +567,13 @@ def renderremBaf(request):
             except Batch.DoesNotExist:
                 messages.success(request, 'Batch Doesnt Exist ')
                 return redirect("HomePage")
+
+def ConsolidatedCorelations(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            inst = Corelationdata.objects.all()
+            subinst = SubjectDB.objects.all()
+            param = {'data':zip(inst,subinst)}
+            return render(request,'Admin/ViewSheets Together.html',param)
 
 

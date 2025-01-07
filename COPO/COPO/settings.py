@@ -113,8 +113,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Asia/Kolkata'  # Replace with your timezone
+USE_TZ = True  # Ensure this is True for timezone-aware datetimes
 USE_I18N = True
 
 USE_TZ = True

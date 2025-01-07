@@ -40,37 +40,34 @@
 
         }
 
-
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-radius: 10px;
+            background-color: rgba(241, 151, 91, 0.486);
+            margin: 1px;
+            padding: 2px;
+            border-radius: 10px;
+        }
 
 
         th {
-            border: 2px solid black;
-            margin: 2px;
+            background-color: rgba(241, 151, 91, 0.486);
+            margin: 1px;
             padding: 2px;
-
+            border-radius: 10px;
         }
 
         td {
-            border: 0.5px solid black;
-            margin: 2px;
+            border: none rgba(95, 72, 57, 0.486);
+            margin: 1px;
             padding: 2px;
             text-align: center;
-            height: 31px;
-            /* Prevent text selection */
-        }
-
-        td.selected {
-            background-color: #a0d6b4;
-        }
-
-        td.filled {
-            background-color: #ffd966;
-        }
-
-        table {
-            border-collapse: collapse;
+            border-radius: 10px;
 
         }
+
 
         input[type=number]::-webkit-outer-spin-button,
         input[type=number]::-webkit-inner-spin-button {
@@ -153,10 +150,10 @@
 
             <div class="Internal-External-Weighted-AVG ">
                 <!--Error while using style visiblity hidden!-->
-                <table class="">
+                <table id="INT-EXT">
                     <thead>
                         <tr>
-                            <td style="background-color:rgb(246, 239, 229)"></td>
+                            <td style="background-color:rgb(246, 239, 229)">4</td>
                             <td style="background-color:rgb(246, 239, 229)">Int Wt Avg </td>
                             <td style="background-color:rgb(246, 239, 229)">Ext Wt Ag </td>
                         </tr>
@@ -445,9 +442,23 @@
             <p>Click to save Correlation Matrix,
                 COPO and Ethreshold acheived &
                 CourseExit Tables </p>
-            <button class="Button" id="savenprint" style="width: 150px;">
-                Save And Print
+            <button class="Button" id="savenprint" style="width: 200px;">
+                Export To Xcell And Print
             </button>
+            <script>
+                document.getElementById('savenprint').addEventListener('click', function () {
+                    const sub = document.getElementById('subject_collapse').innerHTML.trim()
+                    const tea = document.getElementById('teacher_collapse').innerHTML.trim()
+                    // const br = 
+                    // const ba = 
+                    const time = document.getElementById('stime').innerHTML.trim()
+
+                    setTimeout(() => {
+                        alert('Data Saved Successfully, Redirecting to FreshPage');
+                        location.reload(true);
+                    }, 1000)
+                });
+            </script>
 
         </div>
         <br>
@@ -527,7 +538,7 @@
                 <table id="formTableCopoRelation">
                     <thead>
                         <tr>
-                            <td style = "width: 30px"></td>`
+                            <td style = "width: 30px">2</td>`
             for (let x = 0; x < pos; x++) {
                 innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >Po${x + 1}</td>`
 
@@ -558,7 +569,7 @@
             <button type = "button" class = "Button" onclick=  " update() ">Update</button>
 
             <br><br>
-            <table>
+            <table id="Table3xl">
                  <tbody>`
 
             innerhtml += `<tr> <td style = "width: 200px;background-color:#50bd2e"  >Target Set</td>`;
@@ -583,10 +594,10 @@
                 </tbody></table>  <br><br>`;
 
             document.getElementById('copotable-div').innerHTML = innerhtml;
-            let table = ` <form ><table>
+            let table = ` <form ><table id="Table1xl">
             <thead>
                 <tr>
-                    <td style="width: 50px;"></td>
+                    <td style="width: 50px;">1 </td>
                     <td>Course Outcomes</td>
                 </tr>
             </thead>
@@ -611,7 +622,7 @@
                 <table id="formTableCopoAchieved">
                     <thead>
                         <tr>
-                            <td style = "width: 30px"></td>`
+                            <td style = "width: 30px">9</td>`
             for (let x = 0; x < pos; x++) {
                 innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >Po${x + 1}</td>`
 
@@ -671,7 +682,7 @@
 <table id="formEThresholdCopoAchieved">
     <thead>
         <tr>
-            <td style = "width: 30px"></td>`
+            <td style = "width: 30px">10</td>`
             for (let x = 0; x < pos; x++) {
                 innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >Po${x + 1}</td>`
 
@@ -814,7 +825,7 @@
 <table id="formTableCourseExitCopoAchieved">
     <thead>
         <tr>
-            <td style = "width: 30px"></td>`
+            <td style = "width: 30px">12</td>`
             for (let x = 0; x < pos; x++) {
                 innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >Po${x + 1}</td>`
 
@@ -870,10 +881,10 @@
 
             let innerhtml = `
 <form> <caption>External Thershold based / scaled average </caption>
-<table id="formEThresholdCopoAchieved">
+<table id="formCEThresholdCopoAchieved">
 <thead>
 <tr>
-<td style = "width: 30px"></td>`
+<td style = "width: 30px">13</td>`
             for (let x = 0; x < pos; x++) {
                 innerhtml += `<td style = "width: 30px;background-color:#ffd966"  >Po${x + 1}</td>`
 
@@ -1202,11 +1213,6 @@
 
             //Table 4 finished
 
-
-            console.log(CoAchieved1Dict)
-            console.log(CoAchieved2Dict)
-            console.log(CoAchieved3Dict)
-            console.log(CoAchieved4Dict)
             $.ajax({
                 url: '/Admin/Home/SaveCOPOAcheived/', // Backend endpoint
                 type: 'POST',
@@ -1219,17 +1225,7 @@
                     teacher: tea,
                     sub: sub,
                     csrfmiddlewaretoken: '{{ csrf_token }}'
-                }, success: function (data) {
-                    setTimeout(() => {
-                        alert('Data Saved Successfully, Redirecting to FreshPage');
-                        location.reload(true);
-                    }, 1000)
-
-
-
-                }
-
-
+                },
             })
         }
 
@@ -1252,7 +1248,7 @@
         });
     </script>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js">
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -5,7 +5,6 @@
 <head>
     <script src="https://getbootstrap.com/docs/5.3/assets/js/color-modes.js"></script>
     <meta charset="UTF-8">
-    <title>Teachers</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
     <title> Welcome to COPO website</title>
 
@@ -181,25 +180,23 @@
         </div>
         <div class="navbar navbar-dark bg-dark shadow-sm">
             <div class="container">
-                <a href="#" class="navbar-brand d-flex align-items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
-                        stroke-linecap="round" stroke-linejoin="round" stroke-width="2" aria-hidden="true" class="me-2"
-                        viewBox="0 0 24 24"> </svg>
-                    <strong>{{yourself}}<div> {% if messages %}
-                            <ul class="message-list">
-                                {% for message in messages %}
-                                <li class="alert alert-{{ message.tags }} alert-dismissible fade show"
-                                    style="background-color: rgba(189, 239, 143, 0.055);color: rgba(217, 240, 176, 0.719);"
-                                    role="alert">
-                                    {{ message }}
-                                    <button type="button" class="  btn-close" data-bs-dismiss="alert"
-                                        aria-label="Close"></button>
-                                </li>
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                        </div></strong>
-                </a>
+                <strong>SIES GST </strong>
+
+                <strong>{{yourself}}<div> {% if messages %}
+                        <ul class="message-list">
+                            {% for message in messages %}
+                            <li class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                                style="background-color: rgba(189, 239, 143, 0.055);color: rgba(217, 240, 176, 0.719);"
+                                role="alert">
+                                {{ message }}
+                                <button type="button" class="  btn-close" data-bs-dismiss="alert"
+                                    aria-label="Close"></button>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div></strong>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
                     aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -215,7 +212,7 @@
                     <h1 class="fw-light">All The Info Together</h1>
                     <p class="lead text-body-secondary"> View, manage and track all the sheets Teacher wise</p>
                     <p>
-                        <a href="/Login/loginpage/" class="btn btn-primary my-2">Login</a>
+                        <a href="/Login/login/" class="btn btn-primary my-2">Login</a>
                         <!-- <a href="/Admin/Home/adduserform/" class="btn btn-secondary my-2">Register</a> -->
                     </p>
                 </div>

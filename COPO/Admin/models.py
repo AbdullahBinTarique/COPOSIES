@@ -52,7 +52,7 @@ class COPOAcheiveddata(models.Model):
     copoAch = models.JSONField(null=True)
     copoAchExt = models.JSONField(null=True)
     uploaded_by = models.ForeignKey('AdminUSERS',to_field='slug',on_delete=models.CASCADE,null=True)
-
+    uploade_date = models.DateTimeField(auto_now_add=True)
     CourseCopoAch = models.JSONField(null=True)
     CourseCopoAchExt = models.JSONField(null=True)
 

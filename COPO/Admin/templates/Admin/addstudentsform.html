@@ -222,7 +222,7 @@
             $.get('/Admin/Home/viewBranchBatchEndpt/', function (data) {
 
                 data.branch.forEach(br => {
-                    $('#Branch').append(`<option value="${br.branch} required">${br.branch}</option>`)
+                    $('#Branch').append(`<option value="${br.branch}" required>${br.branch}</option>`)
                 }
                 )
                 data.batch.forEach(ba => {
@@ -280,11 +280,11 @@
             const eleP = document.getElementsByName('Prn')
 
             eleN.forEach(element => {
-                if (element.value != '' || element.value != 'undefined' || element.value != null)
+                if (element.value.trim() != '')
                     name.push(element.value);
             })
             eleP.forEach(element => {
-                if (element.value != '' || element.value != 'undefined' || element.value != null)
+                if (element.value.trim() != '')
                     prn.push(element.value)
             })
             const bforbranch = document.getElementById('Branch').value
@@ -297,16 +297,17 @@
 
             const finaldict = JSON.stringify(dict)
             console.log(finaldict);
-            $.post('/Admin/Home/addstudentBW/', {
-                data: finaldict,
-                csrfmiddlewaretoken: '{{ csrf_token }}'
-            },
-                setTimeout(() => {
-                    alert('Data Added Successfully')
-                    window.location.href = '/Admin/Home/addstudent/';
+            // $.post('/Admin/Home/addstudentBW/', {
+            //     data: finaldict,
+            //     csrfmiddlewaretoken: '{{ csrf_token }}'
+            // }, function (data) {
+            //     setTimeout(() => {
+            //         alert(data.message)
+            //         window.location.href = '/Admin/Home/addstudent/';
 
-                }, 1000)
-            )
+            //     }, 1000)
+            // }
+            // )
 
 
 

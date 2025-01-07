@@ -14,7 +14,9 @@
                 <div class="accordion-body">
                     <form action="/Login/logout/">
                         <button type="submit" class="Button"> Logout </button>
+
                     </form>
+                    <a href='/'> <button class="btn btn-sm btn-secondary">Main Page</button></a>
                 </div>
             </div>
         </div>
@@ -26,7 +28,20 @@
                     data-bs-toggle="collapse" data-bs-target="#Subject_content" aria-expanded="true"
                     aria-controls="flush-collapseOne">
                     {{subject}}
-                </button>
+                </button>&nbsp&nbsp&nbsp
+                <button class="btn btn-outline-secondary button " id="stime"> </button>
+                <script>
+                    setInterval(() => {
+                        const now = new Date();
+                        const hours = now.getHours();
+                        const minutes = now.getMinutes().toString().padStart(2, '0');
+                        const seconds = now.getSeconds().toString().padStart(2, '0');
+                        document.getElementById('stime').innerHTML = `Time: ${now.toLocaleTimeString()}`
+                    }, 1000);
+
+
+
+                </script>
             </h2>
             <div id="Subject_content" class="accordion-collapse collapse show" data-bs-parent="#Subject_name">
                 <div class="accordion-body">
@@ -36,6 +51,7 @@
                         <select name="branch" id="branch">
                             <option value="default" required>Select Branch</option>
                             {% for b in branch %}
+
                             <option value="{{b}}">{{b}}</option>
                             {% endfor %}
                         </select>
@@ -49,7 +65,6 @@
                             {% endfor %}
                         </select>
                         <button type="submit" class="Button"> Generate </button>
-
 
                     </form>
                 </div>

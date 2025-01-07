@@ -17,7 +17,7 @@
     </style>
 </head>
 
-<body>
+<body style="background-color: darkslategrey;">
 
     <div class="login-container">
         {% if messages %}
@@ -44,37 +44,57 @@
                     <span class="toggle-password" onclick="togglePasswordVisibility()">👁️</span>
                 </div>
 
-                <button type="submit">Login</button>
+                <button type="submit" class="btn btn-primary  ">Login</button>
 
                 <div class="links">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ForgetPass">
+                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#ForgetPass">
                         Forget Password
                     </button>
 
                 </div>
             </form>
+            <br>
+            <button type="button" class="btn btn-outline-secondary btn-sm" onclick="window.location='/'">
+                Home
+            </button>
         </div>
 
     </div>
     <!-- Button trigger modal -->
 
 
-    <!-- Modal -->
+
+
+
     <div class="modal fade" id="ForgetPass" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        aria-labelledby="staticBackdropLabel" aria-hidden="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Understood</button>
-                </div>
+                <form action="/Admin/Home/resetPass/" method="post">{% csrf_token %}
+                    <div class="modal-header">
+
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Retrieve Password</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+
+                            <input type="email" class="form-control" id="Email" name="Email"
+                                placeholder="Enter Email:- name@example.com">
+                        </div>
+                        <div class="mb-3">
+
+                            <input type="text" class="form-control" id="fname" name="fname"
+                                placeholder="Enter First Name: (case sensitive) John">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

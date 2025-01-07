@@ -17,7 +17,10 @@
                     </form>
                     <form action="/Admin/Home/">
                         <button type="submit" class="Button">Switch</button>
+
                     </form>
+                    <br>
+                    <a href='/'> <button class="btn btn-sm btn-secondary">Main Page</button></a>
                 </div>
             </div>
         </div>
@@ -29,14 +32,28 @@
                     style="border-radius: 40px;width: 600px;" data-bs-toggle="collapse"
                     data-bs-target="#Subject_content" aria-expanded="True" aria-controls="flush-collapseOne">
                     {{subject}}
-                </button>
+                </button>&nbsp&nbsp&nbsp
+                <button class="btn btn-outline-secondary button " id="stime"> </button>
+                <script>
+                    setInterval(() => {
+                        const now = new Date();
+                        const hours = now.getHours();
+                        const minutes = now.getMinutes().toString().padStart(2, '0');
+                        const seconds = now.getSeconds().toString().padStart(2, '0');
+                        document.getElementById('stime').innerHTML = `Time: ${now.toLocaleTimeString()}`
+                    }, 1000);
+
+
+
+                </script>
             </h2>
             <div id="Subject_content" class="accordion-collapse collapse show" data-bs-parent="#Subject_name">
                 <div class="accordion-body" style="display: flex;">
 
                     <form action='/Teachers/fetchadmin/' method="post">{% csrf_token %}
 
-                        <select name="branch" id="branch">
+                        <select name="branch" id="branch" class="form-select form-select-sm"
+                            aria-label="Small select example">
                             <option value="default">Select Branch</option>
                             {% for b in branch %}
                             <option value="{{b}}">{{b}}</option>
@@ -44,14 +61,15 @@
                         </select>
 
 
-
-                        <select name="batch" id="batch">
+                        <select name="batch" id="batch" class="form-select form-select-sm"
+                            aria-label="Small select example">
                             <option value="default">Select Batch</option>
                             {% for b in batch %}
                             <option value="{{b}}">{{b}}</option>
                             {% endfor %}
                         </select>
                         <button type="submit" class="Button" style="margin-right: 10px;"> Generate </button>
+
                     </form>
 
                 </div>

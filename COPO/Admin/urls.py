@@ -18,7 +18,7 @@ urlpatterns = [
     path('Home/addstudent/addstudentfunction/', views.addstudentfunc, name="AddStudentfunc"),
 
     path('Home/removestudent/',views.removestudent,name="RemoveStudent"),
-    path('Home/SaveCOmatrix/', views.saveCOMatrix, name="SaveCoMatrix"),
+    path('Home/SaveCOmatrix/', views.saveCOrelMatrix, name="SaveCorelMatrix"),
 
     path('Home/Student/fetch/', views.fetchstudent, name="FetchStudent"),
 
@@ -35,6 +35,7 @@ urlpatterns = [
 
     path('Home/UpdateCO/', views.UpdateCOS, name="EndpointCOS"),
     path('Home/SaveCOS/', views.saveCOs, name="SaveCO"),
+    path('Home/resetPass/', views.ResetPass, name="ResetPass"),
 
     path('Home/viewBranchBatchEndpt/',views.returnBranchBatch,name="BranchBatchEndPt"),
 
@@ -51,7 +52,7 @@ path('Home/RenderConfBB/addBranchfunc', views.renderaddBrf, name="AddBrf"),
     path('Home/RenderConfBB/addBatchfunc', views.renderaddBaf, name="AddBaf"),
     path('Home/RenderConfBB/remBatchfunc', views.renderremBaf, name="RemBaf"),
 
-    # path('ConsolidatedCoAttainment/',views.ccoattainment,name="HomePage"),
+    path('Home/ViewConsolidateCorelations',views.ConsolidatedCorelations,name="CCorelations"),
 
     # path('ConsolidatedCourseOutcome/',views.ccourseoutcome,name="HomePage"),
 
