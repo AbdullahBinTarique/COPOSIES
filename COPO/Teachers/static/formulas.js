@@ -37,7 +37,6 @@ class formula {
         for (let x = 0; x < noofquestions; x++) {
             attainment[x] = countarr[x] * 100 / answered[x];
         }
-        console.log(attainment);
     }
     // fourth function excell csc 304 row 174
     static lvlattainment(lvl1, lvl2, lvl3) {
@@ -79,7 +78,6 @@ class calc {
         }
         for (let x = 1; x <= noofquestions; x++)
             finalarr.push(formula.thresholdpercinmarks(thresh, arr[x - 1]));
-        //   console.log(finalarr);
     }
 
     //second function excell csc 304 row 172
@@ -103,7 +101,6 @@ class calc {
             unanswered[y - 1] = fields.length - arr.length   //excell csc 304 row 175
             arr = [];
         }
-        console.log(arr);
     }
     //5th function excell csc 304 I 185
     static weighted_avg_of_internal(noofquestions, COia) {
@@ -560,7 +557,7 @@ class mainFunctions {
         CourseExit.calcCECAchieved();
         CourseExit.CECExternal();
         document.getElementById('CalCE').style.visibility = "hidden";
-        getAllFinalValues()
+
 
     }
 

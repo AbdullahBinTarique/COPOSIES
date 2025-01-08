@@ -21,7 +21,7 @@ Consolidated Corelations
                     d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z"
                     stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round"
                     stroke-linejoin="round"></path>
-            </svg><input type="text" id="searchBox" placeholder="Search..." onkeyup="searchPage()"></span><span
+            </svg><input type="text" id="searchBox" placeholder="Search..." onkeyup="searchPageSem()"></span><span
             class="DocSearch-Button-Keys"></span></button>
 
 </div>
@@ -50,18 +50,18 @@ Consolidated Corelations
                         </tr>
                     </thead>
                     <tbody id="Tbodys" class="table-group-divider">
-                        {% for key,value in x.data.items %}
+                        {% for key,z in x.data.items %}
                         <tr>
                             <th style="width: 50px;">
                                 {{key}}
                             </th>
-                            {% for z in value %}
-                            <td style="width: 50px;" contenteditable="true">
+
+                            <td style="width: 50px;">
                                 {{z}}
                             </td>
 
 
-                            {% endfor %}
+
 
                         </tr>
                         {% endfor %}
@@ -75,12 +75,10 @@ Consolidated Corelations
             cos = '{{subj.NOCO}}'
             pos = '{{subj.NOPO}}'
             psos = '{{subj.NOPSO}}'
-            header = `<th scope="col">COS</th>`
-            for (let a = 0; a < parseInt(pos) + parseInt(psos); a++)
-                if (a < pos)
-                    header += `<th scope="col">Pos${(a + 1)}</th>`
-                else
-                    header += `<th scope="col">Psos${(a + 1 - pos)}</th>`
+            header = `<th scope="col">COS</th>
+            <th scope="col">Names</th>
+            `
+
             document.getElementById('Theads{{x.subject}}').innerHTML = header
 
         </script>
@@ -90,9 +88,7 @@ Consolidated Corelations
             <p class="card-text">
             <h3 id='subjh3' class="searchable">{{x.subject}}</h3>
             <h6 class="searchable">Sem :{{subj.sem}}</h6>
-            <h6>Number of Co = {{subj.NOCO}}</h6>
-            <h6>Number of Po = {{subj.NOPO}}</h6>
-            <h6>Number of Po = {{subj.NOPSO}}</h6>
+
             </p>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
@@ -113,10 +109,11 @@ Consolidated Corelations
 {% endblock %}
 {% block script %}
 <script>
-    function searchPage() {
+
+    function searchPageSem() {
         const input = document.getElementById('searchBox').value.toLowerCase();
         const elements = document.querySelectorAll('.searchable');
-        console.log(elements)
+
 
         elements.forEach(element => {
             if (element.textContent.toLowerCase().includes(input)) {
@@ -159,20 +156,11 @@ Consolidated Corelations
             // Add the enlarged class to the clicked card
             card.classList.add('enlarged');
             card.querySelector('.Expandable').style.height = '300px'
-
-            const element = card.querySelector('#saveCOCorelation')
             // Add an overlay for better focus
             const overlay = document.createElement('div');
             overlay.classList.add('overlay');
             document.body.appendChild(overlay);
-            if (!element) {
-                const submitb = document.createElement('button')
-                submitb.id = "saveCOCorelation";
-                // submitb.classList.add('btn-outline-secondary button')
 
-                submitb.innerHTML = 'Save'
-                card.querySelector('.Expandable').appendChild(submitb)
-            }
 
 
             // Add click listener to overlay to close the enlarged card
@@ -180,47 +168,11 @@ Consolidated Corelations
                 card.classList.remove('enlarged');
                 overlay.remove();
                 card.querySelector('.Expandable').style.height = '230px'
-                submitb.remove()
+
             });
         });
     });
 
-    document.addEventListener('click', function (event) {
-        if (event.target.id === 'saveCOCorelation') {
-            const card = event.target.closest('.card');
-            const table = card.querySelector('table');
-            const data = {};
-            let a = 0;
-            table.querySelectorAll('tbody tr').forEach((row) => {
-                let arr = []
 
-
-                const cells = row.querySelectorAll('td');
-                for (let a = 0; a < cells.length; a++) {
-                    arr.push(cells[a].innerText.trim())
-                }
-                data[`Co` + (a + 1)] = arr
-                a++;
-            });
-            const datam = JSON.stringify(data)
-            const sub = card.querySelector('#subjh3').innerText
-            $.ajax({
-                url: '/Admin/Home/SaveCOmatrix/',
-                type: 'POST',
-                data: {
-                    sub: sub,
-                    matrix: datam,
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    setTimeout(() => {
-                        alert(data.message)
-                    }, 1000)
-                }
-
-            })
-
-        }
-    })
 </script>
 {% endblock %}

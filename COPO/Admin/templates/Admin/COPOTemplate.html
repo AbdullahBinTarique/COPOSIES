@@ -1,14 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" data-bs-theme="auto">
-{% load static %}
+{% load tz %}
 
 <head>
     <script src="https://getbootstrap.com/docs/5.3/assets/js/color-modes.js"></script>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}
+
+        {% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <title> Welcome to COPO website</title>
-
-
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -86,7 +88,49 @@
         .bd-mode-toggle .dropdown-menu .active .bi {
             display: block !important;
         }
+
+        .enlarged {
+            position: fixed;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+
+            z-index: 1050;
+            /* Ensure it's above other elements */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            transform: scale(1.2);
+            /* Slight zoom effect */
+            background-color: rgb(41, 40, 40);
+            /* Optional: Ensure consistent background */
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1049;
+            /* Just below the enlarged card */
+        }
+
+        .enlarged table,
+        .enlarged .card-body {
+            transform: none;
+            /* Ensure child elements retain their original size */
+            width: auto;
+            height: auto;
+        }
+
+        .card table {
+            width: auto;
+            height: auto;
+        }
     </style>
+
+
 </head>
 
 <body>
@@ -157,19 +201,28 @@
             </li>
         </ul>
     </div>
+
+
     <header data-bs-theme="dark">
         <div class="collapse text-bg-dark" id="navbarHeader">
             <div class="container">
                 <div class="row">
                     <div class="col-sm-8 col-md-7 py-4">
                         <h4>About</h4>
-                        <p class="text-body-secondary">View All The Teachers Result Collectively over here. Below from
-                            the cards
-                            select and view results seperately</p>
+                        {% block content1 %}
+
+
+
+                        {% endblock %}
                     </div>
                     <div class="col-sm-4 offset-md-1 py-4">
-                        <h4>Contact</h4>
+                        <h4>Nav</h4>
                         <ul class="list-unstyled">
+                            <!-- <li><a href="#" class="text-white">Follow on Twitter</a></li>
+                            <li><a href="#" class="text-white">Like on Facebook</a></li> -->
+                            <li><a href="/Admin/Home/" class="text-white">Home</a></li>
+                            <li><a href="/Admin/Home/RenderUpdateCO/" class="text-white">Configure COS</a></li>
+                            <li><a href="/Admin/Home/ConfSubjects/" class="text-white">Configure Subjects</a></li>
                             <li><a href="/Admin/Home/ViewCONAMES/" class="text-white">Consolidated COS Informations</a>
                             </li>
                             <li><a href="/Admin/Home/ViewCOPOAchieved/" class="text-white">Consolidated Direct
@@ -181,6 +234,8 @@
 
                             <li><a href="/Admin/Home/ViewCourseExitThresholdBasedCOPOAchieved/"
                                     class="text-white">CourseExit Threshold Based Matrices</a></li>
+
+
                         </ul>
                     </div>
                 </div>
@@ -188,22 +243,9 @@
         </div>
         <div class="navbar navbar-dark bg-dark shadow-sm">
             <div class="container">
-                <strong>SIES GST </strong>
 
-                <strong>{{yourself}}<div> {% if messages %}
-                        <ul class="message-list">
-                            {% for message in messages %}
-                            <li class="alert alert-{{ message.tags }} alert-dismissible fade show"
-                                style="background-color: rgba(189, 239, 143, 0.055);color: rgba(217, 240, 176, 0.719);"
-                                role="alert">
-                                {{ message }}
-                                <button type="button" class="  btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                    </div></strong>
+
+                <strong>SIES GST </strong>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader"
                     aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
@@ -212,17 +254,18 @@
             </div>
         </div>
     </header>
+
     <main>
 
         <section class="py-5 text-center container">
             <div class="row py-lg-5">
                 <div class="col-lg-6 col-md-8 mx-auto">
-                    <h1 class="fw-light">All The Info Together</h1>
-                    <p class="lead text-body-secondary"> View, manage and track all the sheets Teacher wise</p>
-                    <p>
-                        <a href="/Login/login/" class="btn btn-primary my-2">Login</a>
-                        <!-- <a href="/Admin/Home/adduserform/" class="btn btn-secondary my-2">Register</a> -->
-                    </p>
+                    {% block content2 %}
+
+
+
+
+                    {% endblock %}
                 </div>
             </div>
         </section>
@@ -230,101 +273,36 @@
         <div class="album py-5 bg-body-tertiary">
             <div class="container">
 
+
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#55595c" />
-                                <image x="0" y="0" width="100%" height="100%"
-                                    href="https://blog.tubikstudio.com/wp-content/uploads/2018/12/explore_universe_website_animation_tubik.gif"
-                                    alt="Example Img" preserveAspectRatio="xMidYMid slice" />
-
-                            </svg>
-                            <div class="card-body">
-                                <p class="card-text">User Manual : Explore the website Here</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                        <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
-                                    </div>
-                                    <!-- <small class="text-body-secondary">9 mins</small> -->
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
 
-                    <!--  -->
-
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                                preserveAspectRatio="xMidYMid slice" focusable="false">
-                                <title>Placeholder</title>
-                                <rect width="100%" height="100%" fill="#55595c" />
-                                <image x="0" y="0" width="100%" height="100%" href="{% static 'Pics/Graphimg.jpg' %}"
-                                    alt="Example Img" preserveAspectRatio="xMidYMid slice" />
-
-                            </svg>
-                            <div class="card-body">
-                                <p class="card-text">View Collectively as Graphs</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                        <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
-                                    </div>
-                                    <!-- <small class="text-body-secondary">9 mins</small> -->
-
-                                </div>
-
-                            </div>
-
-                        </div>
+                    {% block content3 %}
+                    <!-- Comes the for loop -->
+                    <!-- endloop -->
+                    {% endblock %}
 
 
-                        <!--  -->
-                    </div>
                 </div>
             </div>
-
         </div>
 
-
     </main>
+
     <footer class="text-body-secondary py-5">
         <div class="container">
             <p class="float-end mb-1">
                 <a href="#">Back to top</a>
             </p>
-            <!-- <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-    <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="/docs/5.3/getting-started/introduction/">getting started guide</a>.</p> -->
+
         </div>
     </footer>
-
-
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
+    {% block script %}
+    {% endblock %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
-        // Auto fade out alerts after 3 seconds
-        document.addEventListener('DOMContentLoaded', function () {
-            setTimeout(function () {
-                let alerts = document.querySelectorAll('.alert');
-                alerts.forEach(function (alert) {
-                    alert.classList.add('fade-out');
-                    setTimeout(function () {
-                        alert.style.display = 'none';
-                    }, 500); // Match the duration of the fade-out transition
-                });
-            }, 3000); // Time in milliseconds before fading out (3 seconds)
-        });
-    </script>
+
 
 </body>
 

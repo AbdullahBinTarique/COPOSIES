@@ -1,29 +1,53 @@
 {% extends "Admin/COPOTemplate.html" %}
 {% block title %}
-Consolidated Corelations
+Course Exit Threshold Based COPO ACHIEVED
 {% endblock %}
 {% block content1 %}
-<p class="text-body-secondary"> The Corelation sheet data is saved at the time of updation of
-    data during the calculation of Course Outcome and Programme Outcome Mapping.Here You can
-    edit and update the Sheets,click on view to enlarge the table and change the values and save
-    to overwrite the data</p>
+<p class="text-body-secondary"> The Corelation sheet data is saved at the time of submission of
+    data during the calculation of Course Outcome and Programme Outcome Mapping.</p>
 {% endblock %}
 
 {% block content2 %}
-<h1 class="fw-light">Subjects Corelation Sheets</h1>
+<h1 class="fw-light">Course Exit Threshold Based COPO ACHIEVED
+</h1>
 <p class="lead text-body-secondary">For Each of the Subjects , below are the Sheets representing the
     data</p>
 <p>
-<div class="bd-search" id="docsearch" data-bd-docs-version="5.3"><button type="button" aria-label="Search (Ctrl+K)"
+<div class="  d-flex" style="justify-content: center;" id="docsearch"><button type="button" aria-label="Search (Ctrl+K)"
         class="DocSearch DocSearch-Button"><span class="DocSearch-Button-Container"><svg width="20" height="20"
                 viewBox="0 0 20 20" aria-hidden="true" class="DocSearch-Search-Icon">
                 <path
                     d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z"
                     stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round"
                     stroke-linejoin="round"></path>
-            </svg><input type="text" id="searchBox" placeholder="Search..." onkeyup="searchPage()"></span><span
-            class="DocSearch-Button-Keys"></span></button>
+            </svg><input type="text" id="searchBoxBr" placeholder="Filter Branch..."
+                onkeyup="searchPageBranch()"></span><span class="DocSearch-Button-Keys"> </span></button>
 
+    <br>
+
+    <button type="button" aria-label="Search (Ctrl+K)" class="DocSearch DocSearch-Button"><span
+            class="DocSearch-Button-Container"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"
+                class="DocSearch-Search-Icon">
+                <path
+                    d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z"
+                    stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+            </svg><input type="text" id="searchBoxBa" placeholder="Filter Batch..."
+                onkeyup="searchPageBatch()"></span><span class="DocSearch-Button-Keys"></span></button>
+
+    <br>
+
+    <button type="button" aria-label="Search (Ctrl+K)" class="DocSearch DocSearch-Button"><span
+            class="DocSearch-Button-Container"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"
+                class="DocSearch-Search-Icon">
+                <path
+                    d="M14.386 14.386l4.0877 4.0877-4.0877-4.0877c-2.9418 2.9419-7.7115 2.9419-10.6533 0-2.9419-2.9418-2.9419-7.7115 0-10.6533 2.9418-2.9419 7.7115-2.9419 10.6533 0 2.9419 2.9418 2.9419 7.7115 0 10.6533z"
+                    stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+            </svg><input type="text" id="searchBox" placeholder="Filter by Sem, Date/Time.."
+                onkeyup="searchPageSem()"></span><span class="DocSearch-Button-Keys"></span></button>
+
+    <button type="button" aria-label="Search (Ctrl+K)" class="DocSearch DocSearch-Button" id="Filter">Filter</button>
 </div>
 </p>
 {% endblock %}
@@ -38,7 +62,7 @@ Consolidated Corelations
 </script>
 {% for x,subj in data %}
 <div class="col-lg-6">
-    <div class="card shadow-sm forbuttons">
+    <div class="card shadow-sm forbuttons" data-brn="{{x.branch}}" data-sem="{{subj.sem}}" data-batch="{{x.batch}}">
         <div style="width:100%; height:230px;overflow-y: scroll;padding-left: 10px;padding-top: 10px;"
             class="Expandable">
             <div style="width: 1000px; height: 250px;">
@@ -50,13 +74,13 @@ Consolidated Corelations
                         </tr>
                     </thead>
                     <tbody id="Tbodys" class="table-group-divider">
-                        {% for key,value in x.data.items %}
+                        {% for key,value in x.CourseCopoAchExt.items %}
                         <tr>
                             <th style="width: 50px;">
                                 {{key}}
                             </th>
                             {% for z in value %}
-                            <td style="width: 50px;" contenteditable="true">
+                            <td style="width: 50px;">
                                 {{z}}
                             </td>
 
@@ -88,8 +112,10 @@ Consolidated Corelations
 
         <div class="card-body">
             <p class="card-text">
-            <h3 id='subjh3' class="searchable">{{x.subject}}</h3>
-            <h6 class="searchable">Sem :{{subj.sem}}</h6>
+            <h3 id='subjh3' class="searchable">{{x.subject}}-{{x.uploaded_by}}</h3>
+            <h6 class="searchable"> Sem :{{subj.sem}}</h6>
+            <h6 class="searchableBa">Batch :{{x.batch}}</h6>
+            <h6 class="searchableBr">Branch :{{x.branch}} </h6>
             <h6>Number of Co = {{subj.NOCO}}</h6>
             <h6>Number of Po = {{subj.NOPO}}</h6>
             <h6>Number of Po = {{subj.NOPSO}}</h6>
@@ -100,10 +126,9 @@ Consolidated Corelations
                         id="{{x.subject}}-view">View</button>
 
                 </div>
-                <!--
-                                    <small class="text-body-secondary">Uploaded at {{x.uploade_time|date:"D M d, Y
-                                        H:i:s"}}</small>
-                                    <small class="text-body-secondary"> {{ event.start_time|timesince }} ago</small> -->
+
+                <small class="text-body-secondary" class="searchable">Uploaded at {{ x.uploade_date}}</small>
+                <small class="text-body-secondary" class="searchable"> {{ x.uploade_date|timesince }} ago</small>
             </div>
         </div>
     </div>
@@ -113,10 +138,36 @@ Consolidated Corelations
 {% endblock %}
 {% block script %}
 <script>
-    function searchPage() {
+    function searchPageBranch() {
+        const input = document.getElementById('searchBoxBr').value.toLowerCase();
+        const elements = document.querySelectorAll('.searchableBr');
+
+
+        elements.forEach(element => {
+            if (element.textContent.toLowerCase().includes(input)) {
+                element.closest('.card').style.display = 'block'; // Show matching elements
+            } else {
+                element.closest('.card').style.display = 'none'; // Hide non-matching elements
+            }
+        });
+    }
+    function searchPageBatch() {
+        const input = document.getElementById('searchBoxBa').value.toLowerCase();
+        const elements = document.querySelectorAll('.searchableBa');
+
+
+        elements.forEach(element => {
+            if (element.textContent.toLowerCase().includes(input)) {
+                element.closest('.card').style.display = 'block'; // Show matching elements
+            } else {
+                element.closest('.card').style.display = 'none'; // Hide non-matching elements
+            }
+        });
+    }
+    function searchPageSem() {
         const input = document.getElementById('searchBox').value.toLowerCase();
         const elements = document.querySelectorAll('.searchable');
-        console.log(elements)
+
 
         elements.forEach(element => {
             if (element.textContent.toLowerCase().includes(input)) {
@@ -142,6 +193,41 @@ Consolidated Corelations
         }
     });
 
+    document.addEventListener('click', function (event) {
+        if (event.target.id === 'Filter') {
+            console.log('HI')
+
+            const br = document.getElementById("searchBoxBr");
+            const ba = document.getElementById("searchBoxBa");
+            const va = document.getElementById("searchBox");
+            const cards = document.querySelectorAll(".card");
+            function applyFilters() {
+                const brval = br.value
+                const baval = ba.value
+                const vaval = va.value
+                cards.forEach(card => {
+                    const cardbr = card.dataset.brn
+                    const cardba = card.dataset.batch
+                    const cardva = card.dataset.sem
+
+                    const matchesbr = cardbr === brval
+                    const matchesba = cardba === baval
+                    const matchesva = cardva === vaval
+
+                    if (matchesbr && matchesba && matchesva) {
+                        card.style.display = "block"
+                    }
+                    else {
+                        card.style.display = "none"
+                    }
+
+                })
+            }
+            applyFilters()
+
+        }
+    })
+
 
     // Add event listener to each button
     buttons.forEach((button) => {
@@ -159,20 +245,11 @@ Consolidated Corelations
             // Add the enlarged class to the clicked card
             card.classList.add('enlarged');
             card.querySelector('.Expandable').style.height = '300px'
-
-            const element = card.querySelector('#saveCOCorelation')
             // Add an overlay for better focus
             const overlay = document.createElement('div');
             overlay.classList.add('overlay');
             document.body.appendChild(overlay);
-            if (!element) {
-                const submitb = document.createElement('button')
-                submitb.id = "saveCOCorelation";
-                // submitb.classList.add('btn-outline-secondary button')
 
-                submitb.innerHTML = 'Save'
-                card.querySelector('.Expandable').appendChild(submitb)
-            }
 
 
             // Add click listener to overlay to close the enlarged card
@@ -180,47 +257,11 @@ Consolidated Corelations
                 card.classList.remove('enlarged');
                 overlay.remove();
                 card.querySelector('.Expandable').style.height = '230px'
-                submitb.remove()
+
             });
         });
     });
 
-    document.addEventListener('click', function (event) {
-        if (event.target.id === 'saveCOCorelation') {
-            const card = event.target.closest('.card');
-            const table = card.querySelector('table');
-            const data = {};
-            let a = 0;
-            table.querySelectorAll('tbody tr').forEach((row) => {
-                let arr = []
 
-
-                const cells = row.querySelectorAll('td');
-                for (let a = 0; a < cells.length; a++) {
-                    arr.push(cells[a].innerText.trim())
-                }
-                data[`Co` + (a + 1)] = arr
-                a++;
-            });
-            const datam = JSON.stringify(data)
-            const sub = card.querySelector('#subjh3').innerText
-            $.ajax({
-                url: '/Admin/Home/SaveCOmatrix/',
-                type: 'POST',
-                data: {
-                    sub: sub,
-                    matrix: datam,
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    setTimeout(() => {
-                        alert(data.message)
-                    }, 1000)
-                }
-
-            })
-
-        }
-    })
 </script>
 {% endblock %}

@@ -41,18 +41,24 @@ urlpatterns = [
 
     path('Home/SaveCOPOAcheived/',views.SaveCOPOAchieved,name="SaveCOAcheived"),
 
-    path('Home/RenderConfBB',views.renderCONFBB,name="ConfBB"),
-    path('Home/RenderConfBB/addBranch', views.renderaddBr, name="AddBr"),
-    path('Home/RenderConfBB/remBranch', views.renderremBr, name="RemBr"),
-    path('Home/RenderConfBB/addBatch', views.renderaddBa, name="AddBa"),
-    path('Home/RenderConfBB/remBatch', views.renderremBa, name="RemBa"),
+    path('Home/RenderConfBB/',views.renderCONFBB,name="ConfBB"),
+    path('Home/RenderConfBB/addBranch/', views.renderaddBr, name="AddBr"),
+    path('Home/RenderConfBB/remBranch/', views.renderremBr, name="RemBr"),
+    path('Home/RenderConfBB/addBatch/', views.renderaddBa, name="AddBa"),
+    path('Home/RenderConfBB/remBatch/', views.renderremBa, name="RemBa"),
 
-path('Home/RenderConfBB/addBranchfunc', views.renderaddBrf, name="AddBrf"),
-    path('Home/RenderConfBB/remBranchfunc', views.renderremBrf, name="RemBrf"),
-    path('Home/RenderConfBB/addBatchfunc', views.renderaddBaf, name="AddBaf"),
-    path('Home/RenderConfBB/remBatchfunc', views.renderremBaf, name="RemBaf"),
+path('Home/RenderConfBB/addBranchfunc/', views.renderaddBrf, name="AddBrf"),
+    path('Home/RenderConfBB/remBranchfunc/', views.renderremBrf, name="RemBrf"),
+    path('Home/RenderConfBB/addBatchfunc/', views.renderaddBaf, name="AddBaf"),
+    path('Home/RenderConfBB/remBatchfunc/', views.renderremBaf, name="RemBaf"),
 
-    path('Home/ViewConsolidateCorelations',views.ConsolidatedCorelations,name="CCorelations"),
+    path('Home/ViewConsolidateCorelations/',views.ConsolidatedCorelations,name="CCorelations"),
+    path('Home/ViewCOPOAchieved/', views.ConsolidatedAcheived, name="COPOAchieved"),
+path('Home/ViewCONAMES/', views.viewCONSconames, name="COPONAMES"),
+    path('Home/ViewCourseExitCOPOAchieved/', views.ConsolidatedCourseExitCOPO, name="CourseExitCOPOAchieved"),
+    path('Home/ViewCourseExitThresholdBasedCOPOAchieved/', views.CourseExitThresholdBased, name="CourseExitThresholdBasesCOPOAchieved"),
+
+    path('Home/ViewExternalCOPOAchieved/', views.ConsolidatedThresholdbasedScaledAcheived, name="ExternalCOPOAchieved"),
 
     # path('ConsolidatedCourseOutcome/',views.ccourseoutcome,name="HomePage"),
 

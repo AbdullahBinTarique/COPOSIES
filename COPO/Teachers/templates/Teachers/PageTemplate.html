@@ -163,11 +163,13 @@
 
                     </tbody>
                 </table>
-
             </div>
-
             <div>
                 {% if Students %}
+                <script>
+                    var ba = '{{Batch}}'
+                    var br = '{{Branch}}'
+                </script>
 
                 <form action="">
                     <caption>IA 1</caption>
@@ -447,16 +449,13 @@
             </button>
             <script>
                 document.getElementById('savenprint').addEventListener('click', function () {
-                    const sub = document.getElementById('subject_collapse').innerHTML.trim()
-                    const tea = document.getElementById('teacher_collapse').innerHTML.trim()
-                    // const br = 
-                    // const ba = 
-                    const time = document.getElementById('stime').innerHTML.trim()
+
+                    getAllFinalValues()
 
                     setTimeout(() => {
                         alert('Data Saved Successfully, Redirecting to FreshPage');
                         location.reload(true);
-                    }, 1000)
+                    }, 100)
                 });
             </script>
 
@@ -514,14 +513,6 @@
 
 
 
-                    // for (const key in conames) {
-                    //     console.log(`${key}:${conames[key]}`);
-
-                    // }
-                    // Object.entries(conames).forEach(([key, value]) => {
-                    //     console.log(`${key}:${value}`)
-
-                    // })
 
                 }
 
@@ -530,9 +521,7 @@
         }
 
         function generateCOPO() {
-            // pos = document.getElementById('numberofpos').value;
-            // psos = document.getElementById('numberofpsos').value;
-            // cos = document.getElementById('numberofcos').value;
+
             let innerhtml = `
             <form>
                 <table id="formTableCopoRelation">
@@ -1106,7 +1095,8 @@
 
         function getAllFinalValues() {
             let sub = document.getElementById('subject_collapse').innerHTML.trim();
-            let tea = document.getElementById('teacher_collapse').innerHTML.trim();
+            let tea = document.getElementById('teacher').innerHTML.trim();
+
 
             let CoAchieved1 = {}
             for (let a = 0; a < cos; a++) {
@@ -1224,6 +1214,8 @@
                     table4: CoAchieved4Dict,
                     teacher: tea,
                     sub: sub,
+                    batch: ba,
+                    branch: br,
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
             })

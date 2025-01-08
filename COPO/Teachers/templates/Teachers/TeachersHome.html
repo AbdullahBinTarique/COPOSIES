@@ -7,7 +7,7 @@
                 <button class="accordion-button collapsed" id="teacher_collapse" style="border-radius: 40px;"
                     type="button" data-bs-toggle="collapse" data-bs-target="#Teacher_content" aria-expanded="false"
                     aria-controls="flush-collapseOne">
-                    {{teachname}}
+                    <span id="teacher">{{teachname }}</span>&nbsp&nbsp<span>Name:{{TN|upper }}</span>
                 </button>
             </h2>
             <div id="Teacher_content" class="accordion-collapse collapse" data-bs-parent="#Teacher_name">
@@ -16,6 +16,7 @@
                         <button type="submit" class="Button"> Logout </button>
 
                     </form>
+                    <br>
                     <a href='/'> <button class="btn btn-sm btn-secondary">Main Page</button></a>
                 </div>
             </div>

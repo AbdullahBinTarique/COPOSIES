@@ -49,9 +49,11 @@ class CONAMES(models.Model):
 
 class COPOAcheiveddata(models.Model):
     subject = models.ForeignKey('Admin.SubjectDB',to_field='subject',on_delete=models.CASCADE)
+    uploaded_by = models.ForeignKey('AdminUSERS', to_field='slug', on_delete=models.CASCADE, null=True)
+    batch = models.ForeignKey('Teachers.Batch',to_field='batch',on_delete=models.CASCADE,null = True)
+    branch = models.ForeignKey('Teachers.Branch',to_field='branch',on_delete=models.CASCADE,null = True)
     copoAch = models.JSONField(null=True)
     copoAchExt = models.JSONField(null=True)
-    uploaded_by = models.ForeignKey('AdminUSERS',to_field='slug',on_delete=models.CASCADE,null=True)
     uploade_date = models.DateTimeField(auto_now_add=True)
     CourseCopoAch = models.JSONField(null=True)
     CourseCopoAchExt = models.JSONField(null=True)

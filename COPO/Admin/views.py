@@ -131,7 +131,7 @@ def addstudentBW(request):
         if request.method == 'POST':
             jsonvalue = request.POST.get('data')
             data_dict =json.loads(jsonvalue)
-            print("Data received: ", data_dict)
+
             try:
                 branch = Branch.objects.get(branch = data_dict['branch'])
             except Branch.DoesNotExist:
@@ -141,7 +141,7 @@ def addstudentBW(request):
             except Batch.DoesNotExist:
                 return JsonResponse({'message':'Batch DNE Create Batch'})
 
-            print("Data received: ",data_dict)
+
             for x,y in zip(data_dict['prn'],data_dict['name']):
                 try:
                     prn_inst = Students.objects.get(prn = x)
@@ -156,7 +156,7 @@ def removestudentfunc(request):
     if 'user_id' in request.session:
         if request.method == 'POST':
             rem = request.POST['Student']
-            print(rem)
+
             Students.objects.get( name=rem).delete()
             messages.success(request, 'Successfully removed the user')
             return redirect("HomePage")
@@ -200,7 +200,7 @@ def returnsSubforSem(request):
             subs = SubjectDB.objects.filter(sem=sem)
             sub = list(subs.values('subject'))
             data = {'subs':sub}
-            print(sub)
+
             return JsonResponse(data)
 
 def RenderSubjectHtml(request):
@@ -260,7 +260,6 @@ def saveCOs(request):
                 sub_ins= CONAMES.objects.get(subject=sub)
                 if data:
                     data_dict = json.loads(data)  # Convert JSON string to a dictionary
-                    print("Data received:", data_dict)
                     sub_ins.data = data_dict
                     sub_ins.save()
                     messages.success(request, 'Edited Successfully ')
@@ -270,7 +269,6 @@ def saveCOs(request):
             except CONAMES.DoesNotExist:
                 if data:
                     data_dict = json.loads(data)  # Convert JSON string to a dictionary
-                    print("Data received:", data_dict)
                     sinstance = get_object_or_404(SubjectDB, subject=sub)
                     ins = CONAMES.objects.create(subject=sinstance, data=data_dict)
                     ins.save()
@@ -456,7 +454,11 @@ def SaveCOPOAchieved(request):
             copoAchExDa = request.POST['table2']
             coursExdata = request.POST['table3']
             coursExAchdata = request.POST['table4']
+            branch = request.POST['branch']
+            batch = request.POST['batch']
 
+            bainst = Batch.objects.get(batch = batch)
+            brinst = Branch.objects.get(branch = branch)
             teacherUName = request.POST['teacher']
             sub = request.POST['sub']
 
@@ -464,19 +466,15 @@ def SaveCOPOAchieved(request):
             copoExdata = json.loads(copoAchExDa)
             courseExitAch = json.loads(coursExdata)
             courseExitExAch = json.loads(coursExAchdata)
-            print(copo)
-            print(copoExdata)
-            print(courseExitAch)
-            print(courseExitExAch)
 
             subinst = SubjectDB.objects.get(subject = sub)
             teacinst =AdminUSERS.objects.get(username = teacherUName,email = request.session['user_id'])
             uploaded_by = teacinst
-            print(uploaded_by)
             inst = COPOAcheiveddata.objects.create(subject = subinst, copoAch=copo,copoAchExt=copoExdata
                                                    ,CourseCopoAch=courseExitAch,CourseCopoAchExt=courseExitExAch,
-                                                   uploaded_by=uploaded_by)
+                                                   uploaded_by=uploaded_by,batch = bainst,branch = brinst)
             inst.save()
+            print(inst)
             return JsonResponse({})
 
 def renderCONFBB(request):
@@ -539,7 +537,6 @@ def renderaddBaf(request):
             ey = request.POST['entry_year']
             fy = request.POST['final_year']
             strin = str(ey) + '-' + str(fy)
-            print(str)
             try:
                 bainst = Batch.objects.get(batch=strin)
                 messages.success(request, 'Batch Already Exists')
@@ -558,7 +555,7 @@ def renderremBaf(request):
             ey = request.POST['entry_year']
             fy = request.POST['final_year']
             strin = str(ey) + '-' + str(fy)
-            print(str)
+
             try:
                 bainst =Batch.objects.get(batch=strin)
                 Batch.objects.get(batch=strin).delete()
@@ -572,8 +569,83 @@ def ConsolidatedCorelations(request):
     if 'user_id' in request.session:
         if request.method == 'GET':
             inst = Corelationdata.objects.all()
-            subinst = SubjectDB.objects.all()
-            param = {'data':zip(inst,subinst)}
+            li = list( inst.values('data','subject'))
+            l = []
+            for x in inst:
+                subinst = SubjectDB.objects.get(subject = x.subject)
+                l.append(subinst)
+            param = {'data':zip(li,l)}
+
             return render(request,'Admin/ViewSheets Together.html',param)
+
+def ConsolidatedAcheived(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            inst = COPOAcheiveddata.objects.all()
+
+            l = []
+            for x in inst:
+                subinst = SubjectDB.objects.get(subject=x.subject)
+                l.append(subinst)
+            param = {'data': zip(inst, l)}
+
+
+            return render(request, 'Admin/ViewCOPOAcheived.html', param)
+
+def ConsolidatedThresholdbasedScaledAcheived(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            inst = COPOAcheiveddata.objects.all()
+
+            l = []
+            for x in inst:
+                subinst = SubjectDB.objects.get(subject=x.subject)
+                l.append(subinst)
+            param = {'data': zip(inst, l)}
+
+
+            return render(request, 'Admin/ThresholdbasedScaled COPO.html', param)
+
+def ConsolidatedCourseExitCOPO(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            inst = COPOAcheiveddata.objects.all()
+
+            l = []
+            for x in inst:
+                subinst = SubjectDB.objects.get(subject=x.subject)
+                l.append(subinst)
+            param = {'data': zip(inst, l)}
+
+
+            return render(request, 'Admin/CourseExitCOPOAchieved.html', param)
+
+def CourseExitThresholdBased(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            inst = COPOAcheiveddata.objects.all()
+
+            l = []
+            for x in inst:
+                subinst = SubjectDB.objects.get(subject=x.subject)
+                l.append(subinst)
+            param = {'data': zip(inst, l)}
+
+
+            return render(request, 'Admin/CourseExitThresholdBasedCOPO.html', param)
+
+def viewCONSconames(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            inst = CONAMES.objects.all()
+
+            l = []
+            for x in inst:
+                subinst = SubjectDB.objects.get(subject=x.subject)
+                l.append(subinst)
+            param = {'data': zip(inst, l)}
+
+
+            return render(request, 'Admin/viewCONSCONAMES.html', param)
 
 
