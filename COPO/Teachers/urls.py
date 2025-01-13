@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
 
-    path('',views.index,name="TeachersHome"),
+    path('',views.teahome,name="TeachersHome"),
     path('admins/', views.adminhome  , name="AdminTeachersHome"),
 
     path('fetch/',views.fetch,name="FetchStudents"),

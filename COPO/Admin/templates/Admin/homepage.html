@@ -172,7 +172,7 @@
 
             position: relative;
             width: 100%;
-            height: 200px;
+            height: 450px;
             overflow: auto;
 
             /* perspective: 1000px; */
@@ -394,11 +394,11 @@
             {% endif %}
         </div>
 
-        <div class="offcanvas offcanvas-end" style="            background: linear-gradient(to bottom, rgba(148, 245, 20, 0.199), rgb(46, 155, 228));
+        <div class="offcanvas offcanvas-end" style="            background: linear-gradient(to bottom, rgba(223, 244, 195, 0.998), rgb(46, 155, 228));
 " tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
 
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasRightLabel">Menu</h5>
+                <h5 class="offcanvas-title  " style="Color:  black" id="offcanvasRightLabel">Menu</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
 
@@ -406,13 +406,15 @@
 
                 <a href="/Admin/Home/RenderConfBB"><button>Configure Batch And Branch</button></a>
 
-
-
                 <a href='/Admin/Home/RenderUpdateCO/'><button>Configure COS</button></a>
 
-                <a href='/Admin/Home/adduserform/'><button>Add Teachers</button></a>
-
                 <a href='/Admin/Home/ConfSubjects/'><button>Configure Subjects</button></a>
+                <a href='/Admin/Home/RenderConfBB/addSubj'><button>Add Subjects</button></a>
+
+                <a href='/Admin/Home/RenderConfBB/remSubj'><button>Remove Subjects</button></a>
+
+
+                <a href='/Admin/Home/adduserform/'><button>Add Teachers</button></a>
 
                 <a href='/Admin/Home/removeuser/'><button>Remove Teachers</button></a>
 
@@ -431,17 +433,20 @@
             <div class="box" style="">
                 <div class="right-buttons">
                     <a href='/Admin/Home/ViewConsolidateCorelations'> <button>Consolidated Co-relation</button></a>
+
                     <a href='/Admin/Home/ViewCONAMES/'> <button>Consolidated COS Informations</button></a>
+
                     <a href="/Admin/Home/ViewCourseExitCOPOAchieved/"> <button>Consolidated CourseExit COPO
                         </button></a>
                     <a href="/Admin/Home/ViewCOPOAchieved/" class="text-white"><button>Consolidated Direct
                             Attainment</button></a>
-                    <a href="/Admin/Home/ViewExternalCOPOAchieved/" class="text-white"><button>All Threshold Based
+                    <a href="/Admin/Home/ViewExternalCOPOAchieved/" class="text-white"><button>Consolidated Threshold
+                            Based
                             Scaled AVG</button></a>
                     <a href="/Admin/Home/ViewCourseExitThresholdBasedCOPOAchieved/"
-                        class="text-white"><button>CourseExit Threshold Based Matrices
+                        class="text-white"><button>Consolidated CourseExit Threshold Based Matrices
                             Scaled AVG</button></a>
-                    <a href='#'> <button>View A Whole Batch As Graph</button></a>
+                    <a href='/Admin/Home/renderAVGCOPO/'> <button>AvgCOPO</button></a>
                 </div>
             </div>
         </div>

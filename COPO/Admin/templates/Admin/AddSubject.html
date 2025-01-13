@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Remove Branch</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>Add Subject</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -45,8 +46,8 @@
             border-radius: 4px;
         }
 
-        input[type="submit"] {
-            background-color: #E53935;
+        button[type="submit"] {
+            background-color: #70de3ec1;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -54,8 +55,8 @@
             cursor: pointer;
         }
 
-        input[type="submit"]:hover {
-            background-color: #FF4D4D;
+        button[type="submit"]:hover {
+            background-color: #76c93a;
         }
 
         .error {
@@ -66,17 +67,26 @@
 </head>
 
 <body>
-    <form id="userForm" action='/Admin/Home/RenderConfBB/remBranchfunc' method="POST"> {% csrf_token %}
-        <h7>Branches Are:</h7>
-        <ul>{% for x in br %}
-            <li>{{x.branch}}</li>
+    <form id="userForm" action='/Admin/Home/RenderConfBB/addSubjfunc' method="POST"> {% csrf_token %}
+        <h7>Subjects Are:</h7>
+        <ul>{% for x in sub|dictsort:"sem" %}
+
+            {% ifchanged x.sem %}
+            <li style="list-style:none;">Sem {{x.sem}}</li>
+            {% endifchanged %}
+            <li>{{x.subject}}</li>
             {% endfor %}
         </ul>
-        <label for="name">Branch Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
+        <label for="name">Subject Name:</label>
+        <input type="text" name="name" id="name" class="text-body-primary" required>
+        <label for="code">Subject code:</label>
+        <input type="text" name="code" id="code" class="text-body-primary" required>
+        <label for="sem">Sem:</label>
+        <input type="number" name="sem" id="sem" class="text-body-primary" max="8" min="1" required>
 
-        <input type="submit" value="Remove Batch" style="margin-top: 15%;">
+        <button type="submit" style="margin-top: 15%;">Add Subject</button>
     </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

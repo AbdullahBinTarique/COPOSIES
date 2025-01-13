@@ -7,7 +7,7 @@
                 <button class="accordion-button collapsed" id="teacher_collapse" type="button"
                     style="border-radius: 40px;width: 600px;" data-bs-toggle="collapse"
                     data-bs-target="#Teacher_content" aria-expanded="false" aria-controls="flush-collapseOne">
-                    <span id="teacher">{{teachname }}</span>&nbsp&nbsp<span id="teacher">Name:{{TN|upper }}</span>
+                    <span id="teacher">{{teachname }}</span>&nbsp&nbsp<span id="teacher">Name:{{TN |upper }}</span>
                 </button>
             </h2>
             <div id="Teacher_content" class="accordion-collapse collapse" data-bs-parent="#Teacher_name">
@@ -31,7 +31,11 @@
                 <button class="accordion-button" id="subject_collapse" type="button"
                     style="border-radius: 40px;width: 600px;" data-bs-toggle="collapse"
                     data-bs-target="#Subject_content" aria-expanded="True" aria-controls="flush-collapseOne">
-                    {{subject}}
+                    <select name="subjectDL" id="subjectDL" onchange="setCOPO()">
+                        {% for x in sub %}
+                        <option value="{{x.subject}}">{{x.subject}}</option>
+                        {% endfor %}
+                    </select>
                 </button>&nbsp&nbsp&nbsp
                 <button class="btn btn-outline-secondary button " id="stime"> </button>
                 <script>

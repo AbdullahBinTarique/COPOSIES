@@ -1,0 +1,126 @@
+{% extends "Admin/COPOTemplate.html" %}
+{% block title %}
+Avg COPO
+{% endblock %}
+{% block content1 %}
+<p class="text-body-secondary"> The Corelation sheet data is saved at the time of submission of
+    data during the calculation of Course Outcome and Programme Outcome Mapping.</p>
+{% endblock %}
+
+{% block list %}
+<li><a href="/Admin/Home/ViewCONAMES/" class="text-white">Consolidated COS Informations</a>
+</li>
+<li><a href="/Admin/Home/ViewCOPOAchieved/" class="text-white">Consolidated Direct
+        Attainment</a></li>
+
+<li><a href="/Admin/Home/ViewCourseExitCOPOAchieved/" class="text-white">CourseExit COPO
+        Achieved</a></li>
+<li><a href="/Admin/Home/ViewExternalCOPOAchieved/" class="text-white">All Threshold Based
+        Scaled AVG</a></li>
+
+<li><a href="/Admin/Home/ViewCourseExitThresholdBasedCOPOAchieved/" class="text-white">CourseExit Threshold Based
+        Matrices</a></li>
+<li> <a href='/'> <button>Main Page</button></a></li>
+{% endblock %}
+
+{% block content2 %}
+<h1 class="fw-light"> COPO AVG</h1>
+{% if COPOAVG %}
+<h1 class="fw-light">Department of {{bran}} Batch {{batc}}</h1>
+{% endif %}
+<p class="lead text-body-secondary">For Each of the Subjects , below are the Sheets representing the
+    data</p>
+<p>
+<div class="  d-flex" style="justify-content: center;" id="docsearch">
+
+    <form action="/Admin/Home/ViewAVGCOPO/" method="get">
+        <select name="batch" id="batch">
+            <option value="def">Select Batch</option>
+            {% for x in ba %}
+            <option value="{{x.batch}}" name='{{x.batch}}'>{{x.batch}}</option>
+            {% endfor %}
+        </select>
+        <select name="branch" id="branch">
+            <option value="def">Select Branch</option>
+            {% for x in br %}
+            <option value="{{x.branch}}" name='{{x.branch}}'>{{x.branch}}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+</div>
+</p>
+{% endblock %}
+
+{% block content3 %}
+<script>
+    var sub = ''
+    var cos = ''
+    var pos = ''
+    var psos = ''
+    var header = ''
+</script>
+{% if COPOAVG %}
+
+<div class="col-lg-6" style="width:100%">
+    <div class="card shadow-sm forbuttons">
+        <div style="width:100%; height:100%;overflow-y: scroll;padding-left: 10px;padding-top: 10px;"
+            class="Expandable">
+            <div style="width: 1000px; height: 250px;">
+                <table class="table table-bordered border-primary  table-dark table-hover">
+                    <thead>
+                        <tr scope="row" id="Theads">
+
+
+                        </tr>
+                    </thead>
+                    <tbody id="Tbodys" class="table-group-divider">
+                        {% for key,value in COPOAVG.items %}
+                        <tr>
+                            {% for x in key %}
+                            <th style="width: 50px;">
+                                {{x}}
+                            </th>
+                            {% endfor %}
+                            {% for z in value %}
+                            <td style="width: 50px;">
+                                {{z}}
+                            </td>
+                            {% endfor %}
+
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script>
+
+
+            pos = 12
+            psos = 2
+            header = `<th scope="col">Subject_ID</th>
+            <th scope="col">Subject</th>`
+            for (let a = 0; a < parseInt(pos) + parseInt(psos); a++)
+
+                header += `<th scope="col">P's${(a + 1)}</th>`
+
+
+            document.getElementById('Theads').innerHTML = header
+
+        </script>
+
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+{% block script %}
+<script>
+
+</script>
+{% endblock %}

@@ -8,6 +8,8 @@ from django.db import models
 from django.urls import reverse
 import time
 
+from graphviz.dot import subgraph
+
 from Teachers.models import Students,Branch,Batch,Teacher
 from Admin.models import AdminUSERS, SubjectDB, CONAMES, Corelationdata, COPOAcheiveddata
 from Teachers.models import Sem1,Sem2,Sem3,Sem4,Sem5,Sem6,Sem7,Sem8
@@ -502,6 +504,115 @@ def renderremBa(request):
             param = {'ba':ba}
             return render(request,'Admin/removeBatch.html',param)
 
+def renderremsub(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            sub = SubjectDB.objects.all()
+            param = {'sub':sub}
+            return render(request,'Admin/RemSubject.html',param)
+
+
+def renderaddsub(request):
+    if 'user_id' in request.session:
+        if request.method == 'GET':
+            sub = SubjectDB.objects.all()
+            print(sub)
+            param = {'sub':sub}
+            return render(request,'Admin/AddSubject.html',param)
+
+def renderaddsubf(request):
+    if 'user_id' in request.session:
+        if request.method == 'POST':
+            sub = request.POST['name']
+            sem = request.POST['sem']
+            code = request.POST['code']
+            print(sub,sem,code)
+            # try:
+                # subs =
+            if  sem == "1":
+                subinst = Sem1.objects.create(Subject=sub,subject_id = code )
+                messages.success(request, 'Subject Added Successfully ')
+                return redirect("HomePage")
+
+            elif  sem == "2":
+                subinst = Sem2.objects.create(Subject=sub, subject_id=code)
+                messages.success(request, 'Subject Added Successfully ')
+                return redirect("HomePage")
+
+            elif  sem == "3":
+                subinst = Sem3.objects.create(Subject=sub, subject_id=code)
+                messages.success(request, 'Subject Added Successfully ')
+                return redirect("HomePage")
+            elif sem == "4":
+                subinst = Sem4.objects.create(Subject=sub, subject_id=code)
+                messages.success(request, 'Subject Added Successfully ')
+                return redirect("HomePage")
+            elif sem == "5":
+                subinst = Sem5.objects.create(Subject=sub, subject_id=code)
+                messages.success(request, 'Subject Added Successfully ')
+                return redirect("HomePage")
+            elif sem == "6":
+                subinst = Sem6.objects.create(Subject=sub, subject_id=code)
+                messages.success(request, 'Subject Added Successfully ')
+                return redirect("HomePage")
+            elif sem == "7":
+                subinst = Sem7.objects.create(Subject=sub, subject_id=code)
+                messages.success(request, 'Subject Added Successfully ')
+                return redirect("HomePage")
+            elif sem == "8":
+                subinst = Sem8.objects.create(Subject=sub, subject_id=code)
+                messages.success(request, 'Subject Added Successfully ')
+                return redirect("HomePage")
+
+
+
+
+
+def renderremsubf(request):
+    if 'user_id' in request.session:
+        if request.method == 'POST':
+            sub = request.POST['name']
+
+            try:
+                subinst = SubjectDB.objects.get(subject =sub)
+                if subinst.sem == 1:
+                    Sem1.objects.get(Subject = subinst.subject).delete()
+
+                elif subinst.sem == 2:
+                    Sem2.objects.get(Subject = subinst.subject).delete()
+
+                elif subinst.sem == 3:
+                    Sem3.objects.get(Subject = subinst.subject).delete()
+
+                elif subinst.sem == 4:
+                    Sem4.objects.get(Subject = subinst.subject).delete()
+
+                elif subinst.sem == 5:
+                    Sem5.objects.get(Subject = subinst.subject).delete()
+
+                elif subinst.sem == 6:
+                    Sem6.objects.get(Subject = subinst.subject).delete()
+
+                elif subinst.sem == 7:
+                    Sem7.objects.get(Subject = subinst.subject).delete()
+
+                elif subinst.sem == 8:
+                    Sem8.objects.get(Subject = subinst.subject).delete()
+
+                tinst = Teacher.objects.filter(subject =sub)
+                for x in tinst:
+                    print(x.subject)
+                    x.subject = ""
+                    x.subject_id = ""
+                    x.save()
+                messages.success(request, 'Subject Removed Successfully ')
+                subinst.delete()
+                return redirect("HomePage")
+            except SubjectDB.DoesNotExist:
+                messages.success(request,'Subject Doesnt Exists ')
+                return redirect("HomePage")
+
+
 def renderaddBrf(request):
     if 'user_id' in request.session:
         if request.method == 'POST':
@@ -566,7 +677,7 @@ def renderremBaf(request):
                 return redirect("HomePage")
 
 def ConsolidatedCorelations(request):
-    if 'user_id' in request.session:
+    
         if request.method == 'GET':
             inst = Corelationdata.objects.all()
             li = list( inst.values('data','subject'))
@@ -579,7 +690,7 @@ def ConsolidatedCorelations(request):
             return render(request,'Admin/ViewSheets Together.html',param)
 
 def ConsolidatedAcheived(request):
-    if 'user_id' in request.session:
+
         if request.method == 'GET':
             inst = COPOAcheiveddata.objects.all()
 
@@ -593,7 +704,7 @@ def ConsolidatedAcheived(request):
             return render(request, 'Admin/ViewCOPOAcheived.html', param)
 
 def ConsolidatedThresholdbasedScaledAcheived(request):
-    if 'user_id' in request.session:
+
         if request.method == 'GET':
             inst = COPOAcheiveddata.objects.all()
 
@@ -607,7 +718,7 @@ def ConsolidatedThresholdbasedScaledAcheived(request):
             return render(request, 'Admin/ThresholdbasedScaled COPO.html', param)
 
 def ConsolidatedCourseExitCOPO(request):
-    if 'user_id' in request.session:
+
         if request.method == 'GET':
             inst = COPOAcheiveddata.objects.all()
 
@@ -621,7 +732,7 @@ def ConsolidatedCourseExitCOPO(request):
             return render(request, 'Admin/CourseExitCOPOAchieved.html', param)
 
 def CourseExitThresholdBased(request):
-    if 'user_id' in request.session:
+
         if request.method == 'GET':
             inst = COPOAcheiveddata.objects.all()
 
@@ -635,17 +746,44 @@ def CourseExitThresholdBased(request):
             return render(request, 'Admin/CourseExitThresholdBasedCOPO.html', param)
 
 def viewCONSconames(request):
-    if 'user_id' in request.session:
-        if request.method == 'GET':
-            inst = CONAMES.objects.all()
 
-            l = []
-            for x in inst:
-                subinst = SubjectDB.objects.get(subject=x.subject)
-                l.append(subinst)
-            param = {'data': zip(inst, l)}
+    if request.method == 'GET':
+        inst = CONAMES.objects.all()
+
+        l = []
+        for x in inst:
+            subinst = SubjectDB.objects.get(subject=x.subject)
+            l.append(subinst)
+        param = {'data': zip(inst, l)}
+        return render(request, 'Admin/viewCONSCONAMES.html', param)
+
+def avgcopo(request):
+    if request.method == 'GET':
+        ba= Batch.objects.all()
+        br = Branch.objects.all()
+        param = {'ba':ba,'br':br}
+        return render(request,'Admin/AVGCOPO.html',param)
+
+def viewAVGCOPO(request):
+    if request.method == 'GET':
+        dicti = {}
+        br = request.GET['branch']
+        ba = request.GET['batch']
+        branch = Branch.objects.all()
+        batch = Batch.objects.all()
 
 
-            return render(request, 'Admin/viewCONSCONAMES.html', param)
+        inst = COPOAcheiveddata.objects.filter(branch=br ,batch = ba )
+        for x in inst:
+            subinst = SubjectDB.objects.get(subject = x.subject)
+            subs = (subinst.subject_id,subinst.subject)
+            dicti[subs] = x.copoAch['AVG']
+
+        dictCOPOAVG = dict(sorted(dicti.items()))
+
+        param = {'COPOAVG':dictCOPOAVG,'br':branch,'bran':br,'ba':batch,'batc':ba ,'subinst':inst,}
+        return render(request,'Admin/AVGCOPO.html',param)
+
+
 
 

@@ -8,21 +8,6 @@ from Admin.models import SubjectDB, CONAMES, AdminUSERS
 from Teachers.models import Teacher, Students, Branch, Batch
 
 
-# Create your views here.
-def index(request):
-    if 'user_id' in request.session:
-        user_id = request.session.get('user_id')
-        if user_id:
-            name = request.session['username']
-            teacher = Teacher.objects.get(Username = name)
-            branches = Branch.objects.all()
-            batch =Batch.objects.all()
-            params = {'teachname':name,'subject':teacher.subject,'branch':branches,'batch':batch}
-            return render(request,'Teachers/TeachersHome.html',params)
-        else:
-            messages.ERROR(request,"You are not Logged In")
-            return redirect("LogInPage")
-    return render(request, 'Login/login.html', {'message': "No session found. Please log in."})
 
 def fetch(request):
     if 'user_id' in request.session:
@@ -32,6 +17,7 @@ def fetch(request):
             name = request.session['username']
             teacher = Teacher.objects.get(Username=name)
             TN = AdminUSERS.objects.get(username = name)
+            print(TN.slug)
 
             sub = SubjectDB.objects.filter(subject=teacher.subject).first()
             qno = sub.subques
@@ -57,7 +43,7 @@ def fetchadmin(request):
             name = request.session['username']
             teacher = Teacher.objects.get(Username=name)
             TN = AdminUSERS.objects.get(username=name)
-            sub= SubjectDB.objects.filter(subject =teacher.subject ).first()
+            sub= SubjectDB.objects.get(subject =teacher.subject )
             qno = sub.subques
             br = request.POST.get('branch','')
             ba = request.POST.get('batch','')
@@ -84,8 +70,27 @@ def adminhome(request):
             TN = AdminUSERS.objects.get(username=name)
             branches = Branch.objects.all()
             batch = Batch.objects.all()
-            params = {'teachname': name,'TN':TN.slug,'subject': teacher.subject, 'branch': branches, 'batch': batch}
+            sub = SubjectDB.objects.all()
+            params = {'teachname': name,'sub':sub,'TN':TN.slug,'subject': teacher.subject, 'branch': branches, 'batch': batch}
             return render(request, 'Teachers/TeachersHomeswitch.html', params)
+        else:
+            messages.ERROR(request, "You are not Logged In")
+            return redirect("LogInPage")
+    return render(request, 'Login/login.html', {'message': "No session found. Please log in."})
+
+def teahome(request):
+    if 'user_id' in request.session:
+
+        user_id = request.session.get('user_id')
+        if user_id:
+            name = request.session['username']
+            teacher = Teacher.objects.get(Username=name)
+            TN = AdminUSERS.objects.get(username=name)
+            branches = Branch.objects.all()
+            batch = Batch.objects.all()
+            sub = SubjectDB.objects.all()
+            params = {'teachname': name,'sub':sub,'TN':TN.slug,'subject': teacher.subject, 'branch': branches, 'batch': batch}
+            return render(request, 'Teachers/TeachersHome.html', params)
         else:
             messages.ERROR(request, "You are not Logged In")
             return redirect("LogInPage")

@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Remove Branch</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>Remove Subject</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -66,17 +67,23 @@
 </head>
 
 <body>
-    <form id="userForm" action='/Admin/Home/RenderConfBB/remBranchfunc' method="POST"> {% csrf_token %}
-        <h7>Branches Are:</h7>
-        <ul>{% for x in br %}
-            <li>{{x.branch}}</li>
+    <form id="userForm" action='/Admin/Home/RenderConfBB/remSubjfunc' method="POST"> {% csrf_token %}
+        <h7>Subjects Are:</h7>
+        <ul>{% for x in sub %}
+            <li>{{x.subject}}</li>
             {% endfor %}
         </ul>
-        <label for="name">Branch Name:</label>
-        <input type="text" id="name" name="name" required><br><br>
+        <label for="name">Subject Name:</label>
+        <select name="name" id="name" class="form-select" style="width: 50%;" required>
+            {% for x in sub %}
+            <option value="{{x.subject}}">{{x.subject}}</option>
+            {% endfor %}
 
-        <input type="submit" value="Remove Batch" style="margin-top: 15%;">
+        </select>
+
+        <input type="submit" value="Remove Subject" style="margin-top: 15%;">
     </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

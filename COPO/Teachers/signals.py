@@ -45,57 +45,65 @@ def create_or_update_Teachers_model(sender, instance, created, **kwargs):
     elif sender == Sem1:
         if created:
             # Create a corresponding record in SecondAppModel
-            SubjectDB.objects.create(
+            inst = SubjectDB.objects.create(
                 subject=instance.Subject,
                 subject_id =instance.subject_id ,
                 sem = 1,
             )
+            inst.save()
     elif sender == Sem2:
         if created:
-            SubjectDB.objects.create(
+            inst = SubjectDB.objects.create(
                 subject=instance.Subject,
                 subject_id=instance.subject_id,
                 sem=2,
             )
+            inst.save()
     elif sender == Sem3:
         if created:
-            SubjectDB.objects.create(
+            inst = SubjectDB.objects.create(
                 subject=instance.Subject,
                 subject_id=instance.subject_id,
                 sem=3,
             )
+            inst.save()
     elif sender == Sem4:
         if created:
-            SubjectDB.objects.create(
+            inst = SubjectDB.objects.create(
                 subject=instance.Subject,
                 subject_id=instance.subject_id,
                 sem=4,
             )
+            inst.save()
     elif sender == Sem5:
         if created:
-            SubjectDB.objects.create(
+            inst = SubjectDB.objects.create(
                 subject=instance.Subject,
                 subject_id=instance.subject_id,
                 sem=5,
             )
+            inst.save()
     elif sender == Sem6:
         if created:
-            SubjectDB.objects.create(
+            inst = SubjectDB.objects.create(
                 subject=instance.Subject,
                 subject_id=instance.subject_id,
                 sem=6,
             )
+            inst.save()
     elif sender == Sem7:
         if created:
-            SubjectDB.objects.create(
+            inst = SubjectDB.objects.create(
                 subject=instance.Subject,
                 subject_id=instance.subject_id,
                 sem=7,
             )
+            inst.save()
     elif sender == Sem8:
         if created:
-            SubjectDB.objects.create(
+            inst = SubjectDB.objects.create(
                 subject=instance.Subject,
                 subject_id=instance.subject_id,
                 sem=8,
             )
+            inst.save()

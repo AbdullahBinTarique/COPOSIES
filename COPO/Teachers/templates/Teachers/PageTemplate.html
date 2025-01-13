@@ -469,7 +469,7 @@
         var psos;
         var cos;
         function setCOPO() {
-            let sub = document.getElementById('subject_collapse').innerHTML.trim();
+            let sub = document.getElementById('subjectDL').value;
 
             $.ajax({
                 url: '/Admin/Home/retrieveco/', // Backend endpoint
@@ -748,7 +748,7 @@
         }
 
         function saveCOmatrix() {
-            let sub = document.getElementById('subject_collapse').innerHTML.trim();
+            let sub = document.getElementById('subjectDL').value;
             let dictdata = {}
             for (let a = 0; a < cos; a++) {
                 const ele = document.getElementsByName('Co' + (a + 1))
@@ -1094,7 +1094,7 @@
         });
 
         function getAllFinalValues() {
-            let sub = document.getElementById('subject_collapse').innerHTML.trim();
+            let sub = document.getElementById('subjectDL').value;
             let tea = document.getElementById('teacher').innerHTML.trim();
 
 
