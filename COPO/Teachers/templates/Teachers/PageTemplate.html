@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Homepage</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         body {
             background-color: #b7cdee6d;
@@ -209,8 +210,12 @@
 
                             {% for s in Students %}
                             <tr name='{{forloop.counter}}'>
-                                <td style="background-color:rgb(246, 239, 229)">{{s.name}}</td>
-                                <td style="background-color:rgb(246, 239, 229)">{{s.prn}}</td>
+                                <td style="background-color:rgb(246, 239, 229)"><input type="text" style="width: 200px;"
+                                        value="{{s.name}}">
+                                </td>
+                                <td style="background-color:rgb(246, 239, 229)"><input type="text" style="width: 100px;"
+                                        value="{{s.prn}}">
+                                </td>
                                 {% for i in NoofQuestions %}
                                 <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
                                         style="width: 30px; border: none; " type="number" name='QA{{i}}' id='QA{{i}}'>
@@ -328,8 +333,12 @@
 
                             {% for s in Students %}
                             <tr>
-                                <td style="background-color:rgb(246, 239, 229)">{{s.name}}</td>
-                                <td style="background-color:rgb(246, 239, 229) ">{{s.prn}}</td>
+                                <td style="background-color:rgb(246, 239, 229)"><input type="text" style="width: 200px;"
+                                        value="{{s.name}}">
+                                </td>
+                                <td style="background-color:rgb(246, 239, 229)"><input type="text" style="width: 100px;"
+                                        value="{{s.prn}}">
+                                </td>
                                 {% for i in NoofQuestions %}
                                 <td style="background-color:rgb(246, 239, 229) "><input class="Table_data"
                                         style="width: 30px; border: none; " type="number" name='QA1{{i}}' id='QA1{{i}}'>
@@ -445,10 +454,13 @@
                 COPO and Ethreshold acheived &
                 CourseExit Tables </p>
             <button class="Button" id="savenprint" style="width: 200px;">
-                Export To Xcell And Print
+                Save And Print this sheet
             </button>
             <script>
                 document.getElementById('savenprint').addEventListener('click', function () {
+                    prin();
+
+
 
                     getAllFinalValues()
 
@@ -457,6 +469,62 @@
                         location.reload(true);
                     }, 100)
                 });
+                const jsonData1 = [];
+                const jsonData2 = [];
+                const jsonData = {};
+
+                function prin() {
+
+                    function extractTableData(table) {
+                        const rows = table.querySelectorAll('tr');
+                        const tableData = [];
+                        rows.forEach(row => {
+                            const rowData = [];
+                            row.querySelectorAll('td, th').forEach(cell => {
+                                const input = cell.querySelector('input');
+                                if (input) {
+                                    rowData.push(input.value); // Extract input value
+                                } else {
+                                    rowData.push(cell.textContent.trim()); // Extract text content
+                                }
+                            });
+                            tableData.push(rowData);
+                        });
+                        return tableData;
+                    }
+                    const tableintext = document.getElementById('INT-EXT');
+                    const table1 = document.getElementById('formTable');
+                    const table2 = document.getElementById('formTable2');
+                    const table3 = document.getElementById('Calculated-IA1');
+                    const table4 = document.getElementById('Calculated-IA2');
+                    const table5 = document.getElementById('formTableCopoAchieved');
+                    const table6 = document.getElementById('formEThresholdCopoAchieved');
+                    const table7 = document.getElementById('formTableCourseExitCopoAchieved');
+                    const table8 = document.getElementById('formCEThresholdCopoAchieved');
+                    const data1 = extractTableData(table1);
+                    const data2 = extractTableData(table2);
+                    const dataintext = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(tableintext), { header: 1 });
+                    const data3 = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(table3), { header: 1 });
+                    const data4 = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(table4), { header: 1 });
+                    const data5 = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(table5), { header: 1 });
+                    const data6 = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(table6), { header: 1 });
+                    const data7 = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(table7), { header: 1 });
+                    const data8 = XLSX.utils.sheet_to_json(XLSX.utils.table_to_sheet(table8), { header: 1 });
+                    const combinedData = [[], [], ...data1, [], ...data3, [], ...data2, [], ...data4, [], ...dataintext, [], [], ...data5, [], ...data6, [], ...data7, [], ...data8];
+                    const worksheet = XLSX.utils.aoa_to_sheet(combinedData);
+                    const workbook = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(workbook, worksheet, 'Combined Data');
+
+                    // Save the workbook as an Excel file
+
+
+                    const h1 = document.getElementById('subjectDL').textContent.trim()
+                    const h2 = document.getElementById('batch').textContent.trim()
+                    const h3 = document.getElementById('branch').textContent.trim()
+                    XLSX.writeFile(workbook, `${h1} ${h2} ${h3} COPO.xlsx`);
+
+
+                };
             </script>
 
         </div>
@@ -508,11 +576,6 @@
                     }
                     calc.TweightedAvgAchieved();
                     calc.TargetNAvg();
-
-
-
-
-
 
                 }
 
@@ -1009,7 +1072,7 @@
 
             // Loop through rows of pasted data
             rows.forEach((rowData, rowIndex) => {
-                const targetRow = tableRows[rowIndex + 3];
+                const targetRow = tableRows[rowIndex];
 
                 // Make sure targetRow exists in the table
                 if (targetRow) {
@@ -1041,7 +1104,7 @@
 
             // Loop through rows of pasted data
             rows.forEach((rowData, rowIndex) => {
-                const targetRow = tableRows[rowIndex + 3];
+                const targetRow = tableRows[rowIndex];
 
                 // Make sure targetRow exists in the table
                 if (targetRow) {
@@ -1092,13 +1155,17 @@
                 }
             });
         });
+        let CoAchieved1 = {}
+        let CoAchieved2 = {}
+        let CoAchieved3 = {}
+        let CoAchieved4 = {}
 
         function getAllFinalValues() {
             let sub = document.getElementById('subjectDL').value;
             let tea = document.getElementById('teacher').innerHTML.trim();
 
 
-            let CoAchieved1 = {}
+
             for (let a = 0; a < cos; a++) {
                 const ele = document.getElementsByName('CoAchieved' + (a + 1))
                 let arr = [];
@@ -1117,7 +1184,7 @@
 
             //Table 1 finished
 
-            let CoAchieved2 = {}
+
             for (let a = 0; a < cos; a++) {
                 ele = document.getElementsByName('ECoAchieved' + (a + 1))
                 arr = [];
@@ -1150,7 +1217,7 @@
 
             //Table 2 finished
 
-            let CoAchieved3 = {}
+
             for (let a = 0; a < cos; a++) {
                 ele = document.getElementsByName('CourseAchieved' + (a + 1))
                 arr = [];
@@ -1170,7 +1237,7 @@
 
             //Table 3 finished
 
-            let CoAchieved4 = {}
+
             for (let a = 0; a < cos; a++) {
                 ele = document.getElementsByName('CourseECoAchieved' + (a + 1))
                 arr = [];
@@ -1244,6 +1311,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js">
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 </body>
 
 </html>

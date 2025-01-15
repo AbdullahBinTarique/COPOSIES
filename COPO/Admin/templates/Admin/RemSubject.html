@@ -80,6 +80,12 @@
             {% endfor %}
 
         </select>
+        <script>
+
+            document.getElementById('name').addEventListener('input', function (event) {
+                alert('All the Data related to the subject will be lost and change cannot be undone.')
+            })
+        </script>
 
         <input type="submit" value="Remove Subject" style="margin-top: 15%;">
     </form>

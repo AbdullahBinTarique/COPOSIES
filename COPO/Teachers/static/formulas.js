@@ -416,16 +416,8 @@ class calc {
 
             }
         }
-        let max = 0;
-        for (let a = 0; a < parseInt(cos); a++) {
-            let nodelist = document.getElementsByName('Co' + (a + 1));
+        let max = 3;
 
-            for (let e of nodelist) {
-                if (e.value > max) {
-                    max = e.value
-                }
-            }
-        }
         let nodelist = document.getElementsByName('TargetSet');
         for (let a of nodelist) {
             a.innerHTML = max;
@@ -435,16 +427,8 @@ class calc {
     }
 
     static TargetNAvg() {//dual
-        let max = 0;
-        for (let a = 0; a < parseInt(cos); a++) {
-            let nodelist = document.getElementsByName('Co' + (a + 1));
+        let max = 3;
 
-            for (let e of nodelist) {
-                if (e.value > max) {
-                    max = e.value
-                }
-            }
-        }
         let nodelist = document.getElementsByName('Targetdata');
         for (let a of nodelist) {
             a.innerHTML = max;
@@ -485,7 +469,7 @@ class calc {
         let avglist = document.getElementsByName('EAVG');
         let list = document.getElementsByName('Achieved')
         for (let a of list) {
-            if (((Math.round(((avglist[top].textContent) / 3) * 100) * 10) / 10) >= checkvalue) {
+            if (((Math.round((parseFloat(avglist[top].textContent) / parseFloat(3)) * 100) * 10) / 10) >= checkvalue) {
                 a.innerHTML = "Y"
             }
             else {
@@ -675,7 +659,7 @@ class CourseExit {
         for (let i = 0; i < cos; i++) {
             let ele = document.getElementsByName('CourseECoAchieved' + (i + 1))
             for (let j = 0; j < (parseInt(pos) + parseInt(psos)); j++) {
-                if (CEScaledValue[i] != "" && coposcore[i][j] != "NaN") {
+                if (coposcore[i][j] != "" && coposcore[i][j] != "NaN") {
                     ele[j].innerHTML = CEScaledValue[i];
                 }
 
@@ -716,16 +700,8 @@ class CourseExit {
 
             }
         }
-        let max = 0;
-        for (let a = 0; a < parseInt(cos); a++) {
-            let nodelist = document.getElementsByName('Co' + (a + 1));
+        let max = 3;
 
-            for (let e of nodelist) {
-                if (e.value > max) {
-                    max = e.value
-                }
-            }
-        }
         let nodelist = document.getElementsByName('CourseTargetSet');
         for (let a of nodelist) {
             a.innerHTML = max;
@@ -735,7 +711,7 @@ class CourseExit {
         let avglist = document.getElementsByName('CourseEAVG');
         let list = document.getElementsByName('CourseAchieved')
         for (let a of list) {
-            if (((Math.round(((avglist[top].textContent) / 3) * 100) * 10) / 10) >= checkvalue) {
+            if (((Math.round((parseFloat((avglist[top].textContent)) / parseFloat(3)) * 100) * 10) / 10) >= checkvalue) {
                 a.innerHTML = "Y"
             }
             else {

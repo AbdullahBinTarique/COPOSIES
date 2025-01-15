@@ -83,6 +83,12 @@
             <span style="font-size:large;padding-bottom: 5%;">&nbsp&nbsp-&nbsp&nbsp</span>
             <input type="number" id="final_year" name="final_year" maxlength="2" required>
         </div>
+        <script>
+
+            document.getElementById('name').addEventListener('input', function (event) {
+                alert('All the Data related to the batch will be lost and change cannot be undone.')
+            })
+        </script>
         <input type="submit" value="Remove Batch Year" style="margin-top: 20%;">
     </form>
 </body>

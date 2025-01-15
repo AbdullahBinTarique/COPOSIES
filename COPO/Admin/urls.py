@@ -7,7 +7,7 @@ urlpatterns = [
     path('Home/adduserform/',views.adduserform,name="AddUserForm"),
     path('Home/adduserform/adduserfunction/', views.adduserfunction, name="AddUserFunction"),
     path('Home/ConfSubjects/', views.RenderSubjectHtml, name="ConfigureSubjectsHtml"),
-    path('Home/DataSubjects/', views.ConfigureAndEditSubject, name="ConfigureSubjectsHtml"),
+    path('Home/DataSubjects/', views.ConfigureAndEditSubject, name="ConfigureSubjects"),
 
     path('Home/removeuser/',views.removeuserform,name="RemoveUser"),
     path('Home/removeuser/func', views.removeuserfunction, name="RemoveUserfunc"),
@@ -66,6 +66,11 @@ path('Home/renderAVGCOPO/', views.avgcopo, name="RenderAVGCOPO"),
     path('Home/ViewCourseExitThresholdBasedCOPOAchieved/', views.CourseExitThresholdBased, name="CourseExitThresholdBasesCOPOAchieved"),
 
     path('Home/ViewExternalCOPOAchieved/', views.ConsolidatedThresholdbasedScaledAcheived, name="ExternalCOPOAchieved"),
+
+    # path('Home/deleteEntry/', views.deleteEntry, name="deleteEntry"),
+    # view avg copoThreshscaled
+    # view avg copoexit
+    # view avg copothreshbasedexit
 
     # path('ConsolidatedCourseOutcome/',views.ccourseoutcome,name="HomePage"),
 

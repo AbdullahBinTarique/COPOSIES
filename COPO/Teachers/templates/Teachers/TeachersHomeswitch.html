@@ -31,13 +31,12 @@
                 <button class="accordion-button" id="subject_collapse" type="button"
                     style="border-radius: 40px;width: 600px;" data-bs-toggle="collapse"
                     data-bs-target="#Subject_content" aria-expanded="True" aria-controls="flush-collapseOne">
-                    <select name="subjectDL" id="subjectDL" onchange="setCOPO()">
-                        {% for x in sub %}
-                        <option value="{{x.subject}}">{{x.subject}}</option>
-                        {% endfor %}
-                    </select>
-                </button>&nbsp&nbsp&nbsp
-                <button class="btn btn-outline-secondary button " id="stime"> </button>
+                    <div style="width: 150px;height: 40px;padding: 5px;" class="btn btn-outline-secondary button "
+                        id="stime">
+
+
+                    </div>
+                </button>
                 <script>
                     setInterval(() => {
                         const now = new Date();
@@ -55,22 +54,42 @@
                 <div class="accordion-body" style="display: flex;">
 
                     <form action='/Teachers/fetchadmin/' method="post">{% csrf_token %}
+                        <select name="subjectDL" id="subjectDL" onchange="setCOPO()">
+                            {% if suba %}
+                            <option value="{{suba}}">{{suba}}</option>
+                            {% else %}
+                            {% for x in sub %}
+                            <option value="{{x.subject}}">{{x.subject}}</option>
+                            {% endfor %}
+                            {% endif %}
+                        </select>
+                        <br>
 
                         <select name="branch" id="branch" class="form-select form-select-sm"
                             aria-label="Small select example">
-                            <option value="default">Select Branch</option>
+
+                            {% if Branch %}
+                            <option value="{Branch}">{{Branch}}</option>
+                            {% else %}
                             {% for b in branch %}
                             <option value="{{b}}">{{b}}</option>
                             {% endfor %}
+                            {% endif %}
                         </select>
 
 
                         <select name="batch" id="batch" class="form-select form-select-sm"
                             aria-label="Small select example">
-                            <option value="default">Select Batch</option>
+
+                            {% if Batch %}
+                            <option value="{Batch}">{{Batch}}</option>
+
+                            {% else %}
+
                             {% for b in batch %}
                             <option value="{{b}}">{{b}}</option>
                             {% endfor %}
+                            {% endif %}
                         </select>
                         <button type="submit" class="Button" style="margin-right: 10px;"> Generate </button>
 

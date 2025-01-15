@@ -532,38 +532,53 @@ def renderaddsubf(request):
             if  sem == "1":
                 subinst = Sem1.objects.create(Subject=sub,subject_id = code )
                 messages.success(request, 'Subject Added Successfully ')
-                return redirect("HomePage")
+                messages.success(request, 'Please configure the Subjects ')
+
+                return redirect("ConfigureSubjectsHtml")
 
             elif  sem == "2":
                 subinst = Sem2.objects.create(Subject=sub, subject_id=code)
                 messages.success(request, 'Subject Added Successfully ')
-                return redirect("HomePage")
+                messages.success(request, 'Please configure the Subjects ')
+
+                return redirect("ConfigureSubjectsHtml")
 
             elif  sem == "3":
                 subinst = Sem3.objects.create(Subject=sub, subject_id=code)
                 messages.success(request, 'Subject Added Successfully ')
-                return redirect("HomePage")
+                messages.success(request, 'Please configure the Subjects ')
+
+                return redirect("ConfigureSubjectsHtml")
             elif sem == "4":
                 subinst = Sem4.objects.create(Subject=sub, subject_id=code)
                 messages.success(request, 'Subject Added Successfully ')
-                return redirect("HomePage")
+                messages.success(request, 'Please configure the Subjects ')
+
+                return redirect("ConfigureSubjectsHtml")
             elif sem == "5":
                 subinst = Sem5.objects.create(Subject=sub, subject_id=code)
                 messages.success(request, 'Subject Added Successfully ')
-                return redirect("HomePage")
+                messages.success(request, 'Please configure the Subjects ')
+
+                return redirect("ConfigureSubjectsHtml")
             elif sem == "6":
                 subinst = Sem6.objects.create(Subject=sub, subject_id=code)
                 messages.success(request, 'Subject Added Successfully ')
-                return redirect("HomePage")
+                messages.success(request, 'Please configure the Subjects ')
+
+                return redirect("ConfigureSubjectsHtml")
             elif sem == "7":
                 subinst = Sem7.objects.create(Subject=sub, subject_id=code)
                 messages.success(request, 'Subject Added Successfully ')
-                return redirect("HomePage")
+                messages.success(request, 'Please configure the Subjects ')
+
+                return redirect("ConfigureSubjectsHtml")
             elif sem == "8":
                 subinst = Sem8.objects.create(Subject=sub, subject_id=code)
                 messages.success(request, 'Subject Added Successfully ')
-                return redirect("HomePage")
+                messages.success(request, 'Please configure the Subjects ')
 
+                return redirect("ConfigureSubjectsHtml")
 
 
 
