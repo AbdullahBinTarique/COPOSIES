@@ -67,12 +67,12 @@ path('Home/renderAVGCOPO/', views.avgcopo, name="RenderAVGCOPO"),
 
     path('Home/ViewExternalCOPOAchieved/', views.ConsolidatedThresholdbasedScaledAcheived, name="ExternalCOPOAchieved"),
 
-    # path('Home/deleteEntry/', views.deleteEntry, name="deleteEntry"),
+    path('Home/delete', views.deleteEntry, name="deleteEntry"),
     # view avg copoThreshscaled
     # view avg copoexit
     # view avg copothreshbasedexit
 
-    # path('ConsolidatedCourseOutcome/',views.ccourseoutcome,name="HomePage"),
+
 
 
 

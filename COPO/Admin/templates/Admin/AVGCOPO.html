@@ -85,6 +85,7 @@ Avg COPO
                             </th>
                             {% endfor %}
                             {% for z in value %}
+
                             <td style="width: 50px;">
                                 {{z}}
                             </td>
@@ -105,8 +106,10 @@ Avg COPO
             header = `<th scope="col">Subject_ID</th>
             <th scope="col">Subject</th>`
             for (let a = 0; a < parseInt(pos) + parseInt(psos); a++)
-
-                header += `<th scope="col">P's${(a + 1)}</th>`
+                if (a < parseInt(pos))
+                    header += `<th scope="col">Po's${(a + 1)}</th>`
+                else
+                    header += `<th scope="col">PSo's${(a + 1 - parseInt(pos))}</th>`
 
 
             document.getElementById('Theads').innerHTML = header

@@ -58,6 +58,7 @@ class COPOAcheiveddata(models.Model):
     CourseCopoAch = models.JSONField(null=True)
     CourseCopoAchExt = models.JSONField(null=True)
 
+
     def __str__(self):
         return   str(self.subject)+" uploaded by "+str(self.uploaded_by)
 

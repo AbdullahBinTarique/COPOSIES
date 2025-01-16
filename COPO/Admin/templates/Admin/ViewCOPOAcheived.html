@@ -125,23 +125,28 @@ COPO ACHIEVED
 
         <div class="card-body">
             <p class="card-text">
-            <h3 id='subjh3' class="searchable">{{x.subject}}-{{x.uploaded_by}}</h3>
-            <h6 class="searchable"> Sem :{{subj.sem}}</h6>
-            <h6 class="searchableBa">Batch :{{x.batch}}</h6>
-            <h6 class="searchableBr">Branch :{{x.branch}} </h6>
+            <h3 id='subjh3' class="searchable id">{{x.subject}}-{{x.uploaded_by}}</h3>
+            <h6 class="searchable sem" data-sem="{{subj.sem}}"> Sem :{{subj.sem}}</h6>
+            <h6 class="searchableBa" data-batch="{{x.batch}}">Batch :{{x.batch}}</h6>
+            <h6 class="searchableBr" data-branch="{{x.branch}}">Branch :{{x.branch}} </h6>
             <h6>Number of Co = {{subj.NOCO}}</h6>
             <h6>Number of Po = {{subj.NOPO}}</h6>
             <h6>Number of Po = {{subj.NOPSO}}</h6>
+            <h6 data-times="{{ x.uploade_date}}" class="timed"></h6>
             </p>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-outline-secondary myButtonV enlarge-btn"
                         id="{{x.subject}}-view">View</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary myButtonV del"
+                        id="{{x.subject}}-delete">Delete</button>
 
                 </div>
 
-                <small class="text-body-secondary" class="searchable">Uploaded at {{ x.uploade_date}}</small>
-                <small class="text-body-secondary" class="searchable"> {{ x.uploade_date|timesince }} ago</small>
+                <small class="text-body-secondary" class="searchable ">Uploaded at {{ x.uploade_date}}</small>
+
+                <small class="text-body-secondary" class="searchable ">
+                    {{x.uploade_date|timesince }} ago</small>
             </div>
         </div>
     </div>
@@ -208,7 +213,7 @@ COPO ACHIEVED
 
     document.addEventListener('click', function (event) {
         if (event.target.id === 'Filter') {
-            console.log('HI')
+
 
             const br = document.getElementById("searchBoxBr");
             const ba = document.getElementById("searchBoxBa");
@@ -240,6 +245,53 @@ COPO ACHIEVED
 
         }
     })
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const but = document.querySelectorAll('.del')
+        but.forEach((button) => {
+            button.addEventListener('click', (event) => {
+                const card = event.target.closest('.card')
+                let subname = card.querySelector('.id').textContent
+                subname = subname.trim().split('-')
+
+                const sems = card.querySelector('.sem')
+                const sem = sems.dataset.sem
+                const bats = card.querySelector('.searchableBa')
+                const bat = bats.dataset.batch
+                const bari = card.querySelector('.searchableBr')
+                const bar = bari.dataset.branch
+                const but = document.querySelectorAll('.del')
+                let time = card.querySelector('.timed')
+                time = time.dataset.times
+
+                console.log(bat)
+                console.log(bar)
+                console.log(subname[0])
+
+
+                $.ajax({
+                    url: '/Admin/Home/delete',
+                    type: 'POST',
+                    data: {
+                        // Send JSON string as data
+                        sub: subname[0],
+                        bari: bar,
+                        bath: bat,
+                        time: time,
+
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    }, success: function (data) {
+                        if (data.message) {
+                            alert(data.message);
+                            location.reload(true);
+                        }
+                    }
+                })
+
+            })
+        })
+    })
+
 
 
     // Add event listener to each button
@@ -277,4 +329,6 @@ COPO ACHIEVED
 
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {% endblock %}

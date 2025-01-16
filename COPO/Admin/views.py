@@ -1,5 +1,6 @@
 import json
 
+from datetime import datetime
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.shortcuts import HttpResponse
@@ -8,6 +9,7 @@ from django.db import models
 from django.urls import reverse
 import time
 
+from django.utils.timezone import make_aware
 from graphviz.dot import subgraph
 
 from Teachers.models import Students,Branch,Batch,Teacher
@@ -798,6 +800,41 @@ def viewAVGCOPO(request):
 
         param = {'COPOAVG':dictCOPOAVG,'br':branch,'bran':br,'ba':batch,'batc':ba ,'subinst':inst,}
         return render(request,'Admin/AVGCOPO.html',param)
+
+def deleteEntry(request):
+    if 'user_id' in request.session:
+        if request.method == 'POST':
+            sub = request.POST['sub']
+
+            bat =  request.POST['bath']
+            bar =  request.POST['bari']
+            time = request.POST['time']
+            #
+            #
+            # # Parse the string to a datetime object
+            time = time.replace("p.m.", "PM").replace("a.m.", "AM")
+            # parsed_time = datetime.strptime(time, "%b. %d, %Y, %I:%M %p")
+            #
+            # # Make it timezone-aware (if your project uses timezones)
+            # aware_time = make_aware(parsed_time)
+            # subinst = SubjectDB.objects.get(subject = sub)
+            # batinst = Batch.objects.get(batch = bat)
+            # barinst = Branch.objects.get(branch = bar)
+            # truncated_time = aware_time.replace( microsecond=0)
+            parsed_time = datetime.strptime(time, "%b. %d, %Y, %I:%M %p")
+            hour = parsed_time.hour
+            minute = parsed_time.minute
+            # Use the parsed and formatted time for filtering
+
+            # subject = subinst, batch = batinst, branch = barinst,
+            try:
+                dinst = COPOAcheiveddata.objects.filter( uploade_date__hour=hour,
+    uploade_date__minute=minute)
+                dinst.delete()
+                return JsonResponse({'message':'Successfully Removed the sheet'})
+            except COPOAcheiveddata.DoesNotExist:
+                return JsonResponse({'message':'Error'})
+
 
 
 
