@@ -68,10 +68,14 @@ Avg COPO
     <div class="card shadow-sm forbuttons">
         <div style="width:100%; height:100%;overflow-y: scroll;padding-left: 10px;padding-top: 10px;"
             class="Expandable">
-            <div style="width: 1000px; height: 250px;">
-                <table class="table table-bordered border-primary  table-dark table-hover">
+            <div style="width: 1000px; height: 100%;">
+                <p
+                    style="border: 2px solid blue ;  padding: 10px ; font-size: larger;font-weight: 600;display: block;width:25%">
+                    Direct Attainments
+                    Avg</p>
+                <table class="table table-bordered border-primary  table-dark table-hover" id="Table">
                     <thead>
-                        <tr scope="row" id="Theads">
+                        <tr scope="row" id="Theads1">
 
 
                         </tr>
@@ -93,7 +97,131 @@ Avg COPO
 
                         </tr>
                         {% endfor %}
+                        <tr id="Avg">
+                            <th colspan="2">
+                                Average :
+                            </th>
 
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="width: 1000px; height: 100%;">
+
+                <table class="table table-bordered border-primary  table-dark table-hover" id="Table2">
+                    <p
+                        style="border: 2px solid blue ;  padding: 10px ; font-size: larger;font-weight: 600;display: block;width:25%">
+                        Direct Attainments Scaled
+                        Avg</p>
+                    <thead>
+                        <tr scope="row" id="Theads2">
+
+
+                        </tr>
+                    </thead>
+                    <tbody id="Tbodys" class="table-group-divider">
+                        {% for key,value in COPOAVGSC.items %}
+                        <tr>
+                            {% for x in key %}
+                            <th style="width: 50px;">
+                                {{x}}
+                            </th>
+                            {% endfor %}
+                            {% for z in value %}
+
+                            <td style="width: 50px;">
+                                {{z}}
+                            </td>
+                            {% endfor %}
+
+                        </tr>
+                        {% endfor %}
+                        <tr id="Avg2">
+                            <th colspan="2">
+                                Average :
+                            </th>
+
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="width: 1000px; height: 100%;">
+                <p
+                    style="border: 2px solid blue ;  padding: 10px ; font-size: larger;font-weight: 600;display: block;width:25%">
+                    In-Direct Attainments
+                    Avg</p>
+                <table class="table table-bordered border-primary  table-dark table-hover" id="Table3">
+                    <thead>
+                        <tr scope="row" id="Theads3">
+
+
+                        </tr>
+                    </thead>
+                    <tbody id="Tbodys" class="table-group-divider">
+                        {% for key,value in COPOAVGEXT.items %}
+                        <tr>
+                            {% for x in key %}
+                            <th style="width: 50px;">
+                                {{x}}
+                            </th>
+                            {% endfor %}
+                            {% for z in value %}
+
+                            <td style="width: 50px;">
+                                {{z}}
+                            </td>
+                            {% endfor %}
+
+                        </tr>
+                        {% endfor %}
+                        <tr id="Avg3">
+                            <th colspan="2">
+                                Average :
+                            </th>
+
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="width: 1000px; height: 100%;">
+                <p
+                    style="border: 2px solid blue ;  padding: 10px ; font-size: larger;font-weight: 600;display: block;width:25%">
+                    In-Direct Attainments Scaled
+                    Avg</p>
+                <table class="table table-bordered border-primary  table-dark table-hover" id="Table4">
+                    <thead>
+                        <tr scope="row" id="Theads4">
+
+
+                        </tr>
+                    </thead>
+                    <tbody id="Tbodys" class="table-group-divider">
+                        {% for key,value in COPOAVGEXTSC.items %}
+                        <tr>
+                            {% for x in key %}
+                            <th style="width: 50px;">
+                                {{x}}
+                            </th>
+                            {% endfor %}
+                            {% for z in value %}
+
+                            <td style="width: 50px;">
+                                {{z}}
+                            </td>
+                            {% endfor %}
+
+                        </tr>
+                        {% endfor %}
+                        <tr id="Avg4">
+                            <th colspan="2">
+                                Average :
+                            </th>
+
+
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -112,7 +240,51 @@ Avg COPO
                     header += `<th scope="col">PSo's${(a + 1 - parseInt(pos))}</th>`
 
 
-            document.getElementById('Theads').innerHTML = header
+            document.getElementById('Theads1').innerHTML = header
+            document.getElementById('Theads2').innerHTML = header
+
+            document.getElementById('Theads3').innerHTML = header
+
+            document.getElementById('Theads4').innerHTML = header
+
+
+            function calcavg(str, avg) {
+                let storeelements = []
+                const table = document.getElementById(str)
+                let arr = [];
+                const rows = table.querySelectorAll('tr');
+                rows.forEach(row => {
+                    const rowdata = [];
+                    row.querySelectorAll('td').forEach(cell => {
+                        rowdata.push(cell.textContent.trim());
+                    });
+                    arr.push(rowdata);
+                })
+                for (let z = 0; z < 14; z++) {
+                    let avg = 0.0, sum = 0.0, count = 0;
+                    for (let b = 1; b < arr.length - 1; b++) {
+                        if (arr[b][z] != "" && arr[b][z] != "NaN") {
+                            sum += parseFloat(arr[b][z]);
+                            count++;
+                        }
+                    }
+                    avg = Math.round(sum / count * 100) / 100;
+                    storeelements.push(avg);
+                }
+                let doc = ``
+
+                for (let index = 0; index < storeelements.length; index++) {
+                    doc += `<th>${storeelements[index]}</th>`
+
+                }
+                table.querySelector(`#${avg}`).innerHTML += doc
+            }
+
+            calcavg('Table', 'Avg');
+            calcavg('Table2', 'Avg2');
+            calcavg('Table3', 'Avg3');
+            calcavg('Table4', 'Avg4');
+
 
         </script>
 

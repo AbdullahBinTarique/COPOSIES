@@ -1,6 +1,8 @@
 {% extends "Admin/COPOTemplate.html" %}
+{% load static %}
+
 {% block title %}
-COPO ACHIEVED
+Manage Sheets
 {% endblock %}
 {% block content1 %}
 <p class="text-body-secondary"> The Corelation sheet data is saved at the time of submission of
@@ -22,7 +24,7 @@ COPO ACHIEVED
 {% endblock %}
 
 {% block content2 %}
-<h1 class="fw-light">COPO Achieved</h1>
+<h1 class="fw-light">Manage Sheets</h1>
 <p class="lead text-body-secondary">For Each of the Subjects , below are the Sheets representing the
     data</p>
 <p>
@@ -66,92 +68,56 @@ COPO ACHIEVED
 {% endblock %}
 
 {% block content3 %}
-<script>
-    var sub = ''
-    var cos = ''
-    var pos = ''
-    var psos = ''
-    var header = ''
-</script>
-{% for x,subj in data %}
+{% for x in INS %}
 <div class="col-lg-6">
+
     <div class="card shadow-sm forbuttons" data-brn="{{x.branch}}" data-sem="{{subj.sem}}" data-batch="{{x.batch}}">
-        <div style="width:100%; height:230px;overflow-y: scroll;padding-left: 10px;padding-top: 10px;"
-            class="Expandable">
-            <div style="width: 1000px; height: 250px;">
-                <table class="table table-bordered border-primary  table-dark table-hover">
-                    <thead>
-                        <tr scope="row" id="Theads{{x.subject}}">
+        <div style="width:100%; height:230px ; " class="Expandable">
+            <svg class="bd-placeholder-img card-img-top" style="position:absolute ; " width="90%" height="225px"
+                xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                preserveAspectRatio="xMidYMid slice" focusable="false">
+                <title>Placeholder</title>
+                <image style="filter: blur(4px);opacity: 0.5;;" x="0" y="0" width="100%" height="100%"
+                    href="{% static 'Pics/' %}{% cycle 'Physics.jpg' 'Maths.jpg' 'Java.jpg' 'PCE.jpg' 'CP.jpg' 'AOA.jpg' 'AI.jpg' 'CG.jpg' 'dlcoa.jpg' 'DS.jpg' 'DSGT.jpg' 'EG.jpg' 'MP.jpg' 'NLPP.jpg' 'RDBMS.jpg' 'Java.jpg' %}"
+                    alt="Example Img" preserveAspectRatio="xMidYMid slice" />
 
-
-                        </tr>
-                    </thead>
-                    <tbody id="Tbodys" class="table-group-divider">
-                        {% for key,value in x.copoAch.items %}
-                        <tr>
-                            <th style="width: 50px;">
-                                {{key}}
-                            </th>
-                            {% for z in value %}
-                            <td style="width: 50px;">
-                                {{z}}
-                            </td>
-
-
-                            {% endfor %}
-
-                        </tr>
-                        {% endfor %}
-
-                    </tbody>
-                </table>
-            </div>
+            </svg>
+            <svg style="position:absolute; " class="bd-placeholder-img card-img-top" width="100%" height="225px"
+                aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+                <title>{{x.uploaded_by}}</title>
+                <text x="50%" y="50%" fill="#eceeef" dy=".3em">{{x.uploaded_by}}</text>
+            </svg>
         </div>
-        <script>
-            sub = '{{subj.subject}}'
-            cos = '{{subj.NOCO}}'
-            pos = '{{subj.NOPO}}'
-            psos = '{{subj.NOPSO}}'
-            header = `<th scope="col">COS</th>`
-            for (let a = 0; a < parseInt(pos) + parseInt(psos); a++)
-                if (a < pos)
-                    header += `<th scope="col">Pos${(a + 1)}</th>`
-                else
-                    header += `<th scope="col">Psos${(a + 1 - pos)}</th>`
-            document.getElementById('Theads{{x.subject}}').innerHTML = header
 
-        </script>
 
 
         <div class="card-body">
             <p class="card-text">
             <h3 id='subjh3' class="searchable id">{{x.subject}}-{{x.uploaded_by}}</h3>
-            <h6 class="searchable sem" data-sem="{{subj.sem}}"> Sem :{{subj.sem}}</h6>
+
             <h6 class="searchableBa" data-batch="{{x.batch}}">Batch :{{x.batch}}</h6>
             <h6 class="searchableBr" data-branch="{{x.branch}}">Branch :{{x.branch}} </h6>
-            <h6>Number of Co = {{subj.NOCO}}</h6>
-            <h6>Number of Po = {{subj.NOPO}}</h6>
-            <h6>Number of Po = {{subj.NOPSO}}</h6>
+
             <h6 data-times="{{ x.uploade_date}}" class="timed"></h6>
             </p>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-outline-secondary myButtonV enlarge-btn"
-                        id="{{x.subject}}-view">View</button>
-
-
+                    <button type="button" class="btn btn-sm btn-outline-secondary   enlarge-btn"
+                        id="open-new-tab">View</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary   del"
+                        id="{{x.subject}}-delete">Delete</button>
                 </div>
 
                 <small class="text-body-secondary" class="searchable ">Uploaded at {{ x.uploade_date}}</small>
 
                 <small class="text-body-secondary" class="searchable ">
                     {{x.uploade_date|timesince }} ago</small>
+
             </div>
         </div>
     </div>
 </div>
 {% endfor %}
-
 {% endblock %}
 {% block script %}
 <script>
@@ -196,19 +162,7 @@ COPO ACHIEVED
     }
 
     const buttons = document.querySelectorAll('.enlarge-btn');
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') {
-            const overlay = document.querySelector('.overlay');
-            const enlargedCard = document.querySelector('.enlarged');
 
-            if (overlay && enlargedCard) {
-                overlay.remove();
-                enlargedCard.classList.remove('enlarged');
-                enlargedCard.querySelector('.Expandable').style.height = '230px'
-
-            }
-        }
-    });
 
     document.addEventListener('click', function (event) {
         if (event.target.id === 'Filter') {
@@ -245,6 +199,39 @@ COPO ACHIEVED
         }
     })
 
+    document.addEventListener('DOMContentLoaded', () => {
+        const but = document.querySelectorAll('.del')
+        but.forEach((button) => {
+            button.addEventListener('click', (event) => {
+                const card = event.target.closest('.card')
+                let subname = card.querySelector('.id').textContent
+                subname = subname.trim().split('-')
+                let time = card.querySelector('.timed')
+                time = time.dataset.times
+
+
+                if (confirm("Are you sure you want to delete the Sheet, All the data related to this sheet will be lost")) {
+                    $.ajax({
+                        url: '/Admin/Home/delete',
+                        type: 'POST',
+                        data: {
+                            // Send JSON string as data
+
+
+                            time: time,
+
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        }, success: function (data) {
+                            if (data.message) {
+                                alert(data.message);
+                                location.reload(true);
+                            }
+                        }
+                    })
+                }
+            })
+        })
+    })
 
 
 
@@ -252,32 +239,24 @@ COPO ACHIEVED
     buttons.forEach((button) => {
         button.addEventListener('click', (event) => {
             const card = event.target.closest('.card');
+            let time = card.querySelector('.timed')
+            time = time.dataset.times
 
-            // Check if a card is already enlarged
-            const existingEnlarged = document.querySelector('.enlarged');
-            if (existingEnlarged) {
-                existingEnlarged.classList.remove('enlarged');
-                const overlay = document.querySelector('.overlay');
-                if (overlay) overlay.remove();
-            }
+            $.ajax({
+                url: '/Admin/Home/ViewSheet',
+                type: 'POST',
+                data: {
+                    // Send JSON string as data
+                    times: time,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                }, success: function (data) {
+                    const newTab = window.open();
 
-            // Add the enlarged class to the clicked card
-            card.classList.add('enlarged');
-            card.querySelector('.Expandable').style.height = '300px'
-            // Add an overlay for better focus
-            const overlay = document.createElement('div');
-            overlay.classList.add('overlay');
-            document.body.appendChild(overlay);
+                    newTab.document.body.innerHTML = JSON.parse(data.html);
 
+                }
+            })
 
-
-            // Add click listener to overlay to close the enlarged card
-            overlay.addEventListener('click', () => {
-                card.classList.remove('enlarged');
-                overlay.remove();
-                card.querySelector('.Expandable').style.height = '230px'
-
-            });
         });
     });
 

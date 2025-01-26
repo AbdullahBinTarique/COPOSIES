@@ -327,7 +327,7 @@ class calc {
 
     static calcWeightedAvgAchieved() {
         let variable = parseInt(psos) + parseInt(pos);
-        for (let i = 0; i < coposcore.length; i++) {
+        for (let i = 0; i < cos; i++) {
             for (let j = 0; j < variable; j++) {
                 let k = coposcore[i][j];
                 if (k === '3' && j < pos) {
@@ -577,7 +577,7 @@ class CourseExit {
         storeelements = []
         let variable = parseInt(psos) + parseInt(pos);
         let values = document.getElementsByName('ScaledValue')
-        for (let i = 0; i < coposcore.length; i++) {
+        for (let i = 0; i < cos; i++) {
             for (let j = 0; j < variable; j++) {
                 let k = coposcore[i][j];
                 if (k === '3' && j < pos) {

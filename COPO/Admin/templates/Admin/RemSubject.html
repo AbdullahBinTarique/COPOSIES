@@ -68,18 +68,27 @@
 
 <body>
     <form id="userForm" action='/Admin/Home/RenderConfBB/remSubjfunc' method="POST"> {% csrf_token %}
-        <h7>Subjects Are:</h7>
-        <ul>{% for x in sub %}
-            <li>{{x.subject}}</li>
-            {% endfor %}
-        </ul>
+        <div style="overflow: auto; height: 300px;width: 300px;border: 1px solid #ccc;">
+            <h7>Subjects Are:</h7>
+            <ul>{% for x in sub|dictsort:"sem" %}
+
+                {% ifchanged x.sem %}
+                <hr>
+                <li style="list-style:none;">Sem {{x.sem}}</li>
+                {% endifchanged %}
+                <li>{{x.subject}}</li>
+                {% endfor %}
+            </ul>
+        </div>
         <label for="name">Subject Name:</label>
+
         <select name="name" id="name" class="form-select" style="width: 50%;" required>
             {% for x in sub %}
             <option value="{{x.subject}}">{{x.subject}}</option>
             {% endfor %}
 
         </select>
+
         <script>
 
             document.getElementById('name').addEventListener('input', function (event) {

@@ -1,4 +1,5 @@
 import json
+from django.template.loader import render_to_string
 
 from datetime import datetime
 from django.http import JsonResponse
@@ -460,7 +461,7 @@ def SaveCOPOAchieved(request):
             coursExAchdata = request.POST['table4']
             branch = request.POST['branch']
             batch = request.POST['batch']
-
+            page = request.POST['page']
             bainst = Batch.objects.get(batch = batch)
             brinst = Branch.objects.get(branch = branch)
             teacherUName = request.POST['teacher']
@@ -475,7 +476,7 @@ def SaveCOPOAchieved(request):
             teacinst =AdminUSERS.objects.get(username = teacherUName,email = request.session['user_id'])
             uploaded_by = teacinst
             inst = COPOAcheiveddata.objects.create(subject = subinst, copoAch=copo,copoAchExt=copoExdata
-                                                   ,CourseCopoAch=courseExitAch,CourseCopoAchExt=courseExitExAch,
+                                                   ,temp = page,CourseCopoAch=courseExitAch,CourseCopoAchExt=courseExitExAch,
                                                    uploaded_by=uploaded_by,batch = bainst,branch = brinst)
             inst.save()
             print(inst)
@@ -784,6 +785,9 @@ def avgcopo(request):
 def viewAVGCOPO(request):
     if request.method == 'GET':
         dicti = {}
+        dicti2 = {}
+        dicti3 = {}
+        dicti4 = {}
         br = request.GET['branch']
         ba = request.GET['batch']
         branch = Branch.objects.all()
@@ -798,44 +802,84 @@ def viewAVGCOPO(request):
 
         dictCOPOAVG = dict(sorted(dicti.items()))
 
-        param = {'COPOAVG':dictCOPOAVG,'br':branch,'bran':br,'ba':batch,'batc':ba ,'subinst':inst,}
+        for x in inst:
+            subinst = SubjectDB.objects.get(subject = x.subject)
+            subs = (subinst.subject_id,subinst.subject)
+            dicti2[subs] = x.copoAchExt['EAVG']
+
+        dictCOPOAVG2 = dict(sorted(dicti2.items()))
+        for x in inst:
+            subinst = SubjectDB.objects.get(subject = x.subject)
+            subs = (subinst.subject_id,subinst.subject)
+            dicti3[subs] = x.CourseCopoAch['CourseAVG']
+
+        dictCOPOAVG3 = dict(sorted(dicti3.items()))
+        for x in inst:
+            subinst = SubjectDB.objects.get(subject = x.subject)
+            subs = (subinst.subject_id,subinst.subject)
+            dicti4[subs] = x.CourseCopoAchExt['CourseEAVG']
+
+        dictCOPOAVG4 = dict(sorted(dicti4.items()))
+
+        param = {'COPOAVG':dictCOPOAVG,'COPOAVGSC':dictCOPOAVG2,'COPOAVGEXT':dictCOPOAVG3,'COPOAVGEXTSC':dictCOPOAVG4,'br':branch,'bran':br,'ba':batch,'batc':ba ,'subinst':inst,}
         return render(request,'Admin/AVGCOPO.html',param)
 
 def deleteEntry(request):
     if 'user_id' in request.session:
         if request.method == 'POST':
-            sub = request.POST['sub']
-
-            bat =  request.POST['bath']
-            bar =  request.POST['bari']
+            # sub = request.POST['sub']
+            # bat =  request.POST['bath']
+            # bar =  request.POST['bari']
             time = request.POST['time']
-            #
-            #
-            # # Parse the string to a datetime object
+
             time = time.replace("p.m.", "PM").replace("a.m.", "AM")
-            # parsed_time = datetime.strptime(time, "%b. %d, %Y, %I:%M %p")
-            #
-            # # Make it timezone-aware (if your project uses timezones)
-            # aware_time = make_aware(parsed_time)
-            # subinst = SubjectDB.objects.get(subject = sub)
-            # batinst = Batch.objects.get(batch = bat)
-            # barinst = Branch.objects.get(branch = bar)
-            # truncated_time = aware_time.replace( microsecond=0)
+            if ',' in time and ' PM' in time or ' AM' in time:
+                time_parts = time.split(',')
+                time_portion = time_parts[-1].strip()
+                if len(time_portion.split(':')) == 1:  # If no minutes are present
+                    time = time.replace(time_portion,
+                                        time_portion.replace(' AM', ':00 AM').replace(' PM', ':00 PM'))
+
             parsed_time = datetime.strptime(time, "%b. %d, %Y, %I:%M %p")
             hour = parsed_time.hour
             minute = parsed_time.minute
-            # Use the parsed and formatted time for filtering
-
-            # subject = subinst, batch = batinst, branch = barinst,
             try:
                 dinst = COPOAcheiveddata.objects.filter( uploade_date__hour=hour,
-    uploade_date__minute=minute)
+    uploade_date__minute=minute).first()
                 dinst.delete()
                 return JsonResponse({'message':'Successfully Removed the sheet'})
             except COPOAcheiveddata.DoesNotExist:
                 return JsonResponse({'message':'Error'})
 
+def ManageSheets(request):
+    inst = COPOAcheiveddata.objects.all()
+    params = {'INS':inst}
+    return render(request,'Admin/ManageSheetshtml.html',params)
+
+def ViewSheet(request):
+    time = request.POST['times']
+
+    time = time.replace("p.m.", "PM").replace("a.m.", "AM")
+    if ',' in time and ' PM' in time or ' AM' in time:
+        time_parts = time.split(',')
+        time_portion = time_parts[-1].strip()
+        if len(time_portion.split(':')) == 1:  # If no minutes are present
+            time = time.replace(time_portion,
+                                              time_portion.replace(' AM', ':00 AM').replace(' PM', ':00 PM'))
+    parsed_time = datetime.strptime(time, "%b. %d, %Y, %I:%M %p")
+    hour = parsed_time.hour
+    minute = parsed_time.minute
+
+    try:
+        dinst = COPOAcheiveddata.objects.filter(uploade_date__hour=hour,
+                                                uploade_date__minute=minute).first()
+        param = {'data':dinst}
+          # Pass context if needed
+        rendered_html = render_to_string('Teachers/Sheet.html', param)
+        return JsonResponse({"html": dinst.temp})
 
 
+    except COPOAcheiveddata.DoesNotExist:
+        return JsonResponse({'message': 'Error'})
 
 

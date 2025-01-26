@@ -72,11 +72,13 @@
 
 <body>
     <form id="userForm" action='/Admin/Home/RenderConfBB/remBatchfunc' method="POST"> {% csrf_token %}
-        <h7>The Batchs are:</h7>
-        <ul>{% for x in ba %}
-            <li>{{ x.batch }}</li>
-            {% endfor %}
-        </ul>
+        <div style="overflow: auto; height: 300px;width: 300px;border: 1px solid #ccc;">
+            <h7>The Batchs are:</h7>
+            <ul>{% for x in ba %}
+                <li>{{ x.batch }}</li>
+                {% endfor %}
+            </ul>
+        </div>
         <label for="name">Batch Year:</label>
         <div>
             <input type="number" id="entry_year" name="entry_year" maxlength="2" required>

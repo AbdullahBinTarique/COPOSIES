@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head id="head">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Homepage</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
+    <style id="style">
         body {
             background-color: #b7cdee6d;
             height: 100vh;
@@ -103,13 +103,13 @@
     </style>
 </head>
 
-<body>
+<body id="body">
     {% block content %}
 
     {% endblock %}
 
     <br><br><br>
-    <main>
+    <main id='main'>
         {% if messages %}
         <ul class="message-list">
             {% for message in messages %}
@@ -456,12 +456,14 @@
             <button class="Button" id="savenprint" style="width: 200px;">
                 Save And Print this sheet
             </button>
+
             <script>
+
                 document.getElementById('savenprint').addEventListener('click', function () {
+
+
+
                     prin();
-
-
-
                     getAllFinalValues()
 
                     setTimeout(() => {
@@ -556,6 +558,7 @@
                     document.getElementById('numberofcos').value = cos;
                     const con = document.getElementsByName('CoName')
                     let counter = 0;
+                    coposcore = [];
                     generateCOPO()
 
                     for (const key in conames) {
@@ -803,6 +806,7 @@
 
         }
         function save() {
+            coposcore = [];
             if (coposcore.length == 0)
                 calc.TweightedAvgAchieved();
             calc.TargetNAvg();
@@ -1161,6 +1165,24 @@
         let CoAchieved4 = {}
 
         function getAllFinalValues() {
+            let a = document.getElementById('Table3xl').outerHTML
+            a += `<br><br><br>`
+            a += document.getElementById('INT-EXT').outerHTML
+            a += `<br><br><br><h4>CALC IA1</h4>`
+            a += document.getElementById('Calculated-IA1').outerHTML
+            a += `<br><br><br><h4>CALC IA2</h4>`
+            a += document.getElementById('Calculated-IA2').outerHTML
+            a += `<br><br><br><h4>Direct Attainment</h4>`
+            a += document.getElementById('formTableCopoAchieved').outerHTML
+            a += `<br><br><br><h4>Direct Attainment Scaled Values</h4>`
+            a += document.getElementById('formEThresholdCopoAchieved').outerHTML
+            a += `<br><br><br><h4>Indirect Attainment</h4>`
+            a += document.getElementById('formTableCourseExitCopoAchieved').outerHTML
+            a += `<br><br><br><h4>Indirect Attainment Scaled Values</h4>`
+            a += document.getElementById('formCEThresholdCopoAchieved').outerHTML
+
+
+            const jsa = JSON.stringify(a)
             let sub = document.getElementById('subjectDL').value;
             let tea = document.getElementById('teacher').innerHTML.trim();
 
@@ -1283,6 +1305,7 @@
                     sub: sub,
                     batch: ba,
                     branch: br,
+                    page: jsa,
                     csrfmiddlewaretoken: '{{ csrf_token }}'
                 },
             })

@@ -68,15 +68,19 @@
 
 <body>
     <form id="userForm" action='/Admin/Home/RenderConfBB/addSubjfunc' method="POST"> {% csrf_token %}
-        <h7>Subjects Are:</h7>
-        <ul>{% for x in sub|dictsort:"sem" %}
 
-            {% ifchanged x.sem %}
-            <li style="list-style:none;">Sem {{x.sem}}</li>
-            {% endifchanged %}
-            <li>{{x.subject}}</li>
-            {% endfor %}
-        </ul>
+        <div style="overflow: auto; height: 300px;width: 300px;border: 1px solid #ccc;">
+            <h7>Subjects Are:</h7>
+            <ul>{% for x in sub|dictsort:"sem" %}
+
+                {% ifchanged x.sem %}
+                <hr>
+                <li style="list-style:none;">Sem {{x.sem}}</li>
+                {% endifchanged %}
+                <li>{{x.subject}}</li>
+                {% endfor %}
+            </ul>
+        </div>
         <label for="name">Subject Name:</label>
         <input type="text" name="name" id="name" class="text-body-primary" required>
         <label for="code">Subject code:</label>

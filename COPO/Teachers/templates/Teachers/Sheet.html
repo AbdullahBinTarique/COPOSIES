@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{data.uploaded_by}}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #b7cdee6d;
+            height: 100vh;
+        }
+
+        .fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        header {
+            border: 1 px solid white;
+            margin-top: 100px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* height: 100vh; */
+        }
+
+        .accordion-button {
+
+            width: 500px;
+
+
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            border-radius: 10px;
+            background-color: rgba(241, 151, 91, 0.486);
+            margin: 1px;
+            padding: 2px;
+            border-radius: 10px;
+        }
+
+
+        th {
+            background-color: rgba(241, 151, 91, 0.486);
+            margin: 1px;
+            padding: 2px;
+            border-radius: 10px;
+        }
+
+        td {
+            border: none rgba(95, 72, 57, 0.486);
+            margin: 1px;
+            padding: 2px;
+            text-align: center;
+            border-radius: 10px;
+
+        }
+
+
+        input[type=number]::-webkit-outer-spin-button,
+        input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0px;
+
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .Table_data:focus {
+            outline: none;
+        }
+
+        .Button {
+            border: 2px solid blue;
+            background-color: #6A0DAD;
+            color: azure;
+            width: 100px;
+            height: 30px;
+            border-radius: 30px;
+            transition: background-color;
+            font-size: 14px;
+        }
+
+        .Button:hover {
+            background-color: #540b9c;
+
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="accordion accordion-flush" id="Teacher_name">
+            <div class="accordion-item" style="border-radius: 40px;">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" id="teacher_collapse" style="border-radius: 40px;"
+                        type="button" data-bs-toggle="collapse" data-bs-target="#Teacher_content" aria-expanded="false"
+                        aria-controls="flush-collapseOne">
+                        <span id="teacher">{{data.uploaded_by }}</span>&nbsp&nbsp
+                    </button>
+                </h2>
+                <div id="Teacher_content" class="accordion-collapse collapse" data-bs-parent="#Teacher_name">
+                    <div class="accordion-body">
+
+
+                        <a href='/'> <button class="btn btn-sm btn-secondary">Main Page</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="accordion accordion-flush" id="Subject_name">
+            <div class="accordion-item" style="border-radius: 40px;">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" id="subject_collapse" style="border-radius: 40px;" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#Subject_content" aria-expanded="true"
+                        aria-controls="flush-collapseOne">
+                        <div style="width: 200px;height: 40px;padding: 5px;" class="btn btn-outline-secondary button "
+                            id="stime">
+
+
+                        </div>
+                    </button>
+
+                    <script>
+                        document.getElementById('stime').innerHTML = ` {{ data.uploade_date}}`
+                    </script>
+                </h2>
+                <div id="Subject_content" class="accordion-collapse collapse show" data-bs-parent="#Subject_name">
+                    <div class="accordion-body">
+
+
+                        <select name="subjectDL" id="subjectDL" onchange="setCOPO()">
+                            <option value="{{suba}}">{{data.subject}}</option>
+                        </select>
+                        <br>
+
+
+                        <select name="branch" id="branch" class="form-select form-select-sm" style="width: 100px;"
+                            aria-label="Small select example">
+                            <option value="{Branch}">{{data.branch}}</option>
+
+                        </select>
+
+
+                        <select name="batch" id="batch" class="form-select form-select-sm " style="width: 100px;"
+                            aria-label="Small select example">
+                            <option value="{Batch}">{{data.batch}}</option>
+
+                        </select>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+    </main>
+
+    <script>
+        // Auto fade out alerts after 3 seconds
+
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                let alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function (alert) {
+                    alert.classList.add('fade-out');
+                    setTimeout(function () {
+                        alert.style.display = 'none';
+                    }, 500); // Match the duration of the fade-out transition
+                });
+            }, 3000); // Time in milliseconds before fading out (3 seconds)
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js">
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+</body>
+
+</html>

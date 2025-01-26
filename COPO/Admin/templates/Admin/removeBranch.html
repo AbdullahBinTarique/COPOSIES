@@ -67,11 +67,14 @@
 
 <body>
     <form id="userForm" action='/Admin/Home/RenderConfBB/remBranchfunc' method="POST"> {% csrf_token %}
-        <h7>Branches Are:</h7>
-        <ul>{% for x in br %}
-            <li>{{x.branch}}</li>
-            {% endfor %}
-        </ul>
+        <div
+            style="overflow: auto; height: 300px;width: 300px;border: 1px solid #ccc;padding: 20px;box-sizing: border-box;">
+            <h3>Branches Are:</h3>
+            <ul>{% for x in br %}
+                <li>{{x.branch}}</li>
+                {% endfor %}
+            </ul>
+        </div>
         <label for="name">Branch Name:</label>
         <input type="text" id="name" name="name" required><br><br>
 

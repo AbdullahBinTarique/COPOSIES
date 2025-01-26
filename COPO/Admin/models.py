@@ -57,6 +57,7 @@ class COPOAcheiveddata(models.Model):
     uploade_date = models.DateTimeField(auto_now_add=True)
     CourseCopoAch = models.JSONField(null=True)
     CourseCopoAchExt = models.JSONField(null=True)
+    temp = models.JSONField(null=True)
 
 
     def __str__(self):
