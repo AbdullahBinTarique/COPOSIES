@@ -107,6 +107,9 @@ Avg COPO
                     </tbody>
                 </table>
             </div>
+            <div class="graph1"></div>
+            <br><br>
+            <hr>
             <div style="width: 1000px; height: 100%;">
 
                 <table class="table table-bordered border-primary  table-dark table-hover" id="Table2">
@@ -147,6 +150,9 @@ Avg COPO
                     </tbody>
                 </table>
             </div>
+            <div class="graph2"></div>
+            <br><br>
+            <hr>
             <div style="width: 1000px; height: 100%;">
                 <p
                     style="border: 2px solid blue ;  padding: 10px ; font-size: larger;font-weight: 600;display: block;width:25%">
@@ -186,6 +192,9 @@ Avg COPO
                     </tbody>
                 </table>
             </div>
+            <div class="graph3"></div>
+            <br><br>
+            <hr>
             <div style="width: 1000px; height: 100%;">
                 <p
                     style="border: 2px solid blue ;  padding: 10px ; font-size: larger;font-weight: 600;display: block;width:25%">
@@ -226,18 +235,102 @@ Avg COPO
                 </table>
             </div>
         </div>
+        <div class="graph4">
+
+        </div>
+        <br><br>
+        <hr>
         <script>
+
+
+
+            const width = 500;
+            const height = 300;
+            const margin = { top: 20, right: 20, bottom: 40, left: 40 };
+
+
+            function graphattained(divclass, dataarr) {
+                const data = dataarr;
+                const svg = d3.select(`.${divclass}`)
+                    .append("svg")
+                    .attr("width", width)
+                    .attr("height", height);
+
+                const xScale = d3.scaleBand()
+                    .domain(data.map((d, i) => i))
+                    .range([margin.left, width - margin.right])
+                    .padding(0.2);
+
+                const yScale = d3.scaleLinear()
+                    .domain([0, 3])
+                    .range([height - margin.bottom, margin.top]);
+
+                // Add bars with animation
+                svg.selectAll("rect")
+                    .data(data)
+                    .enter()
+                    .append("rect")
+                    .attr("x", (d, i) => xScale(i))
+                    .attr("y", height - margin.bottom)
+                    .attr("width", xScale.bandwidth())
+                    .attr("height", 0)
+                    .attr("fill", (d, i) => i >= data.length - 2 ? "lime" : "aqua") // Change color of last two bars
+                    .transition()
+                    .duration(800)
+                    .attr("y", d => yScale(d))
+                    .attr("height", d => height - margin.bottom - yScale(d));
+
+                // Add labels on top of bars
+                svg.selectAll("text")
+                    .data(data)
+                    .enter()
+                    .append("text")
+                    .text(d => d)
+                    .attr("x", (d, i) => xScale(i) + xScale.bandwidth() / 2)
+                    .attr("y", height - margin.bottom)
+                    .attr("text-anchor", "middle")
+                    .attr("fill", "white")
+                    .attr("font-size", "12px")
+                    .transition()
+                    .duration(800)
+                    .attr("y", d => yScale(d) - 5);
+
+                // X Axis
+                svg.append("g")
+                    .attr("transform", `translate(0, ${height - margin.bottom})`)
+                    .call(d3.axisBottom(xScale).tickFormat(d => d + 1));
+                svg.append("text")
+                    .attr("x", width / 2)
+                    .attr("y", height - 5)
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", "14px")
+                    .attr("fill", "White")
+                    .text("COS");
+                // Y Axis
+                svg.append("g")
+                    .attr("transform", `translate(${margin.left}, 0)`)
+                    .call(d3.axisLeft(yScale));
+                svg.append("text")
+                    .attr("x", -height / 2)
+                    .attr("y", 15)
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", "14px")
+                    .attr("fill", "White")
+                    .attr("transform", "rotate(-90)")
+                    .text("Values");
+
+
+            }
 
 
             pos = 12
             psos = 2
             header = `<th scope="col">Subject_ID</th>
-            <th scope="col">Subject</th>`
-            for (let a = 0; a < parseInt(pos) + parseInt(psos); a++)
-                if (a < parseInt(pos))
-                    header += `<th scope="col">Po's${(a + 1)}</th>`
-                else
-                    header += `<th scope="col">PSo's${(a + 1 - parseInt(pos))}</th>`
+        <th scope="col">Subject</th>`
+            for (let a = 0; a < parseInt(pos) + parseInt(psos); a++) if (a < parseInt(pos)) header += `<th scope="col">
+            Po's${(a + 1)}</th>`
+            else
+                header += `<th scope="col">PSo's${(a + 1 - parseInt(pos))}</th>`
 
 
             document.getElementById('Theads1').innerHTML = header
@@ -247,9 +340,9 @@ Avg COPO
 
             document.getElementById('Theads4').innerHTML = header
 
-
+            var storeelements = []
             function calcavg(str, avg) {
-                let storeelements = []
+                storeelements = []
                 const table = document.getElementById(str)
                 let arr = [];
                 const rows = table.querySelectorAll('tr');
@@ -261,19 +354,14 @@ Avg COPO
                     arr.push(rowdata);
                 })
                 for (let z = 0; z < 14; z++) {
-                    let avg = 0.0, sum = 0.0, count = 0;
-                    for (let b = 1; b < arr.length - 1; b++) {
-                        if (arr[b][z] != "" && arr[b][z] != "NaN") {
-                            sum += parseFloat(arr[b][z]);
-                            count++;
-                        }
-                    }
-                    avg = Math.round(sum / count * 100) / 100;
-                    storeelements.push(avg);
-                }
-                let doc = ``
-
-                for (let index = 0; index < storeelements.length; index++) {
+                    let avg = 0.0, sum = 0.0, count = 0; for (let b = 1; b < arr.length - 1; b++) {
+                        if
+                            (arr[b][z] != "" && arr[b][z] != "NaN") { sum += parseFloat(arr[b][z]); count++; }
+                    } avg = Math.round(sum /
+                        count * 100) / 100; storeelements.push(avg);
+                } let doc = ``;
+                for (let index = 0; index <
+                    storeelements.length; index++) {
                     doc += `<th>${storeelements[index]}</th>`
 
                 }
@@ -281,10 +369,13 @@ Avg COPO
             }
 
             calcavg('Table', 'Avg');
+            graphattained('graph1', storeelements)
             calcavg('Table2', 'Avg2');
+            graphattained('graph2', storeelements)
             calcavg('Table3', 'Avg3');
+            graphattained('graph3', storeelements)
             calcavg('Table4', 'Avg4');
-
+            graphattained('graph4', storeelements)
 
         </script>
 
@@ -295,7 +386,5 @@ Avg COPO
 
 {% endblock %}
 {% block script %}
-<script>
 
-</script>
 {% endblock %}
